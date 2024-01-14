@@ -29,7 +29,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <SupportUrl>https://github.com/Aetherinox/startallback-activator</SupportUrl>
+    <SupportUrl>https://github.com/Aetherinox/windowfx-patcher</SupportUrl>
     <TargetCulture>en</TargetCulture>
     <ProductName>Stardock WindowFX Patcher</ProductName>
     <PublisherName>Aetherx</PublisherName>
