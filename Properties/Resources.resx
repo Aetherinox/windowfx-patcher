@@ -1,0 +1,467 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="about_hdr_desc" xml:space="preserve">
+    <value>Educational purposes only. No ads, no music, no bullshit.</value>
+    <comment>About &gt;Header Description</comment>
+  </data>
+  <data name="about_lbl_gpg" xml:space="preserve">
+    <value>GPG KeyID</value>
+    <comment>About &gt;GPG ID Label</comment>
+  </data>
+  <data name="about_lbl_thumbprint" xml:space="preserve">
+    <value>Digital Signature Thumbprint</value>
+    <comment>About &gt;PIV ID Label</comment>
+  </data>
+  <data name="about_lnk_github" xml:space="preserve">
+    <value>Github Repo</value>
+    <comment>About &gt;Link &gt; Github</comment>
+  </data>
+  <data name="about_lnk_tpb" xml:space="preserve">
+    <value>TPB Profile</value>
+    <comment>About &gt;Link &gt; TPB</comment>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="bch" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Materials\bch.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bg_header" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bg_header.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="btc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Materials\btc.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="btn_open_folder" xml:space="preserve">
+    <value>&amp;Open Folder</value>
+  </data>
+  <data name="btn_patch" xml:space="preserve">
+    <value>&amp;Patch</value>
+    <comment>Patch button</comment>
+  </data>
+  <data name="chat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Materials\bell.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cwrite_dmp_exception" xml:space="preserve">
+    <value>Dev Dump: Exception:
+
+{0}</value>
+    <comment>Console.Write</comment>
+  </data>
+  <data name="cwrite_dmp_finish" xml:space="preserve">
+    <value>Dev Dump: Finished</value>
+    <comment>Console.Write</comment>
+  </data>
+  <data name="dlg_cancelled" xml:space="preserve">
+    <value>Cancelled by user</value>
+    <comment>File dialog box</comment>
+  </data>
+  <data name="dlg_title" xml:space="preserve">
+    <value>Locate WindowFXConfig.exe</value>
+    <comment>File dialog box</comment>
+  </data>
+  <data name="error" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Materials\error.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Materials\eth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="exclamation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Materials\exclamation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="information" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Materials\info.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lbl_contrib_bch" xml:space="preserve">
+    <value>BCH</value>
+    <comment>Bitcoin Cash</comment>
+  </data>
+  <data name="lbl_contrib_btc" xml:space="preserve">
+    <value>BTC</value>
+    <comment>Bitcoin</comment>
+  </data>
+  <data name="lbl_contrib_eth" xml:space="preserve">
+    <value>ETH</value>
+    <comment>Etherium</comment>
+  </data>
+  <data name="msgbox_dev_bak_msg" xml:space="preserve">
+    <value>The following file will be backed up:
+
+{0}
+{1}</value>
+    <comment>Message box</comment>
+  </data>
+  <data name="msgbox_extract_err_title" xml:space="preserve">
+    <value>Fatal Error</value>
+    <comment>Message box</comment>
+  </data>
+  <data name="msgbox_integrity_fail_msg" xml:space="preserve">
+    <value>The fails associated to this patch have a signature, however, it is not by the developer who wrote the patch, aborting...
+
+Certificate Thumbprint:
+     {0}</value>
+    <comment>Message box</comment>
+  </data>
+  <data name="msgbox_integrity_fail_nosign_msg" xml:space="preserve">
+    <value>The files for this activator are not signed and may be fake from another source. Files from this activator's developer will ALWAYS be signed.
+
+Ensure you downloaded this patch from the developer.
+
+Failed File(s):
+     {0}</value>
+    <comment>Message box</comment>
+  </data>
+  <data name="msgbox_integrity_fail_nosign_title" xml:space="preserve">
+    <value>Integrity Check Failed</value>
+    <comment>Message box</comment>
+  </data>
+  <data name="msgbox_integrity_fail_title" xml:space="preserve">
+    <value>Integrity Check Failed</value>
+    <comment>Message box</comment>
+  </data>
+  <data name="msgbox_nolocopen_msg" xml:space="preserve">
+    <value>Could not find WindowFX. It must be installed first before you can run the patcher.</value>
+    <comment>Message box</comment>
+  </data>
+  <data name="msgbox_nolocopen_title" xml:space="preserve">
+    <value>WindowFX Not Found</value>
+    <comment>Message box</comment>
+  </data>
+  <data name="msgbox_nolocpath_msg" xml:space="preserve">
+    <value>Patcher cannot determine where WindowFX is installed
+Tried looking in {0}
+
+You will be prompted to manually locate WindowFXConfig.exe. Ensure that WindowFX is installed on your system.</value>
+    <comment>Message box</comment>
+  </data>
+  <data name="msgbox_nolocpath_title" xml:space="preserve">
+    <value>Cannot Locate WindowFX</value>
+    <comment>Message box</comment>
+  </data>
+  <data name="msgbox_patch_compl_msg" xml:space="preserve">
+    <value>WindowFX has been successfully patched.</value>
+    <comment>Message box</comment>
+  </data>
+  <data name="msgbox_patch_compl_title" xml:space="preserve">
+    <value>Patch Complete</value>
+    <comment>Message box</comment>
+  </data>
+  <data name="question" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Materials\question.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="status_dlg_loaded" xml:space="preserve">
+    <value>Loaded {0}</value>
+    <comment>Status bar</comment>
+  </data>
+  <data name="status_generate" xml:space="preserve">
+    <value>Click Patch to begin ...</value>
+    <comment>Status bar</comment>
+  </data>
+  <data name="status_integrity_fail" xml:space="preserve">
+    <value>Integrity check failed</value>
+    <comment>Status bar</comment>
+  </data>
+  <data name="status_integrity_success" xml:space="preserve">
+    <value>Integrity check success</value>
+    <comment>Status bar</comment>
+  </data>
+  <data name="status_manual_locate" xml:space="preserve">
+    <value>WindowFX not found, loading manual dialog ...</value>
+    <comment>Status bar</comment>
+  </data>
+  <data name="status_patch_complete" xml:space="preserve">
+    <value>Successfully patched WindowFX</value>
+    <comment>Status bar</comment>
+  </data>
+  <data name="status_wfx_not_found" xml:space="preserve">
+    <value>WindowFX not found</value>
+    <comment>Status bar</comment>
+  </data>
+  <data name="status_taskkill_fail_cmd" xml:space="preserve">
+    <value>Could not restart task {0}</value>
+    <comment>Status bar</comment>
+  </data>
+  <data name="status_taskkill_fail_proc" xml:space="preserve">
+    <value>Could not kill task {0}</value>
+    <comment>Status bar</comment>
+  </data>
+  <data name="status_taskkill_fail" xml:space="preserve">
+    <value>Could not kill {0}</value>
+    <comment>Status bar</comment>
+  </data>
+  <data name="btn_template_abort" xml:space="preserve">
+    <value>&amp;Abort</value>
+    <comment>Dialog &gt; Button &gt; Abort</comment>
+  </data>
+  <data name="btn_template_cancel" xml:space="preserve">
+    <value>&amp;Cancel</value>
+    <comment>Dialog &gt; Button &gt; Cancel</comment>
+  </data>
+  <data name="btn_template_ignore" xml:space="preserve">
+    <value>&amp;Ignore</value>
+    <comment>Dialog &gt; Button &gt; Ignore</comment>
+  </data>
+  <data name="btn_template_no" xml:space="preserve">
+    <value>&amp;No</value>
+    <comment>Dialog &gt; Button &gt; No</comment>
+  </data>
+  <data name="btn_template_ok" xml:space="preserve">
+    <value>&amp;OK</value>
+    <comment>Dialog &gt; Button &gt; OK</comment>
+  </data>
+  <data name="btn_template_retry" xml:space="preserve">
+    <value>&amp;Retry</value>
+    <comment>Dialog &gt; Button &gt; Retry</comment>
+  </data>
+  <data name="btn_template_yes" xml:space="preserve">
+    <value>&amp;Yes</value>
+    <comment>Dialog &gt; Button &gt; Yes</comment>
+  </data>
+  <data name="txt_contrib_intro" xml:space="preserve">
+    <value>I do this because I enjoy giving back, and I'm not looking to make a profit off my work. However, donations would help immensely for one purpose -- purchasing libraries and other commercial products which have insane licensing systems. These types of products would make life much easier and get releases pumped out on a more regular basis. Don't feel obligated, this is just "if you can". My main goal is better tools.</value>
+  </data>
+  <data name="txt_intro_1" xml:space="preserve">
+    <value>This program will patch and activate WindowFX. Ensure that you install Stardock WindowFX before running this patch.</value>
+  </data>
+  <data name="txt_intro_2" xml:space="preserve">
+    <value>Press PATCH to begin</value>
+  </data>
+  <data name="msgbox_update_msg" xml:space="preserve">
+    <value>Update v{0} is available.
+
+Updates ensure this patch works with the latest version {1}. If you have issues using this tool, download the latest version in the top menu: Help ► Updates
+
+Would you like to view the update? If not, program will start as normal.</value>
+  </data>
+  <data name="msgbox_update_title" xml:space="preserve">
+    <value>Update Available: {0} ► {1}</value>
+  </data>
+  <data name="msgbox_bhost_cancel_msg" xml:space="preserve">
+    <value>Your host file has been left untouched</value>
+  </data>
+  <data name="msgbox_bhost_cancel_title" xml:space="preserve">
+    <value>Operation Cancelled</value>
+  </data>
+  <data name="msgbox_bhost_fw_badpath_msg" xml:space="preserve">
+    <value>Cannot locate the exact path to Stardock WindowFX. You may need to manually block Stardock WindowFX using Windows Firewall.
+
+{0}</value>
+  </data>
+  <data name="msgbox_bhost_fw_badpath_title" xml:space="preserve">
+    <value>Unknown Firewall Target</value>
+  </data>
+  <data name="msgbox_bhost_fw_success_msg" xml:space="preserve">
+    <value>Successfully added new Firewall rules to block the executable:
+
+{0}</value>
+  </data>
+  <data name="msgbox_bhost_fw_success_title" xml:space="preserve">
+    <value>Added Firewall Rules</value>
+  </data>
+  <data name="msgbox_bhost_msg" xml:space="preserve">
+    <value>This action will block WindowFX from being able to communicate with the Stardock License Server, by adding entries to your Windows host file. 
+
+Additionally, two firewall rules will be created which blocks inbound / outbound internet communication between your machine and WindowFX only.
+
+Are you sure?</value>
+  </data>
+  <data name="msgbox_bhost_success_msg" xml:space="preserve">
+    <value>Successfully edited your host file at {0}</value>
+  </data>
+  <data name="msgbox_bhost_success_title" xml:space="preserve">
+    <value>Stardock WindowFX Servers Successfully Blocked</value>
+  </data>
+  <data name="msgbox_bhost_title" xml:space="preserve">
+    <value>Add WindowFX Blocks?</value>
+  </data>
+  <data name="msgbox_debug_fpath_env_c1_msg" xml:space="preserve">
+    <value />
+  </data>
+  <data name="msgbox_debug_fpath_env_c1_title" xml:space="preserve">
+    <value>Debug: 1000C-1</value>
+  </data>
+  <data name="msgbox_debug_fpath_env_c2_msg" xml:space="preserve">
+    <value>Located {0} with Windows Env Var in:
+
+{1}</value>
+  </data>
+  <data name="msgbox_debug_fpath_env_c2_title" xml:space="preserve">
+    <value>Debug: 1000C-2</value>
+  </data>
+  <data name="msgbox_debug_fpath_msg" xml:space="preserve">
+    <value>Located {0} In:
+
+{1}</value>
+  </data>
+  <data name="msgbox_debug_fpath_ps_msg" xml:space="preserve">
+    <value>Located {0} with Powershell in:
+
+{1}</value>
+  </data>
+  <data name="msgbox_debug_fpath_ps_title" xml:space="preserve">
+    <value>Debug: 1000B-0</value>
+  </data>
+  <data name="msgbox_debug_fpath_title" xml:space="preserve">
+    <value>Debug: 1000A-0</value>
+  </data>
+  <data name="msgbox_debug_ps_bhost_qry_alert_msg" xml:space="preserve">
+    <value>It appears something went wrong adding the new firewall rules.
+
+It could be that you've already added the rules in a prior session.
+
+You can manually block Stardock WindowFX in your WIndows Firewall.</value>
+  </data>
+  <data name="msgbox_debug_ps_bhost_qry_alert_title" xml:space="preserve">
+    <value>Firewall Rule Addition Failed</value>
+  </data>
+  <data name="msgbox_debug_ps_bhost_qry_ok_msg" xml:space="preserve">
+    <value>Added firewall rules to system:
+
+{0}
+
+{1}</value>
+  </data>
+  <data name="msgbox_debug_ps_bhost_qry_ok_title" xml:space="preserve">
+    <value>Windows Firewall Updated</value>
+  </data>
+  <data name="status_bak_create" xml:space="preserve">
+    <value>Creating backup {0} ...</value>
+  </data>
+  <data name="status_byte_modify" xml:space="preserve">
+    <value>Applying patch {0}% ...</value>
+    <comment>Progress</comment>
+  </data>
+  <data name="status_launch_app" xml:space="preserve">
+    <value>Launching {0} ...</value>
+  </data>
+  <data name="status_patch_locating" xml:space="preserve">
+    <value>Locating {0} ...</value>
+  </data>
+  <data name="status_patch_start" xml:space="preserve">
+    <value>Please wait, applying patch ...</value>
+  </data>
+  <data name="status_services_stopping" xml:space="preserve">
+    <value>Stopping {0} services ...</value>
+  </data>
+  <data name="status_taskkill_succ" xml:space="preserve">
+    <value>Stopped service {0} ...</value>
+  </data>
+  <data name="wfx_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Materials\wfx_128.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>
