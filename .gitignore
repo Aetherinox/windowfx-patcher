@@ -1,0 +1,84 @@
+# ----------------------
+# Ignore everything
+# ----------------------
+/*
+
+# ----------------------
+# Add Gitignore
+# ----------------------
+!.gitignore
+
+# ----------------------
+# Add Manifest
+# ----------------------
+!/manifest
+
+# ----------------------
+# Add Tools
+# ----------------------
+!/Tools
+
+# ----------------------
+# Add Docs
+# ----------------------
+!/Docs
+
+# ----------------------
+# Bin
+# ----------------------
+!/bin
+/bin/Debug/*
+/bin/Release/*
+/bin/Release/*.pdb
+/bin/Release/*.exe
+/bin/Release/*.manifest
+/bin/Release/*.application
+/bin/Release/*.dll
+/bin/Release/*exe.config
+
+/MSBuildCode/*
+!/MSBuildCode/
+
+/bin/Release/app.publish/*
+!/bin/Release/app.publish/
+!/bin/Release/app.publish/*.exe
+/bin/Release/app.publish/setup.exe
+
+/bin/Release/net481/*
+!/bin/Release/net481/
+!/bin/Release/net481/*.exe
+
+/bin/Release/net481/publish/*
+!/bin/Release/net481/publish/
+!/bin/Release/net481/publish/*.exe
+
+/bin/Release/.vshistory*
+
+# Allow: Classes
+!/Classes*
+/Classes/.vshistory*
+
+# Allow: Controls
+!/Controls*
+/Controls/.vshistory*
+
+# Allow: Forms
+!/Forms*
+/Forms/.vshistory*
+
+# Allow: Materials
+!/Materials*
+/Materials/.vshistory*
+
+# Allow: Properties
+!/Properties*
+/Properties/.vshistory*
+
+# Allow: Exts
+!*.csproj
+!*.sln
+!*.cs
+!*.resx
+!*.ico
+!*.md
+!sign.bat
