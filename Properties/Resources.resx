@@ -490,18 +490,6 @@ You can manually block Stardock WindowFX in your WIndows Firewall.</value>
   <data name="status_task_stop_app" xml:space="preserve">
     <value>Shutting down tasks for {0} ...</value>
   </data>
-  <data name="wfx32" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\wfx32.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="wfx4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\wfx4.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="wfx4_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\wfx4_64.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="wfx64" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\wfx64.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="msgbox_backup_error_exemissing_msg" xml:space="preserve">
     <value>Was unable to back up {0}.
 
@@ -514,5 +502,17 @@ You should re-install Stardock WindowFX.</value>
   </data>
   <data name="status_backup_error_exemissing" xml:space="preserve">
     <value>The target file {0} is missing.</value>
+  </data>
+  <data name="wfx32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wfx32.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="wfx4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wfx4.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="wfx4_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wfx4_64.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="wfx64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wfx64.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
