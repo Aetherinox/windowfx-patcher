@@ -8,14 +8,12 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 using System.Diagnostics;
-using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Management.Automation;
 using System.Text;
-using Lng = WFXPatch.Properties.Resources;
+using Res = WFXPatch.Properties.Resources;
 using Cfg = WFXPatch.Properties.Settings;
-using System.Security.Policy;
-using System.Management.Automation.Language;
+using System.Xml.Linq;
 
 namespace WFXPatch
 {
@@ -39,37 +37,39 @@ namespace WFXPatch
             Define > Paths
         */
 
-        private static string patch_launch_dir  = System.IO.Path.GetDirectoryName( System.Reflection.Assembly.GetEntryAssembly( ).Location );
-        private static string app_target_exe    = Cfg.Default.app_target_exe;
+        static private string patch_launch_fullpath = Process.GetCurrentProcess( ).MainModule.FileName;
+        static private string patch_launch_dir      = Path.GetDirectoryName( patch_launch_fullpath );
+        static private string patch_launch_exe      = Path.GetFileName( patch_launch_fullpath );
+        private static string app_target_exe        = Cfg.Default.app_target_exe;
 
         /*
              Define > Target Program Search Locations
         */
 
-        private static string find_InAppData    = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData ),
-                                                    "Stardock",
-                                                    "WindowFX",
-                                                    app_target_exe
-                                                );
+        private static string find_InAppData        = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.LocalApplicationData ),
+                                                        "Stardock",
+                                                        "WindowFX",
+                                                        app_target_exe
+                                                    );
 
-        private static string find_InProg64     = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.ProgramFiles ),
-                                                    "Stardock",
-                                                    "WindowFX",
-                                                    app_target_exe
-                                                );
+        private static string find_InProg64         = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.ProgramFiles ),
+                                                        "Stardock",
+                                                        "WindowFX",
+                                                        app_target_exe
+                                                    );
 
-        private static string find_InProg86     = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.ProgramFilesX86 ),
-                                                    "Stardock",
-                                                    "WindowFX",
-                                                    app_target_exe
-                                                );
+        private static string find_InProg86         = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.ProgramFilesX86 ),
+                                                        "Stardock",
+                                                        "WindowFX",
+                                                        app_target_exe
+                                                    );
 
-        private static string find_InAppHome    = Path.Combine(
-                                                    patch_launch_dir,
-                                                    "Stardock",
-                                                    "WindowFX",
-                                                    app_target_exe
-                                                );
+        private static string find_InAppHome        = Path.Combine(
+                                                        patch_launch_dir,
+                                                        "Stardock",
+                                                        "WindowFX",
+                                                        app_target_exe
+                                                    );
 
         /*
              Start Patch
@@ -91,7 +91,7 @@ namespace WFXPatch
                 Status > start locate
             */
 
-            StatusBar.Update( string.Format( Lng.status_patch_locating, Cfg.Default.app_name ) );
+            StatusBar.Update( string.Format( Res.status_patch_locating, Cfg.Default.app_name ) );
 
             /*
                 populate path list array
@@ -183,13 +183,13 @@ namespace WFXPatch
                     path_compiled = sb.ToString( );
                 }
 
-                StatusBar.Update( Lng.status_manual_locate );
+                StatusBar.Update( Res.status_manual_locate );
 
                 MessageBox.Show
                 (
                     new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                    string.Format( Lng.msgbox_nolocpath_msg, path_compiled ),
-                    Lng.msgbox_nolocpath_title,
+                    string.Format( Res.msgbox_nolocpath_msg, path_compiled ),
+                    Res.msgbox_nolocpath_title,
                     MessageBoxButtons.OK, MessageBoxIcon.Error
                 );
 
@@ -206,7 +206,7 @@ namespace WFXPatch
                 }
 
                 OpenFileDialog dlg      = new OpenFileDialog( );
-                dlg.Title               = Lng.dlg_title;
+                dlg.Title               = Res.dlg_title;
                 dlg.InitialDirectory    = ext_default;
                 dlg.Filter              = "WindowFX EXE|WindowFXConfig.exe|All files (*.*)|*.*";
                 DialogResult result     = dlg.ShowDialog( );
@@ -217,7 +217,7 @@ namespace WFXPatch
 
                 if ( result == DialogResult.Cancel )
                 {
-                    StatusBar.Update( Lng.dlg_cancelled );
+                    StatusBar.Update( Res.dlg_cancelled );
 
                     return;
                 }
@@ -240,10 +240,10 @@ namespace WFXPatch
                     }
                     sr.Close( );
 
-                    StatusBar.Update( string.Format( Lng.status_dlg_loaded , dlg.FileName ) );
+                    StatusBar.Update( string.Format( Res.status_dlg_loaded, dlg.FileName ) );
                 }
 
-                StatusBar.Update( Lng.status_wfx_not_found );
+                StatusBar.Update( Res.status_wfx_not_found );
             }
 
             /*
@@ -263,95 +263,15 @@ namespace WFXPatch
             */
 
             /*
-                 kill task explorer.exe
+                 kill tasks
             */
 
-          
-            try
-            {
-                Process[] processes = Process.GetProcessesByName( "WindowFXConfig" );
-                foreach ( Process proc in processes )
-                {
-                    proc.Kill( );
-                }
-            }
-            catch ( Exception )
-            {
-                StatusBar.Update( String.Format( Lng.status_taskkill_fail, "WindowFXConfig" ) );
-                return;
-            }
-            finally
-            {
-                StatusBar.Update( string.Format( Lng.status_taskkill_succ, "WindowFXConfig.exe" ) );
-                Console.WriteLine( String.Format( "Service kill [Complete]: {0}", "WindowFXConfig.exe" ) );
-            }
+            StatusBar.Update( string.Format( Res.status_task_stop_app, Cfg.Default.app_name ) );
 
-            /*
-                 kill / restart task explorer.exe
-            */
-
-            try
-            {
-                Process.Start( "cmd", "/c taskkill /f /im WindowFXConfig.exe" ).WaitForExit( );
-            }
-            catch ( Exception )
-            {
-                StatusBar.Update( String.Format( Lng.status_taskkill_fail, "WindowFXConfig.exe" ) );
-                return;
-            }
-            finally
-            {
-                StatusBar.Update( string.Format( Lng.status_taskkill_succ, "WindowFXConfig.exe" ) );
-                Console.WriteLine( String.Format( "Service kill [Complete]: {0}", "WindowFXConfig.exe" ) );
-            }
-
-
-            /*
-                 Kill WindowFX services
-
-                    Stardock WindowFX 6 Helper Process              =>  wfx32.exe
-                    WindowFX Service.  Part of Stardock WindowFX 6  =>  WindowFXSRV.exe
-             */
-
-            StatusBar.Update( string.Format( Lng.status_services_stopping, Cfg.Default.app_name ) );
-
-            try
-            {
-                Process[] processes = Process.GetProcessesByName( "wfx32" );
-                foreach ( Process proc in processes )
-                {
-                    proc.Kill( );
-                }
-            }
-            catch ( Exception )
-            {
-                StatusBar.Update( String.Format( Lng.status_taskkill_fail, "wfx32" ) );
-                return;
-            }
-            finally
-            {
-                StatusBar.Update( string.Format( Lng.status_taskkill_succ, "wfx32" ) );
-                Console.WriteLine( String.Format( "Service kill [Complete]: {0}", "wfx32" ) );
-            }
-
-            try
-            {
-                Process[] processes = Process.GetProcessesByName( "WindowFXSRV" );
-                foreach ( Process proc in processes )
-                {
-                    proc.Kill( );
-                }
-            }
-            catch ( Exception )
-            {
-                StatusBar.Update( Lng.status_taskkill_fail );
-                return;
-            }
-            finally
-            {
-                StatusBar.Update( string.Format( Lng.status_taskkill_succ, "WindowFXSRV" ) );
-                Console.WriteLine( String.Format( "Service kill [Complete]: {0}", "WindowFXSRV" ) );
-            }
+            Helpers.TaskKill( "WindowFXConfig" );
+            Helpers.TaskKill( "wfx64" );
+            Helpers.TaskKill( "wfx32" );
+            Helpers.TaskKill( "WindowFXSRV" );
 
             /*
                 loop each dll path
@@ -364,75 +284,13 @@ namespace WFXPatch
             {
 
                 string WFX_path_fol     = Path.GetDirectoryName( WFX_path_exe );
-                string WFX_path_bak     = WFX_path_exe + ".bak";
-                string psq_var          = "$user_current = $env:username";
-                string psq_takeown      = "takeown /f \"" + WFX_path_bak + "\" y";
-                string psq_icalcs       = "icacls \"" + WFX_path_bak + "\" /grant \"${user_current}:F\" /C /L";
 
                 /*
                     if full backup path exists
                         x:\path\to\WindowFXConfig.exe.bak
                 */
 
-                if ( File.Exists( WFX_path_bak ) )
-                {
-
-                    /*
-                        run powershell commands to adjust permissions
-                    */
-
-                    using ( PowerShell ps = PowerShell.Create( ) )
-                    {
-
-                        ps.AddScript( psq_var );
-                        ps.AddScript( psq_takeown );
-                        ps.AddScript( psq_icalcs );
-
-                        Collection<PSObject> PSOutput   = ps.Invoke( );
-                        StringBuilder sb                = new StringBuilder( );
-
-                        foreach ( PSObject PSItem in PSOutput )
-                        {
-                            if ( PSItem != null )
-                            {
-                                // Console.WriteLine( $"Output line: [{PSItem}]" );
-                                sb.AppendLine( PSItem.ToString( ) );
-                            }
-                        }
-
-                        if ( ps.Streams.Error.Count > 0 )
-                        {
-                            // Error collection
-                        }
-                    }
-
-                    if ( AppInfo.bIsDebug( ) )
-                    {
-                        MessageBox.Show( new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen }, string.Format( ".bak backup file already exists, deleting it and creating new\n\n{0}", WFX_path_bak ),
-                            "Debug: Found existing",
-                            MessageBoxButtons.OK, MessageBoxIcon.None
-                        );
-                    }
-                    
-                    /*
-                        DELETE existing x:\path\to\WindowFXConfig.exe.bak
-                    */
-
-                    File.Delete         ( WFX_path_exe );
-                    File.Move           ( WFX_path_bak, WFX_path_exe );
-                }
-
-                /*
-                    SET     attributes on WindowFXConfig.exe
-                    COPY    WindowFXConfig.exe -> WindowFXConfig.exe.bak
-                    SET     attributes on WindowFXConfig.exe.bak
-                */
-
-                StatusBar.Update( string.Format( Lng.status_bak_create, WFX_path_exe + ".bak" ) );
-
-                File.SetAttributes      ( WFX_path_exe,     FileAttributes.Normal );
-                File.Copy               ( WFX_path_exe,     WFX_path_bak );
-                File.SetAttributes      ( WFX_path_bak,     FileAttributes.Normal );
+                GenerateBackup( WFX_path_exe );
 
                 /*
                     modify bytes for exe
@@ -440,7 +298,7 @@ namespace WFXPatch
 
                 double i_progress = 0;
 
-                StatusBar.Update( string.Format( Lng.status_byte_modify, i_progress ) );
+                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
                 Interface.Progress( Convert.ToInt32( i_progress ) );
 
                 ModifyBytes(
@@ -449,8 +307,8 @@ namespace WFXPatch
                     "01 00 00 00 00 00 00 C0 4D 00 00 04 00 00 00 00 00 00 02 00 40 81 00 00 10 00 00 10 00 00 00 00 10 00 00 10 00 00 00 00 00 00 10 00 00 00 00 00 00 00 00 00 00 00 E4 6A 3C 00 F4 01 00 00 00 30 3F 00 F4 84 0A 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 C0 49 00 18 F4 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
                 );
 
-                i_progress += Math.Round( 12.5 );
-                StatusBar.Update( string.Format( Lng.status_byte_modify, i_progress ) );
+                i_progress += Math.Round( 8.0 );
+                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
                 Interface.Progress( Convert.ToInt32( i_progress ) );
 
                 ModifyBytes(
@@ -459,8 +317,8 @@ namespace WFXPatch
                     "FF FF 6A 01 50 E8 6D 60 02 00 83 C4 14 85 C0 78 17 C7 85 58 FF FF FF 0B 00 00 00 90 83 BD"
                 );
 
-                i_progress += Math.Round( 12.5 );
-                StatusBar.Update( string.Format( Lng.status_byte_modify, i_progress ) );
+                i_progress += Math.Round( 8.0 );
+                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
                 Interface.Progress( Convert.ToInt32( i_progress ) );
 
                 ModifyBytes(
@@ -469,8 +327,8 @@ namespace WFXPatch
                     "45 FC C9 C3 B8 01 00 00 00 C3 A1 D8 FA"
                 );
 
-                i_progress += Math.Round( 12.5 );
-                StatusBar.Update( string.Format( Lng.status_byte_modify, i_progress ) );
+                i_progress += Math.Round( 8.0 );
+                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
                 Interface.Progress( Convert.ToInt32( i_progress ) );
 
                 ModifyBytes(
@@ -479,8 +337,8 @@ namespace WFXPatch
                     "85 C9 74 06 C7 01 0E 00 00 00 83 C0 10"
                 );
 
-                i_progress += Math.Round( 12.5 );
-                StatusBar.Update( string.Format( Lng.status_byte_modify, i_progress ) );
+                i_progress += Math.Round( 8.0 );
+                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
                 Interface.Progress( Convert.ToInt32( i_progress ) );
 
                 ModifyBytes(
@@ -489,8 +347,8 @@ namespace WFXPatch
                     "6A 6C 66 89 45 D4 58 6A 6F 66 89 45 D8"
                 );
 
-                i_progress += Math.Round( 12.5 );
-                StatusBar.Update( string.Format( Lng.status_byte_modify, i_progress ) );
+                i_progress += Math.Round( 8.0 );
+                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
                 Interface.Progress( Convert.ToInt32( i_progress ) );
 
                 ModifyBytes(
@@ -499,8 +357,8 @@ namespace WFXPatch
                     "E8 78 08 FF FF 85 C0 EB 32 6A 10 68 E4"
                 );
 
-                i_progress += Math.Round( 12.5 );
-                StatusBar.Update( string.Format( Lng.status_byte_modify, i_progress ) );
+                i_progress += Math.Round( 8.0 );
+                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
                 Interface.Progress( Convert.ToInt32( i_progress ) );
 
                 ModifyBytes(
@@ -509,8 +367,8 @@ namespace WFXPatch
                     "06 FF FF 85 C0 EB 54 6A 10 68 E4 14 72"
                 );
 
-                i_progress += Math.Round( 12.5 );
-                StatusBar.Update( string.Format( Lng.status_byte_modify, i_progress ) );
+                i_progress += Math.Round( 8.0 );
+                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
                 Interface.Progress( Convert.ToInt32( i_progress ) );
 
                 ModifyBytes(
@@ -519,9 +377,86 @@ namespace WFXPatch
                     "33 73 FE FF 85 C0 EB 30 6A 10 68 E4 14"
                 );
 
-                i_progress = 100;
-                StatusBar.Update( string.Format( Lng.status_byte_modify, i_progress ) );
+                i_progress += Math.Round( 8.0 );
+                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
                 Interface.Progress( Convert.ToInt32( i_progress ) );
+
+                /*
+                    Extract modified dll and exe files
+                */
+
+                File.WriteAllBytes( Cfg.Default.app_res_file_1, Res.wfx4    );
+
+                i_progress += Math.Round( 8.0 );
+                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress( Convert.ToInt32( i_progress ) );
+
+                File.WriteAllBytes( Cfg.Default.app_res_file_2, Res.wfx4_64 );
+
+                i_progress += Math.Round( 8.0 );
+                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress( Convert.ToInt32( i_progress ) );
+
+                File.WriteAllBytes( Cfg.Default.app_res_file_3, Res.wfx32   );
+
+                i_progress += Math.Round( 8.0 );
+                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress( Convert.ToInt32( i_progress ) );
+
+                File.WriteAllBytes( Cfg.Default.app_res_file_4, Res.wfx64   );
+
+                i_progress = 100.0;
+                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress( Convert.ToInt32( i_progress ) );
+
+                /*
+                    Move > File 1
+                */
+
+                string file_1_src       = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_1 );
+                GenerateBackup          ( file_1_src, true );
+
+                if ( File.Exists( Cfg.Default.app_res_file_1 ) )
+                    File.Move( Cfg.Default.app_res_file_1, file_1_src );
+
+                /*
+                    Move > File 2
+                */
+
+                string file_2_src       = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_2 );
+                GenerateBackup          ( file_2_src, true );
+
+                if ( File.Exists( Cfg.Default.app_res_file_2 ) )
+                    File.Move( Cfg.Default.app_res_file_2, file_2_src );
+
+                /*
+                    Move > File 3
+                */
+
+                string file_3_src       = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_3 );
+                GenerateBackup          ( file_3_src, true );
+
+                if ( File.Exists( Cfg.Default.app_res_file_3 ) )
+                    File.Move( Cfg.Default.app_res_file_3, file_3_src );
+
+
+                /*
+                    Move > File 4
+                */
+
+                string file_4_src       = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_4 );
+                GenerateBackup          ( file_4_src, true );
+
+                if ( File.Exists( Cfg.Default.app_res_file_4 ) )
+                    File.Move( Cfg.Default.app_res_file_4, file_4_src );
+
+                /*
+                    Restart Service
+                */
+
+                string wfx_service_restart = "WindowFX";
+                StatusBar.Update( string.Format( Res.status_service_restart_begin, wfx_service_restart ) );
+                Helpers.RestartService( wfx_service_restart, 500 );
 
                 /*
                     launch WindowFX
@@ -533,9 +468,10 @@ namespace WFXPatch
                     {
                         Console.WriteLine( String.Format( "Patch: [Launch]: {0}", WFX_path_exe ) );
                         System.Diagnostics.Process.Start( WFX_path_exe );
-                        StatusBar.Update( string.Format( Lng.status_launch_app, Cfg.Default.app_name ) );
+                        StatusBar.Update( string.Format( Res.status_launch_app, Cfg.Default.app_name ) );
                     }
                 }
+
             }
 
             /*
@@ -560,12 +496,15 @@ namespace WFXPatch
                 AutoRestartShell = 1
             */
 
-            MessageBox.Show( new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen }, string.Format( "{0}", Lng.msgbox_patch_compl_msg ),
-                Lng.msgbox_patch_compl_title,
+            MessageBox.Show
+            (
+                new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                string.Format( "{0}", Res.msgbox_patch_compl_msg ),
+                Res.msgbox_patch_compl_title,
                 MessageBoxButtons.OK, MessageBoxIcon.Information
             );
 
-            StatusBar.Update( Lng.status_patch_complete );
+            StatusBar.Update( Res.status_patch_complete );
 
             return;
         }
@@ -625,11 +564,140 @@ namespace WFXPatch
         }
 
         /*
+            Generate Backup
+
+                takes source file and checks to see if src.bak exists.
+                creates a new src.bak file if one doesnt exist.
+
+            @arg        : str src
+                          the file to be backed up
+                          full path  x:\path\to\target_file.exe || dll
+
+            @ret        : void
+        */
+
+        public void GenerateBackup( string src, bool bMove = false )
+        {
+
+            string dest_bak         = src + ".bak";
+            string psq_var          = "$user_current = $env:username";
+
+            string psq_takeown1     = "takeown /f \"" + dest_bak + "\" y";
+            string psq_icalcs1      = "icacls \"" + dest_bak + "\" /grant \"${user_current}:F\" /C /L";
+
+            string psq_takeown2     = "takeown /f \"" + src + "\" y";
+            string psq_icalcs2      = "icacls \"" + src + "\" /grant \"${user_current}:F\" /C /L";
+
+            if ( File.Exists( dest_bak ) )
+            {
+
+                /*
+                    run powershell commands to adjust permissions
+                */
+
+                using ( PowerShell ps = PowerShell.Create( ) )
+                {
+
+                    ps.AddScript( psq_var );
+
+                    ps.AddScript( psq_takeown1 );
+                    ps.AddScript( psq_icalcs1 );
+
+                    ps.AddScript( psq_takeown2 );
+                    ps.AddScript( psq_icalcs2 );
+
+                    Collection<PSObject> PSOutput   = ps.Invoke( );
+                    StringBuilder sb                = new StringBuilder( );
+
+                    foreach ( PSObject PSItem in PSOutput )
+                    {
+                        if ( PSItem != null )
+                        {
+                            // Console.WriteLine( $"Output line: [{PSItem}]" );
+                            sb.AppendLine( PSItem.ToString( ) );
+                        }
+                    }
+
+                    if ( ps.Streams.Error.Count > 0 )
+                    {
+                        // Error collection
+                    }
+                }
+
+                if ( AppInfo.bIsDebug( ) )
+                {
+                    MessageBox.Show
+                    (
+                        new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                        string.Format( ".bak backup file already exists, deleting it and creating new\n\n{0}", dest_bak ),
+                        "Debug: Found existing",
+                        MessageBoxButtons.OK, MessageBoxIcon.None
+                    );
+                }
+                    
+                /*
+                    target_file.exe.bak already exists, which means it's probably the original 
+                    unmodified version. We want to keep that file since it has the original code.
+
+                    skip creating the new .bak file and just delete the current target_file.exe
+                    then move the existing backup file back to the original target_file.exe name
+
+                    this little method ensures the original never gets overwritten
+                */
+
+                File.Delete         ( src );
+                File.Move           ( dest_bak, src );
+            }
+
+            /*
+                SET     set attributes on src_app.exe
+                COPY    src_app.exe -> src_app.exe.bak
+                SET     set attributes on src_app.exe.bak
+            */
+
+            StatusBar.Update( string.Format( Res.status_bak_create, dest_bak ) );
+
+            if ( File.Exists ( src ) )
+            {
+                File.SetAttributes      ( src,          FileAttributes.Normal );
+
+                if ( bMove )
+                {
+                    File.Move           ( src,          dest_bak );
+                }
+                else
+                    File.Copy           ( src,          dest_bak );
+
+                File.SetAttributes      ( dest_bak,     FileAttributes.Normal );
+
+                return;
+            }
+
+            /*
+                This error shouldn't ever happen, but just in case.
+                    One of the files that are supposed to be backed up ended up going missing.
+            */
+
+            MessageBox.Show
+            ( 
+                new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                "Cannot Move missing file: " + src + "",
+                "Debug",
+                MessageBoxButtons.OK, MessageBoxIcon.Information
+            );
+
+
+        }
+
+        /*
             Block Host
 
                 A two-part function which
                     - Adds entries to the Windows host file
                     - Adds new Windows firewall rules to block the executable from communicating.
+
+            @arg        : void
+            @ret        : void
         */
 
         public void BlockHost( )
@@ -653,8 +721,8 @@ namespace WFXPatch
                 MessageBox.Show
                 ( 
                     new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                    string.Format( Lng.msgbox_bhost_success_msg, hostfile_path ),
-                    Lng.msgbox_bhost_success_title,
+                    string.Format( Res.msgbox_bhost_success_msg, hostfile_path ),
+                    Res.msgbox_bhost_success_title,
                     MessageBoxButtons.OK, MessageBoxIcon.Information
                 );
             }
@@ -677,7 +745,8 @@ namespace WFXPatch
                 MessageBox.Show
                 (
                     new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                    string.Format( Lng.msgbox_bhost_fw_badpath_msg, app_path_exe ), Lng.msgbox_bhost_fw_badpath_title,
+                    string.Format( Res.msgbox_bhost_fw_badpath_msg, app_path_exe ),
+                    Res.msgbox_bhost_fw_badpath_title,
                     MessageBoxButtons.OK, MessageBoxIcon.None
                 );
 
@@ -736,8 +805,8 @@ namespace WFXPatch
                             MessageBox.Show
                             (
                                 new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                                string.Format( Lng.msgbox_debug_ps_bhost_qry_ok_msg, fwl_rule_block_in, fwl_rule_block_out ),
-                                Lng.msgbox_debug_ps_bhost_qry_ok_title,
+                                string.Format( Res.msgbox_debug_ps_bhost_qry_ok_msg, fwl_rule_block_in, fwl_rule_block_out ),
+                                Res.msgbox_debug_ps_bhost_qry_ok_title,
                                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation
                             );
                         }
@@ -752,8 +821,8 @@ namespace WFXPatch
                         MessageBox.Show
                         (
                             new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                            string.Format( Lng.msgbox_debug_ps_bhost_qry_alert_msg ),
-                            Lng.msgbox_debug_ps_bhost_qry_alert_title,
+                            string.Format( Res.msgbox_debug_ps_bhost_qry_alert_msg ),
+                            Res.msgbox_debug_ps_bhost_qry_alert_title,
                             MessageBoxButtons.OK, MessageBoxIcon.Error
                         );
                     }
@@ -767,8 +836,8 @@ namespace WFXPatch
             MessageBox.Show
             (
                 new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                string.Format( Lng.msgbox_bhost_fw_success_msg, app_path_exe ),
-                Lng.msgbox_bhost_fw_success_title,
+                string.Format( Res.msgbox_bhost_fw_success_msg, app_path_exe ),
+                Res.msgbox_bhost_fw_success_title,
                 MessageBoxButtons.OK, MessageBoxIcon.None
             );
         }

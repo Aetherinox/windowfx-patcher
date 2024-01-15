@@ -332,6 +332,28 @@ namespace WFXPatch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Was unable to back up {0}.
+        ///
+        ///The file appears to be missing. Patcher must abort.
+        ///
+        ///You should re-install Stardock WindowFX..
+        /// </summary>
+        internal static string msgbox_backup_error_exemissing_msg {
+            get {
+                return ResourceManager.GetString("msgbox_backup_error_exemissing_msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Critical: Backup Error.
+        /// </summary>
+        internal static string msgbox_backup_error_exemissing_title {
+            get {
+                return ResourceManager.GetString("msgbox_backup_error_exemissing_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your host file has been left untouched.
         /// </summary>
         internal static string msgbox_bhost_cancel_msg {
@@ -430,7 +452,9 @@ namespace WFXPatch.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Located {0} with Windows Env Var in:
+        ///
+        ///{1}.
         /// </summary>
         internal static string msgbox_debug_fpath_env_c1_msg {
             get {
@@ -706,6 +730,15 @@ namespace WFXPatch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The target file {0} is missing..
+        /// </summary>
+        internal static string status_backup_error_exemissing {
+            get {
+                return ResourceManager.GetString("status_backup_error_exemissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creating backup {0} ....
         /// </summary>
         internal static string status_bak_create {
@@ -733,7 +766,7 @@ namespace WFXPatch.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Click Patch to begin ....
+        ///   Looks up a localized string similar to Click Patch to begin.
         /// </summary>
         internal static string status_generate {
             get {
@@ -805,11 +838,83 @@ namespace WFXPatch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service {0} already running.
+        /// </summary>
+        internal static string status_service_already_running {
+            get {
+                return ResourceManager.GetString("status_service_already_running", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service {0} not started.
+        /// </summary>
+        internal static string status_service_not_started {
+            get {
+                return ResourceManager.GetString("status_service_not_started", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restarting Service {0}.
+        /// </summary>
+        internal static string status_service_restart_begin {
+            get {
+                return ResourceManager.GetString("status_service_restart_begin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed restarting service {0}.
+        /// </summary>
+        internal static string status_service_restart_fail {
+            get {
+                return ResourceManager.GetString("status_service_restart_fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not start service {0}.
+        /// </summary>
+        internal static string status_service_start_fail {
+            get {
+                return ResourceManager.GetString("status_service_start_fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service {0} started.
+        /// </summary>
+        internal static string status_service_start_success {
+            get {
+                return ResourceManager.GetString("status_service_start_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stopping {0} services ....
         /// </summary>
         internal static string status_services_stopping {
             get {
                 return ResourceManager.GetString("status_services_stopping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shutting down task {0} ....
+        /// </summary>
+        internal static string status_task_stop {
+            get {
+                return ResourceManager.GetString("status_task_stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shutting down tasks for {0} ....
+        /// </summary>
+        internal static string status_task_stop_app {
+            get {
+                return ResourceManager.GetString("status_task_stop_app", resourceCulture);
             }
         }
         
@@ -892,6 +997,46 @@ namespace WFXPatch.Properties {
             get {
                 object obj = ResourceManager.GetObject("wfx_128", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] wfx32 {
+            get {
+                object obj = ResourceManager.GetObject("wfx32", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] wfx4 {
+            get {
+                object obj = ResourceManager.GetObject("wfx4", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] wfx4_64 {
+            get {
+                object obj = ResourceManager.GetObject("wfx4_64", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] wfx64 {
+            get {
+                object obj = ResourceManager.GetObject("wfx64", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

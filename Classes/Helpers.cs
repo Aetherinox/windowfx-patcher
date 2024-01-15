@@ -12,10 +12,12 @@ using System.Globalization;
 using System.Collections.ObjectModel;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
-using Lng = WFXPatch.Properties.Resources;
-using Cfg = WFXPatch.Properties.Settings;
 using System.Linq;
 using System.Windows.Forms;
+using System.ServiceProcess;
+using System.Diagnostics;
+using Lng = WFXPatch.Properties.Resources;
+using Cfg = WFXPatch.Properties.Settings;
 
 [AttributeUsage( AttributeTargets.Assembly )]
 internal class BuildDateAttribute : Attribute
@@ -97,7 +99,8 @@ namespace WFXPatch
                 -   Patcher exe directory (Where the patcher was executed from)
                 -   Powershell where command
 
-            @return     str | full path ( dir + file.xxx )
+            @ret        : str | full path
+                                dir/file.exe
         */
 
         public string FindApp( )
@@ -107,7 +110,7 @@ namespace WFXPatch
                 looks for the portable app, this takes priority in case the user wants to activate the portable version
             */
 
-            string[] drives     = System.IO.Directory.GetFiles( patch_launch_dir, "*WindowFXConfig.exe" );
+            string[] drives     = System.IO.Directory.GetFiles( patch_launch_dir, "*" + app_target_exe );
             var i_filesFound    = drives.Count( );
 
             if ( i_filesFound > 0 )
@@ -518,11 +521,11 @@ namespace WFXPatch
             returns if a target file is an executable.
             All executables begin with "MZ" or the hexadecimal "4D 5A"
 
-            @param      : str filepath
-            @return     : bool
+            @arg        : str filepath
+            @ret        : bool
         */
 
-        public bool IsExeFile( string filepath )
+        static public bool IsExeFile( string filepath )
         {
             var bytesBegin = new byte[ 2 ];
             using( var fs = File.Open( filepath, FileMode.Open ) )
@@ -531,6 +534,162 @@ namespace WFXPatch
             }
 
             return Encoding.UTF8.GetString( bytesBegin ) == "MZ";
+        }
+
+        /*
+            Service Controller > Restart
+
+            @arg        : str name
+            @arg        : int msTimeout
+            @ret        : void
+        */
+
+        public static void RestartService( string name, int msTimeout )
+        {
+
+            ServiceController sc    = new ServiceController( );
+            sc.ServiceName          = name;
+            TimeSpan timeout        = TimeSpan.FromMilliseconds( msTimeout );
+
+            if ( sc.Status == ServiceControllerStatus.Running )
+            {
+                sc.Stop( );
+                sc.Refresh( );
+            }
+
+            if ( sc.Status == ServiceControllerStatus.StartPending )
+            {
+                StatusBar.Update( string.Format( Lng.status_service_already_running, name ) );
+                Console.WriteLine( string.Format( Lng.status_service_already_running, name ) );
+            }
+
+            try
+            {
+
+                Console.Write( "Activated Service Restart ... " );
+
+                sc.Start            ( );
+                sc.WaitForStatus    ( ServiceControllerStatus.Running, timeout );
+                sc.Refresh          ( );
+
+                if ( sc.Status == ServiceControllerStatus.Running )
+                {
+                    MessageBox.Show
+                    (
+                        new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                        String.Format( Lng.status_service_start_success, name ),
+                        "Restart Service",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information
+                    );
+
+                    StatusBar.Update( string.Format( Lng.status_service_start_success, name ) );
+                    Console.WriteLine( string.Format( Lng.status_service_start_success, name ) );
+                }
+                else
+                {
+
+                    MessageBox.Show
+                    (
+                        new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                        string.Format( Lng.status_service_not_started, name ),
+                        "Restart Service",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information
+                    );
+
+                    StatusBar.Update( string.Format( Lng.status_service_not_started, name ) );
+                    Console.WriteLine( String.Format( Lng.status_service_not_started, name ) );
+                    Console.WriteLine( "Current State: {0}", sc.Status.ToString( "f" ) );
+                }
+            }
+            catch ( InvalidOperationException )
+            {
+
+                MessageBox.Show
+                (
+                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                    String.Format( Lng.status_service_start_fail, name ),
+                    "Restart Service",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information
+                );
+
+                StatusBar.Update( string.Format( Lng.status_service_start_fail, name ) );
+                Console.WriteLine( String.Format( Lng.status_service_start_fail, name ) );
+            }
+
+        }
+
+        /*
+            Task > Kill > Normal
+
+                do not add .exe to the end of the name.
+
+                per the MSDN, this should be the friendly name.
+                "The process name is a friendly name for the process,
+                such as Outlook, that does not include the .exe extension or the path" 
+
+            @ex         : Helpers.TaskKill( "WindowFXConfig" );
+
+            @arg        : str name
+            @ret        : void
+        */
+
+        public static void TaskKill( string name )
+        {
+
+            try
+            {
+                Process[] processes = Process.GetProcessesByName( name );
+                foreach ( Process proc in processes )
+                {
+                    proc.Kill( );
+                }
+            }
+            catch ( Exception )
+            {
+                StatusBar.Update( String.Format( Lng.status_taskkill_fail, name ) );
+                return;
+            }
+            finally
+            {
+                StatusBar.Update( string.Format( Lng.status_taskkill_succ, name ) );
+                Console.WriteLine( String.Format( "Service kill [Complete]: {0}", name ) );
+            }
+        }
+
+        /*
+            Task > Kill > Elevated
+
+                unlike the method TaskKill, this one can have .exe appended to the end of the name
+                since we're not using the Friendly Name.
+
+                this method will kill the task as an admin, which will show a black cmd prompt box
+                briefly. It may freak users out. 
+
+                use Helpers.TaskKill() first if possible.
+
+            @ex         : Helpers.KillTask_TaskKillElevated( "WindowFXConfig.exe" );
+
+            @arg        : str name
+            @ret        : void
+        */
+
+        public static void KillTask_Elevated( string name )
+        {
+            try
+            {
+                string cmd = String.Format( "/c taskkill /f /im {0}", name );
+                Process.Start( "cmd", cmd ).WaitForExit( );
+            }
+            catch ( Exception )
+            {
+                StatusBar.Update( String.Format( Lng.status_taskkill_fail, name ) );
+                return;
+            }
+            finally
+            {
+                StatusBar.Update( string.Format( Lng.status_taskkill_succ, name ) );
+                Console.WriteLine( String.Format( "Service kill [Complete]: {0}", name ) );
+            }
         }
 
     }

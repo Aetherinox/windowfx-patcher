@@ -91,8 +91,8 @@ namespace WFXPatch.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Aetherinox/windowfx/master/Manifest/manifest.js" +
-            "on")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/Aetherinox/windowfx-patcher/master/Manifest/man" +
+            "ifest.json")]
         public string app_url_manifest {
             get {
                 return ((string)(this["app_url_manifest"]));
@@ -105,6 +105,42 @@ namespace WFXPatch.Properties {
         public string app_name {
             get {
                 return ((string)(this["app_name"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("wfx4.dll")]
+        public string app_res_file_1 {
+            get {
+                return ((string)(this["app_res_file_1"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("wfx4_64.dll")]
+        public string app_res_file_2 {
+            get {
+                return ((string)(this["app_res_file_2"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("wfx32.exe")]
+        public string app_res_file_3 {
+            get {
+                return ((string)(this["app_res_file_3"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("wfx64.exe")]
+        public string app_res_file_4 {
+            get {
+                return ((string)(this["app_res_file_4"]));
             }
         }
     }

@@ -182,10 +182,8 @@ namespace WFXPatch
                 rtxt_Intro.AppendText       ( "\n\n" );
 
                 rtxt_Intro.AppendText       ( l2 );
-                rtxt_Intro.Select           ( l1.Length + 1, l2.Length );
+                rtxt_Intro.Select           ( l1.Length + 2, l2.Length );
                 rtxt_Intro.SelectionColor   = Color.FromArgb( 31, 133, 222 );
-
-                rtxt_Intro.AppendText       ( "\n" );
 
                 /*
                     Buttons
@@ -273,10 +271,7 @@ namespace WFXPatch
                 }
                 catch ( WebException e )
                 {
-                    if ( ( ( HttpWebResponse) e.Response ).StatusCode == HttpStatusCode.NotFound )
-                    {
-                        return;
-                    }
+
                 }
             }
 

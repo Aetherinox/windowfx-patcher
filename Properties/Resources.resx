@@ -269,7 +269,7 @@ You will be prompted to manually locate WindowFXConfig.exe. Ensure that WindowFX
     <comment>Status bar</comment>
   </data>
   <data name="status_generate" xml:space="preserve">
-    <value>Click Patch to begin ...</value>
+    <value>Click Patch to begin</value>
     <comment>Status bar</comment>
   </data>
   <data name="status_integrity_fail" xml:space="preserve">
@@ -390,7 +390,9 @@ Are you sure?</value>
     <value>Add WindowFX Blocks?</value>
   </data>
   <data name="msgbox_debug_fpath_env_c1_msg" xml:space="preserve">
-    <value />
+    <value>Located {0} with Windows Env Var in:
+
+{1}</value>
   </data>
   <data name="msgbox_debug_fpath_env_c1_title" xml:space="preserve">
     <value>Debug: 1000C-1</value>
@@ -463,5 +465,54 @@ You can manually block Stardock WindowFX in your WIndows Firewall.</value>
   </data>
   <data name="wfx_128" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Materials\wfx_128.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="status_service_already_running" xml:space="preserve">
+    <value>Service {0} already running</value>
+  </data>
+  <data name="status_service_not_started" xml:space="preserve">
+    <value>Service {0} not started</value>
+  </data>
+  <data name="status_service_restart_begin" xml:space="preserve">
+    <value>Restarting Service {0}</value>
+  </data>
+  <data name="status_service_restart_fail" xml:space="preserve">
+    <value>Failed restarting service {0}</value>
+  </data>
+  <data name="status_service_start_fail" xml:space="preserve">
+    <value>Could not start service {0}</value>
+  </data>
+  <data name="status_service_start_success" xml:space="preserve">
+    <value>Service {0} started</value>
+  </data>
+  <data name="status_task_stop" xml:space="preserve">
+    <value>Shutting down task {0} ...</value>
+  </data>
+  <data name="status_task_stop_app" xml:space="preserve">
+    <value>Shutting down tasks for {0} ...</value>
+  </data>
+  <data name="wfx32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wfx32.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="wfx4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wfx4.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="wfx4_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wfx4_64.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="wfx64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wfx64.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="msgbox_backup_error_exemissing_msg" xml:space="preserve">
+    <value>Was unable to back up {0}.
+
+The file appears to be missing. Patcher must abort.
+
+You should re-install Stardock WindowFX.</value>
+  </data>
+  <data name="msgbox_backup_error_exemissing_title" xml:space="preserve">
+    <value>Critical: Backup Error</value>
+  </data>
+  <data name="status_backup_error_exemissing" xml:space="preserve">
+    <value>The target file {0} is missing.</value>
   </data>
 </root>
