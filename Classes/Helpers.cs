@@ -47,6 +47,12 @@ namespace WFXPatch
         private AppInfo AppInfo = new AppInfo( );
 
         /*
+            Define > Actions
+        */
+
+        readonly static Action<string> wl = Console.WriteLine;
+
+        /*
             Define > Paths
         */
 
@@ -433,6 +439,7 @@ namespace WFXPatch
                 Collection<PSObject> PSOutput = ps.Invoke( );
                 StringBuilder sb = new StringBuilder( );
 
+                string resp = "";
                 foreach ( PSObject PSItem in PSOutput )
                 {
                     if ( PSItem != null )
@@ -444,7 +451,10 @@ namespace WFXPatch
 
                 if ( ps.Streams.Error.Count > 0 )
                 {
-                    // Error collection
+                   resp += Environment.NewLine + string.Format( "{0} errors: ", ps.Streams.Error.Count );
+                   foreach ( ErrorRecord err in ps.Streams.Error )
+                            resp += Environment.NewLine + err.ToString();
+                   Console.WriteLine( resp );
                 }
 
                 return sb.ToString( );
@@ -652,7 +662,7 @@ namespace WFXPatch
             finally
             {
                 StatusBar.Update( string.Format( Lng.status_taskkill_succ, name ) );
-                Console.WriteLine( String.Format( "Service kill [Complete]: {0}", name ) );
+                wl( String.Format( "[ Service ]: Kill             {0}", name ) );
             }
         }
 
@@ -688,7 +698,7 @@ namespace WFXPatch
             finally
             {
                 StatusBar.Update( string.Format( Lng.status_taskkill_succ, name ) );
-                Console.WriteLine( String.Format( "Service kill [Complete]: {0}", name ) );
+                wl( String.Format( "[ Service ]: Kill             {0}", name ) );
             }
         }
 

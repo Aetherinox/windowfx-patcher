@@ -698,6 +698,29 @@ namespace WFXPatch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WindowFX files not modified. It appears these files are already patched. Skipping.
+        ///
+        ///If WindowFX does not work, uninstall WindowFX completely, delete ALL files located in the folder
+        ///     {0}
+        ///
+        ///Re-install WIndowFx, and then re-apply the patch..
+        /// </summary>
+        internal static string msgbox_patchdll_sha256_nomove_msg {
+            get {
+                return ResourceManager.GetString("msgbox_patchdll_sha256_nomove_msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Patch Already Applied.
+        /// </summary>
+        internal static string msgbox_patchdll_sha256_nomove_title {
+            get {
+                return ResourceManager.GetString("msgbox_patchdll_sha256_nomove_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update v{0} is available.
         ///
         ///Updates ensure this patch works with the latest version {1}. If you have issues using this tool, download the latest version in the top menu: Help ► Updates
@@ -807,6 +830,15 @@ namespace WFXPatch.Properties {
         internal static string status_manual_locate {
             get {
                 return ResourceManager.GetString("status_manual_locate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aborted patching -- files already patched.
+        /// </summary>
+        internal static string status_patch_aborted {
+            get {
+                return ResourceManager.GetString("status_patch_aborted", resourceCulture);
             }
         }
         

@@ -238,11 +238,12 @@ namespace WFXPatch
             @ret    : str
         */
 
-        public static byte[] GetSHA256Hash( string path )
+        public static string GetSHA256Hash( string path )
         {
             using ( FileStream stream = File.OpenRead( path ) )
             {
-                return Sha256.ComputeHash( stream );
+                byte[] bytes = Sha256.ComputeHash( stream );
+                return BytesToString( bytes );
             }
         }
 

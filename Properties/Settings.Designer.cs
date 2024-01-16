@@ -143,5 +143,50 @@ namespace WFXPatch.Properties {
                 return ((string)(this["app_res_file_4"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("947c06abf78cd9d8090f7c22811e3ae27ed1a064c52aaba9baf19b848efecbb6")]
+        public string app_res_hash_1 {
+            get {
+                return ((string)(this["app_res_hash_1"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("84002da39b52671b5092b24da5f0ea878287c9533dc7e53abcb758e0b72793fa")]
+        public string app_res_hash_2 {
+            get {
+                return ((string)(this["app_res_hash_2"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1647a0ebbe13ecb56c3320878e0e2d44b2554dde2a0a89f1ec26729d6c072c6a")]
+        public string app_res_hash_3 {
+            get {
+                return ((string)(this["app_res_hash_3"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("7098244dc62c38d726e4070c1594d4f3f830f65556469e45c5c8b1385a3e8ff0")]
+        public string app_res_hash_4 {
+            get {
+                return ((string)(this["app_res_hash_4"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Setting {
+            get {
+                return ((string)(this["Setting"]));
+            }
+        }
     }
 }

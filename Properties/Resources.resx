@@ -500,8 +500,22 @@ You should re-install Stardock WindowFX.</value>
   <data name="msgbox_backup_error_exemissing_title" xml:space="preserve">
     <value>Critical: Backup Error</value>
   </data>
+  <data name="msgbox_patchdll_sha256_nomove_msg" xml:space="preserve">
+    <value>WindowFX files not modified. It appears these files are already patched. Skipping.
+
+If WindowFX does not work, uninstall WindowFX completely, delete ALL files located in the folder
+     {0}
+
+Re-install WIndowFx, and then re-apply the patch.</value>
+  </data>
+  <data name="msgbox_patchdll_sha256_nomove_title" xml:space="preserve">
+    <value>Patch Already Applied</value>
+  </data>
   <data name="status_backup_error_exemissing" xml:space="preserve">
     <value>The target file {0} is missing.</value>
+  </data>
+  <data name="status_patch_aborted" xml:space="preserve">
+    <value>Aborted patching -- files already patched</value>
   </data>
   <data name="wfx32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wfx32.exe;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

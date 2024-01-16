@@ -34,6 +34,12 @@ namespace WFXPatch
         private AppInfo AppInfo         = new AppInfo( );
 
         /*
+            Define > Actions
+        */
+
+        readonly static Action<string> wl = Console.WriteLine;
+
+        /*
             Define > Paths
         */
 
@@ -274,6 +280,12 @@ namespace WFXPatch
             Helpers.TaskKill( "WindowFXSRV" );
 
             /*
+                Check skip
+            */
+
+            bool bRequireEdit   = false;
+
+            /*
                 loop each dll path
 
                     path_exe returns full path to program exe to back up
@@ -284,6 +296,14 @@ namespace WFXPatch
             {
 
                 string WFX_path_fol     = Path.GetDirectoryName( WFX_path_exe );
+
+                MessageBox.Show
+                (
+                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                    WFX_path_exe,
+                    "Path",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information
+                );
 
                 /*
                     if full backup path exists
@@ -308,8 +328,8 @@ namespace WFXPatch
                 );
 
                 i_progress += Math.Round( 8.0 );
-                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
-                Interface.Progress( Convert.ToInt32( i_progress ) );
+                StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress  ( Convert.ToInt32( i_progress ) );
 
                 ModifyBytes(
                     WFX_path_exe,
@@ -318,8 +338,8 @@ namespace WFXPatch
                 );
 
                 i_progress += Math.Round( 8.0 );
-                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
-                Interface.Progress( Convert.ToInt32( i_progress ) );
+                StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress  ( Convert.ToInt32( i_progress ) );
 
                 ModifyBytes(
                     WFX_path_exe,
@@ -328,8 +348,8 @@ namespace WFXPatch
                 );
 
                 i_progress += Math.Round( 8.0 );
-                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
-                Interface.Progress( Convert.ToInt32( i_progress ) );
+                StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress  ( Convert.ToInt32( i_progress ) );
 
                 ModifyBytes(
                     WFX_path_exe,
@@ -338,8 +358,8 @@ namespace WFXPatch
                 );
 
                 i_progress += Math.Round( 8.0 );
-                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
-                Interface.Progress( Convert.ToInt32( i_progress ) );
+                StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress  ( Convert.ToInt32( i_progress ) );
 
                 ModifyBytes(
                     WFX_path_exe,
@@ -348,8 +368,8 @@ namespace WFXPatch
                 );
 
                 i_progress += Math.Round( 8.0 );
-                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
-                Interface.Progress( Convert.ToInt32( i_progress ) );
+                StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress  ( Convert.ToInt32( i_progress ) );
 
                 ModifyBytes(
                     WFX_path_exe,
@@ -358,8 +378,8 @@ namespace WFXPatch
                 );
 
                 i_progress += Math.Round( 8.0 );
-                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
-                Interface.Progress( Convert.ToInt32( i_progress ) );
+                StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress  ( Convert.ToInt32( i_progress ) );
 
                 ModifyBytes(
                     WFX_path_exe,
@@ -368,8 +388,8 @@ namespace WFXPatch
                 );
 
                 i_progress += Math.Round( 8.0 );
-                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
-                Interface.Progress( Convert.ToInt32( i_progress ) );
+                StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress  ( Convert.ToInt32( i_progress ) );
 
                 ModifyBytes(
                     WFX_path_exe,
@@ -378,8 +398,8 @@ namespace WFXPatch
                 );
 
                 i_progress += Math.Round( 8.0 );
-                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
-                Interface.Progress( Convert.ToInt32( i_progress ) );
+                StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress  ( Convert.ToInt32( i_progress ) );
 
                 /*
                     Extract modified dll and exe files
@@ -387,68 +407,257 @@ namespace WFXPatch
 
                 File.WriteAllBytes( Cfg.Default.app_res_file_1, Res.wfx4    );
 
+
+                MessageBox.Show
+                (
+                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                    "Action 1",
+                    "1",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information
+                );
+
                 i_progress += Math.Round( 8.0 );
-                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
-                Interface.Progress( Convert.ToInt32( i_progress ) );
+                StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress  ( Convert.ToInt32( i_progress ) );
+
+                MessageBox.Show
+                (
+                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                    "Action 2",
+                    "2",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information
+                );
 
                 File.WriteAllBytes( Cfg.Default.app_res_file_2, Res.wfx4_64 );
 
                 i_progress += Math.Round( 8.0 );
-                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
-                Interface.Progress( Convert.ToInt32( i_progress ) );
+                StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress  ( Convert.ToInt32( i_progress ) );
 
                 File.WriteAllBytes( Cfg.Default.app_res_file_3, Res.wfx32   );
 
+                MessageBox.Show
+                (
+                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                    "Action 3",
+                    "3",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information
+                );
+
+
                 i_progress += Math.Round( 8.0 );
-                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
-                Interface.Progress( Convert.ToInt32( i_progress ) );
+                StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress  ( Convert.ToInt32( i_progress ) );
 
                 File.WriteAllBytes( Cfg.Default.app_res_file_4, Res.wfx64   );
 
                 i_progress = 100.0;
-                StatusBar.Update( string.Format( Res.status_byte_modify, i_progress ) );
-                Interface.Progress( Convert.ToInt32( i_progress ) );
+                StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
+                Interface.Progress  ( Convert.ToInt32( i_progress ) );
+
+                MessageBox.Show
+                (
+                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                    "Action 4",
+                    "4",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information
+                );
 
                 /*
                     Move > File 1
                 */
 
-                string file_1_src       = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_1 );
-                GenerateBackup          ( file_1_src, true );
+                string file_1_src   = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_1 );
+                string file_1_sha   = Hash.GetSHA256Hash( file_1_src );
 
-                if ( File.Exists( Cfg.Default.app_res_file_1 ) )
-                    File.Move( Cfg.Default.app_res_file_1, file_1_src );
+                            GenerateBackup              ( file_1_src, true );
+
+                            /*
+                                Move > File 1 > Hash
+                            */
+
+                            wl                          ( "" );
+                            wl                          ( String.Format( "[ File 1 ]: SHA256*           {0}", file_1_sha ) );
+                            wl                          ( String.Format( "[ File 1 ]: SHA256            {0}", Cfg.Default.app_res_hash_1 ) );
+
+                            if ( file_1_sha == Cfg.Default.app_res_hash_1 )
+                            {
+                                wl                      ( String.Format( "[ File 1 ]: Skip              " ) );
+                            }
+                            else
+                            {
+
+                                bRequireEdit    = true;
+
+                                if ( File.Exists( Cfg.Default.app_res_file_1 ) )
+                                {
+                                    try
+                                    {
+                                        wl              ( String.Format( "[ File 1 ]: File.Delete       {0}", file_1_src ) );
+                                        File.Delete     ( file_1_src );
+                                    }
+                                    catch ( Exception e )
+                                    {
+                                        wl              ( String.Format( "[ File 1 ]: File.Delete       [Failure]: {0}", file_1_src , e.Message ) );
+
+                                        string psq_delete = "Remove-Item -Path \"" + file_1_src + "\" -Force";
+                                        wl               ( String.Format( "[ File 1 ]: PSQuery           {0}", psq_delete ) );
+                                        Helpers.PowershellQ  ( psq_delete );
+                                    }
+                                }
+
+                                wl                      ( String.Format( "[ File 1 ]: Move-Start        {0}", file_1_src ) );
+                                File.Move               ( Cfg.Default.app_res_file_1, file_1_src );
+                                wl                      ( String.Format( "[ File 1 ]: Move-Complete     {0}", file_1_src ) );
+                            }
 
                 /*
                     Move > File 2
                 */
 
-                string file_2_src       = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_2 );
-                GenerateBackup          ( file_2_src, true );
+                string file_2_src   = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_2 );
+                string file_2_sha   = Hash.GetSHA256Hash( file_2_src );
 
-                if ( File.Exists( Cfg.Default.app_res_file_2 ) )
-                    File.Move( Cfg.Default.app_res_file_2, file_2_src );
+                            GenerateBackup              ( file_2_src, true );
+
+                            /*
+                                Move > File 2 > Hash
+                            */
+
+                            wl                          ( "" );
+                            wl                          ( String.Format( "[ File 2 ]: SHA256*           {0}", file_2_sha ) );
+                            wl                          ( String.Format( "[ File 2 ]: SHA256            {0}", Cfg.Default.app_res_hash_2 ) );
+
+                            if ( file_2_sha == Cfg.Default.app_res_hash_2 )
+                            {
+                                wl                      ( String.Format( "[ File 2 ]: Skip              " ) );
+                            }
+                            else
+                            {
+
+                                bRequireEdit    = true;
+
+                                if ( File.Exists( Cfg.Default.app_res_file_2 ) )
+                                {
+                                    try
+                                    {
+                                        wl              ( String.Format( "[ File 2 ]: File.Delete       {0}", file_2_src ) );
+                                        File.Delete     ( file_2_src );
+                                    }
+                                    catch ( Exception e )
+                                    {
+                                        wl              ( String.Format( "[ File 2 ]: File.Delete       [Failure]: {0}", file_2_src , e.Message ) );
+
+                                        string psq_delete = "Remove-Item -Path \"" + file_2_src + "\" -Force";
+                                        wl               ( String.Format( "[ File 2 ]: PSQuery           {0}", psq_delete ) );
+                                        Helpers.PowershellQ  ( psq_delete );
+                                    }
+
+                                }
+
+                                wl                      ( String.Format( "[ File 2 ]: Move-Start        {0}", file_2_src ) );
+                                File.Move               ( Cfg.Default.app_res_file_2, file_2_src );
+                                wl                      ( String.Format( "[ File 2 ]: Move-Complete     {0}", file_2_src ) );
+                            }
 
                 /*
                     Move > File 3
                 */
 
-                string file_3_src       = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_3 );
-                GenerateBackup          ( file_3_src, true );
+                string file_3_src   = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_3 );
+                string file_3_sha   = Hash.GetSHA256Hash( file_3_src );
 
-                if ( File.Exists( Cfg.Default.app_res_file_3 ) )
-                    File.Move( Cfg.Default.app_res_file_3, file_3_src );
+                            GenerateBackup              ( file_3_src, true );
 
+                            /*
+                                Move > File 3 > Hash
+                            */
+
+                            wl                          ( "" );
+                            wl                          ( String.Format( "[ File 3 ]: SHA256*           {0}", file_3_sha ) );
+                            wl                          ( String.Format( "[ File 3 ]: SHA256            {0}", Cfg.Default.app_res_hash_3 ) );
+
+                            if ( file_3_sha == Cfg.Default.app_res_hash_3 )
+                            {
+                                wl                      ( String.Format( "[ File 3 ]: Skip              " ) );
+                            }
+                            else
+                            {
+
+                                bRequireEdit    = true;
+
+                                if ( File.Exists( Cfg.Default.app_res_file_3 ) )
+                                {
+                                    try
+                                    {
+                                        wl              ( String.Format( "[ File 3 ]: File.Delete       {0}", file_3_src ) );
+                                        File.Delete     ( file_3_src );
+                                    }
+                                    catch ( Exception e )
+                                    {
+                                        wl              ( String.Format( "[ File 3 ]: File.Delete       [Failure] {0}", file_3_src , e.Message ) );
+
+                                        string psq_delete = "Remove-Item -Path \"" + file_3_src + "\" -Force";
+                                        wl               ( String.Format( "[ File 3 ]: PSQuery           {0}", psq_delete ) );
+                                        Helpers.PowershellQ  ( psq_delete );
+                                    }
+
+                                }
+
+                                wl                      ( String.Format( "[ File 3 ]: Move-Start        {0}", file_3_src ) );
+                                File.Move               ( Cfg.Default.app_res_file_3, file_3_src );
+                                wl                      ( String.Format( "[ File 3 ]: Move-Complete     {0}", file_3_src ) );
+                            }
 
                 /*
                     Move > File 4
                 */
 
-                string file_4_src       = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_4 );
-                GenerateBackup          ( file_4_src, true );
+                string file_4_src   = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_4 );
+                string file_4_sha   = Hash.GetSHA256Hash( file_4_src );
 
-                if ( File.Exists( Cfg.Default.app_res_file_4 ) )
-                    File.Move( Cfg.Default.app_res_file_4, file_4_src );
+                            GenerateBackup              ( file_4_src, true );
+
+                            /*
+                                Move > File 4 > Hash
+                            */
+
+                            wl                          ( "" );
+                            wl                          ( String.Format( "[ File 4 ]: SHA256*           {0}", file_4_sha ) );
+                            wl                          ( String.Format( "[ File 4 ]: SHA256            {0}", Cfg.Default.app_res_hash_4 ) );
+
+                            if ( file_4_sha == Cfg.Default.app_res_hash_4 )
+                            {
+                                wl                      ( String.Format( "[ File 4 ]: Skip              " ) );
+                            }
+                            else
+                            {
+
+                                bRequireEdit    = true;
+
+                                if ( File.Exists( Cfg.Default.app_res_file_4 ) )
+                                {
+                                    try
+                                    {
+                                        wl              ( String.Format( "[ File 4 ]: File.Delete       {0}", file_4_src ) );
+                                        File.Delete     ( file_4_src );
+                                    }
+                                    catch ( Exception e )
+                                    {
+                                        wl              ( String.Format( "[ File 4 ]: File.Delete       [Failure]: {0}", file_4_src , e.Message ) );
+
+                                        string psq_delete = "Remove-Item -Path \"" + file_4_src + "\" -Force";
+                                        wl               ( String.Format( "[ File 4 ]: PSQuery           {0}", psq_delete ) );
+                                        Helpers.PowershellQ  ( psq_delete );
+                                    }
+
+                                }
+
+                                wl                      ( String.Format( "[ File 4 ]: Move-Start        {0}", file_4_src ) );
+                                File.Move               ( Cfg.Default.app_res_file_4, file_4_src );
+                                wl                      ( String.Format( "[ File 4 ]: Move-Complete     {0}", file_4_src ) );
+                            }
+                            wl                          ( "" );
 
                 /*
                     Restart Service
@@ -466,7 +675,7 @@ namespace WFXPatch
                 {
                     if ( File.Exists( WFX_path_exe ) )
                     {
-                        Console.WriteLine( String.Format( "Patch: [Launch]: {0}", WFX_path_exe ) );
+                        wl( String.Format( "Patch: [Launch]: {0}", WFX_path_exe ) );
                         System.Diagnostics.Process.Start( WFX_path_exe );
                         StatusBar.Update( string.Format( Res.status_launch_app, Cfg.Default.app_name ) );
                     }
@@ -496,6 +705,23 @@ namespace WFXPatch
                 AutoRestartShell = 1
             */
 
+            if( !bRequireEdit )
+            {
+
+                string app_path_full    = Helpers.FindApp( );
+                string app_path_dir     = Path.GetDirectoryName( app_path_full );
+                MessageBox.Show
+                (
+                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                    string.Format( Res.msgbox_patchdll_sha256_nomove_msg, app_path_dir ),
+                    Res.msgbox_patchdll_sha256_nomove_title,
+                    MessageBoxButtons.OK, MessageBoxIcon.Information
+                );
+
+                StatusBar.Update( Res.status_patch_aborted );
+                return;
+            }
+
             MessageBox.Show
             (
                 new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
@@ -505,7 +731,6 @@ namespace WFXPatch
             );
 
             StatusBar.Update( Res.status_patch_complete );
-
             return;
         }
 
@@ -536,19 +761,19 @@ namespace WFXPatch
                     StreamWriter sw_p   = new StreamWriter( "hex_patched.dmp" );
                     sw_p.WriteLine      ( hex_result );
                     sw_p.Close          ( );
-
-                    Console.WriteLine( String.Format( "ModifyBytes: [StreamWriter]: {0}\n   Find:     {1}\n   Replace:  {2}\n", exe, a, b ) );
-
                 }
                 catch ( Exception e )
                 {
-                    Console.WriteLine( String.Format( "Hex Dump [Exception]: {0} - {1} ", exe, e.Message ) );
+                    wl( String.Format( "Hex Dump [Exception]: {0} - {1} ", exe, e.Message ) );
                 }
                 finally
                 {
-                    Console.WriteLine( String.Format( "Hex Dump [Complete]: {0}", exe ) );
+                    wl( String.Format( "Hex Dump [Complete]: {0}", exe ) );
                 }
             }
+
+            wl( String.Format( "[ ModifyBytes ]: Open         {0}", exe ) );
+            wl( String.Format( "[ ModifyBytes ]: Write        {0} ->\n                              {1}", a, b ) );
 
             // bytes will be separated by a hyphen -, remove hyphen
             string[] hex_patch          = hex_result.Split(' ');
@@ -559,8 +784,11 @@ namespace WFXPatch
                 bytes_modified [ i ]    = Convert.ToByte( hex_patch [ i ], 16 );
             }
 
-            Console.WriteLine( String.Format( "ModifyBytes: [Save File]: {0}", exe ) );
             File.WriteAllBytes( exe, bytes_modified );
+
+            wl( String.Format( "[ ModifyBytes ]: Save         {0}", exe ) );
+            wl( "" );
+
         }
 
         /*
@@ -580,6 +808,42 @@ namespace WFXPatch
         {
 
             string dest_bak         = src + ".bak";
+
+            /*
+                .bak file exists already
+            */
+
+            if ( File.Exists( dest_bak ) )
+            {
+                    MessageBox.Show
+                    (
+                        new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                        string.Format( ".bak backup file already exists \n\n{0}", dest_bak ),
+                        "Debug: Found Existing Backup",
+                        MessageBoxButtons.OK, MessageBoxIcon.None
+                    );
+                
+            }
+            else
+            {
+
+
+                MessageBox.Show
+                (
+                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                    dest_bak,
+                    "Ran Copy",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information
+                );
+
+
+                /*
+                    .bak doesnt exist
+                */
+
+                File.Copy( src, dest_bak );
+            }
+
             string psq_var          = "$user_current = $env:username";
 
             string psq_takeown1     = "takeown /f \"" + dest_bak + "\" y";
@@ -588,65 +852,37 @@ namespace WFXPatch
             string psq_takeown2     = "takeown /f \"" + src + "\" y";
             string psq_icalcs2      = "icacls \"" + src + "\" /grant \"${user_current}:F\" /C /L";
 
-            if ( File.Exists( dest_bak ) )
+            /*
+                run powershell commands to adjust permissions
+            */
+
+            using ( PowerShell ps = PowerShell.Create( ) )
             {
 
-                /*
-                    run powershell commands to adjust permissions
-                */
+                ps.AddScript( psq_var );
 
-                using ( PowerShell ps = PowerShell.Create( ) )
+                ps.AddScript( psq_takeown1 );
+                ps.AddScript( psq_icalcs1 );
+
+                ps.AddScript( psq_takeown2 );
+                ps.AddScript( psq_icalcs2 );
+
+                Collection<PSObject> PSOutput   = ps.Invoke( );
+                StringBuilder sb                = new StringBuilder( );
+
+                foreach ( PSObject PSItem in PSOutput )
                 {
-
-                    ps.AddScript( psq_var );
-
-                    ps.AddScript( psq_takeown1 );
-                    ps.AddScript( psq_icalcs1 );
-
-                    ps.AddScript( psq_takeown2 );
-                    ps.AddScript( psq_icalcs2 );
-
-                    Collection<PSObject> PSOutput   = ps.Invoke( );
-                    StringBuilder sb                = new StringBuilder( );
-
-                    foreach ( PSObject PSItem in PSOutput )
+                    if ( PSItem != null )
                     {
-                        if ( PSItem != null )
-                        {
-                            // Console.WriteLine( $"Output line: [{PSItem}]" );
-                            sb.AppendLine( PSItem.ToString( ) );
-                        }
-                    }
-
-                    if ( ps.Streams.Error.Count > 0 )
-                    {
-                        // Error collection
+                        // Console.WriteLine( $"Output line: [{PSItem}]" );
+                        sb.AppendLine( PSItem.ToString( ) );
                     }
                 }
 
-                if ( AppInfo.bIsDebug( ) )
+                if ( ps.Streams.Error.Count > 0 )
                 {
-                    MessageBox.Show
-                    (
-                        new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                        string.Format( ".bak backup file already exists, deleting it and creating new\n\n{0}", dest_bak ),
-                        "Debug: Found existing",
-                        MessageBoxButtons.OK, MessageBoxIcon.None
-                    );
+                    // Error collection
                 }
-                    
-                /*
-                    target_file.exe.bak already exists, which means it's probably the original 
-                    unmodified version. We want to keep that file since it has the original code.
-
-                    skip creating the new .bak file and just delete the current target_file.exe
-                    then move the existing backup file back to the original target_file.exe name
-
-                    this little method ensures the original never gets overwritten
-                */
-
-                File.Delete         ( src );
-                File.Move           ( dest_bak, src );
             }
 
             /*
@@ -655,38 +891,28 @@ namespace WFXPatch
                 SET     set attributes on src_app.exe.bak
             */
 
-            StatusBar.Update( string.Format( Res.status_bak_create, dest_bak ) );
-
             if ( File.Exists ( src ) )
-            {
                 File.SetAttributes      ( src,          FileAttributes.Normal );
 
-                if ( bMove )
-                {
-                    File.Move           ( src,          dest_bak );
-                }
-                else
-                    File.Copy           ( src,          dest_bak );
-
+            if ( File.Exists ( dest_bak ) )
                 File.SetAttributes      ( dest_bak,     FileAttributes.Normal );
 
-                return;
-            }
-
             /*
-                This error shouldn't ever happen, but just in case.
-                    One of the files that are supposed to be backed up ended up going missing.
+                Backup complete
             */
 
-            MessageBox.Show
-            ( 
-                new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                "Cannot Move missing file: " + src + "",
-                "Debug",
-                MessageBoxButtons.OK, MessageBoxIcon.Information
-            );
+            StatusBar.Update( string.Format( Res.status_bak_create, dest_bak ) );
 
-
+            if ( AppInfo.bIsDebug( ) )
+            {
+                MessageBox.Show
+                ( 
+                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                    String.Format( "Backup Complete:\n src: {0}\nBak: {1}", src, dest_bak ),
+                    "Backup Complete",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information
+                );
+            }
         }
 
         /*
