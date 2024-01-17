@@ -9,6 +9,16 @@
 !.gitignore
 
 # ----------------------
+# Misc Templates
+# ----------------------
+!License*
+!Contributing*
+!Funding*
+!.github
+!.gitea
+!.gitlab
+
+# ----------------------
 # Add Manifest
 # ----------------------
 !/manifest
