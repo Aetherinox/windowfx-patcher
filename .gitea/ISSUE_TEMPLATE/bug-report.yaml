@@ -76,7 +76,6 @@ body:
         How critical is the issue?
         Do not abuse this. Issues that completely break the utility would be classified as critical
       options:
-        - "None"
         - "Low"
         - "Normal"
         - "High"
