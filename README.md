@@ -7,13 +7,15 @@
 
 </div>
 
----
-
 <br />
 
-Allows you to generate and activate a copy of [WindowFX v6.x]((https://stardock.com/products/windowfx/).
+> [!NOTE]
+> These utilities are for educational purposes only and are here to highlight vulernabilities which help ensure a better application. 
+> 
+> The official executables for WindowFX are not available here and can be downloaded on their official website at https://stardock.com/products/windowfx/
+>
+> If you enjoy a program, you should purchase it, especially indie developers.
 
-<br />
 
 ---
 
@@ -25,8 +27,8 @@ Allows you to generate and activate a copy of [WindowFX v6.x]((https://stardock.
 
 <br />
 
-This generator has been developed to work on the following versions:
-- WindowFX v6.x
+This utility has been developed to work on the following versions:
+- [WindowFX v6.x](https://stardock.com/products/windowfx/)
 
 <br />
 
