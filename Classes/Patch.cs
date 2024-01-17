@@ -14,6 +14,7 @@ using System.Text;
 using Res = WFXPatch.Properties.Resources;
 using Cfg = WFXPatch.Properties.Settings;
 using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace WFXPatch
 {
@@ -297,14 +298,6 @@ namespace WFXPatch
 
                 string WFX_path_fol     = Path.GetDirectoryName( WFX_path_exe );
 
-                MessageBox.Show
-                (
-                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                    WFX_path_exe,
-                    "Path",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information
-                );
-
                 /*
                     if full backup path exists
                         x:\path\to\WindowFXConfig.exe.bak
@@ -407,26 +400,9 @@ namespace WFXPatch
 
                 File.WriteAllBytes( Cfg.Default.app_res_file_1, Res.wfx4    );
 
-
-                MessageBox.Show
-                (
-                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                    "Action 1",
-                    "1",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information
-                );
-
                 i_progress += Math.Round( 8.0 );
                 StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
                 Interface.Progress  ( Convert.ToInt32( i_progress ) );
-
-                MessageBox.Show
-                (
-                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                    "Action 2",
-                    "2",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information
-                );
 
                 File.WriteAllBytes( Cfg.Default.app_res_file_2, Res.wfx4_64 );
 
@@ -435,15 +411,6 @@ namespace WFXPatch
                 Interface.Progress  ( Convert.ToInt32( i_progress ) );
 
                 File.WriteAllBytes( Cfg.Default.app_res_file_3, Res.wfx32   );
-
-                MessageBox.Show
-                (
-                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                    "Action 3",
-                    "3",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information
-                );
-
 
                 i_progress += Math.Round( 8.0 );
                 StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
@@ -455,16 +422,12 @@ namespace WFXPatch
                 StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
                 Interface.Progress  ( Convert.ToInt32( i_progress ) );
 
-                MessageBox.Show
-                (
-                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                    "Action 4",
-                    "4",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information
-                );
-
                 /*
                     Move > File 1
+
+                        wfx4.dll
+
+                        OpCodes.LDC:i4 1593
                 */
 
                 string file_1_src   = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_1 );
@@ -500,7 +463,7 @@ namespace WFXPatch
                                     {
                                         wl              ( String.Format( "[ File 1 ]: File.Delete       [Failure]: {0}", file_1_src , e.Message ) );
 
-                                        string psq_delete = "Remove-Item -Path \"" + file_1_src + "\" -Force";
+                                        string[] psq_delete = { "Remove-Item -Path \"" + file_1_src + "\" -Force" };
                                         wl               ( String.Format( "[ File 1 ]: PSQuery           {0}", psq_delete ) );
                                         Helpers.PowershellQ  ( psq_delete );
                                     }
@@ -513,6 +476,11 @@ namespace WFXPatch
 
                 /*
                     Move > File 2
+
+                        wfx4_64.dll
+
+                        OpCodes.LDC:i4 1602
+
                 */
 
                 string file_2_src   = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_2 );
@@ -548,7 +516,7 @@ namespace WFXPatch
                                     {
                                         wl              ( String.Format( "[ File 2 ]: File.Delete       [Failure]: {0}", file_2_src , e.Message ) );
 
-                                        string psq_delete = "Remove-Item -Path \"" + file_2_src + "\" -Force";
+                                        string[] psq_delete = { "Remove-Item -Path \"" + file_2_src + "\" -Force" };
                                         wl               ( String.Format( "[ File 2 ]: PSQuery           {0}", psq_delete ) );
                                         Helpers.PowershellQ  ( psq_delete );
                                     }
@@ -562,6 +530,11 @@ namespace WFXPatch
 
                 /*
                     Move > File 3
+
+                        wfx32.exe
+
+                        OpCodes.LDC:i4 1571
+
                 */
 
                 string file_3_src   = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_3 );
@@ -597,7 +570,7 @@ namespace WFXPatch
                                     {
                                         wl              ( String.Format( "[ File 3 ]: File.Delete       [Failure] {0}", file_3_src , e.Message ) );
 
-                                        string psq_delete = "Remove-Item -Path \"" + file_3_src + "\" -Force";
+                                        string[] psq_delete = { "Remove-Item -Path \"" + file_3_src + "\" -Force" };
                                         wl               ( String.Format( "[ File 3 ]: PSQuery           {0}", psq_delete ) );
                                         Helpers.PowershellQ  ( psq_delete );
                                     }
@@ -611,6 +584,11 @@ namespace WFXPatch
 
                 /*
                     Move > File 4
+
+                        wfx64.exe
+
+                        OpCodes.LDC:i4 1582
+
                 */
 
                 string file_4_src   = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_4 );
@@ -646,7 +624,7 @@ namespace WFXPatch
                                     {
                                         wl              ( String.Format( "[ File 4 ]: File.Delete       [Failure]: {0}", file_4_src , e.Message ) );
 
-                                        string psq_delete = "Remove-Item -Path \"" + file_4_src + "\" -Force";
+                                        string[] psq_delete = { "Remove-Item -Path \"" + file_4_src + "\" -Force" };
                                         wl               ( String.Format( "[ File 4 ]: PSQuery           {0}", psq_delete ) );
                                         Helpers.PowershellQ  ( psq_delete );
                                     }
@@ -658,6 +636,181 @@ namespace WFXPatch
                                 wl                      ( String.Format( "[ File 4 ]: Move-Complete     {0}", file_4_src ) );
                             }
                             wl                          ( "" );
+
+                /*
+                    Wwomtrust.dll
+                */
+
+                wl  ( "" );
+
+                string app_dll_wom_file     = "womtrust.dll";
+                string app_dll_wom_pathto   = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.Windows ), app_dll_wom_file );
+
+                File.WriteAllBytes( Cfg.Default.app_res_file_womdll, Res.womtrust );
+
+                if ( File.Exists( Cfg.Default.app_res_file_womdll ) ) 
+                {
+                    if ( File.Exists( app_dll_wom_pathto ) )
+                    {
+
+                        /*
+                            run powershell commands to adjust permissions
+                        */
+
+                        string[] psq_perms =
+                        {
+                            "$user_current = $env:username",
+                            "takeown /f \"" + app_dll_wom_pathto + "\"",
+                            "icacls \"" + app_dll_wom_pathto + "\" /grant \"${user_current}:F\" /C /L",
+                        };
+
+                        Helpers.PowershellQ( psq_perms );
+
+
+                        File.SetAttributes( app_dll_wom_pathto,   FileAttributes.Normal );
+
+                        /*
+                            Wwomtrust.dll > SHA256
+                        */
+
+                        string app_dll_wom_sha256_src   = Hash.GetSHA256Hash( Cfg.Default.app_res_file_womdll );
+                        string app_dll_wom_sha256_cur   = Hash.GetSHA256Hash( app_dll_wom_pathto );
+
+                        wl                      ( String.Format( "[ womtrust ]: SHA256*         {0}", app_dll_wom_sha256_src ) );
+                        wl                      ( String.Format( "[ womtrust ]: SHA256          {0}", app_dll_wom_sha256_cur ) );
+
+                        if ( app_dll_wom_sha256_src != app_dll_wom_sha256_cur )
+                        {
+
+                            /*
+                                Wwomtrust.dll > Delete
+                            */
+
+                            try
+                            {
+                                wl              ( String.Format( "[ womtrust ]: Delete          {0}", app_dll_wom_pathto ) );
+                                File.Delete     ( app_dll_wom_pathto );
+                            }
+                            catch ( Exception e )
+                            {
+                                wl              ( String.Format( "[ womtrust ]: Delete [Fail]   {0}", app_dll_wom_pathto , e.Message ) );
+
+                                string[] psq_delete = { "Remove-Item -Path \"" + app_dll_wom_pathto + "\" -Force" };
+                                wl              ( String.Format( "[ womtrust ]: PSQuery         {0}", psq_delete ) );
+                                Helpers.PowershellQ  ( psq_delete );
+                            }
+
+                            /*
+                                Wwomtrust.dll > Move
+                            */
+
+                            try
+                            {
+                                File.Move       ( Cfg.Default.app_res_file_womdll, app_dll_wom_pathto );
+                            }
+                            catch ( Exception e )
+                            {
+                                wl              ( String.Format( "[ womtrust ]: Move [Fail]     {0}", app_dll_wom_pathto , e.Message ) );
+
+                                MessageBox.Show
+                                (
+                                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                                    String.Format( Res.msgbox_wotrust_move_error_msg, app_dll_wom_file, app_dll_wom_pathto ),
+                                    String.Format( Res.msgbox_wotrust_move_error_title, app_dll_wom_file ),
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error
+                                );
+                            }
+                        }
+                    }
+                    else
+                    {
+                        File.Move ( Cfg.Default.app_res_file_womdll, app_dll_wom_pathto );
+                    }
+                }
+
+                /*
+                    Wwontrust.dll
+                */
+
+                string app_dll_won_file     = "wontrust.dll";
+                string app_dll_won_pathto   = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.Windows ), "wontrust.dll" );
+
+                File.WriteAllBytes( Cfg.Default.app_res_file_wondll, Res.wontrust );
+
+                if ( File.Exists( Cfg.Default.app_res_file_wondll ) ) 
+                {
+                    if ( File.Exists( app_dll_won_pathto ) )
+                    {
+
+                        string[] psq_perms =
+                        {
+                            "$user_current = $env:username",
+                            "takeown /f \"" + app_dll_wom_pathto + "\"",
+                            "icacls \"" + app_dll_wom_pathto + "\" /grant \"${user_current}:F\" /C /L",
+                        };
+
+                        Helpers.PowershellQ( psq_perms );
+
+                        File.SetAttributes  ( app_dll_won_pathto,   FileAttributes.Normal );
+
+                        /*
+                            Wwontrust.dll > SHA256
+                        */
+
+                        string app_dll_won_sha256_src   = Hash.GetSHA256Hash( Cfg.Default.app_res_file_wondll );
+                        string app_dll_won_sha256_cur   = Hash.GetSHA256Hash( app_dll_won_pathto );
+
+                        wl                              ( String.Format( "[ wontrust.dll ]: SHA256*     {0}", app_dll_won_sha256_src ) );
+                        wl                              ( String.Format( "[ wontrust.dll ]: SHA256      {0}", app_dll_won_sha256_cur ) );
+
+                        if ( app_dll_won_sha256_src != app_dll_won_sha256_cur )
+                        {
+
+                            /*
+                                Wwontrust.dll > Delete
+                            */
+
+                            try
+                            {
+                                wl              ( String.Format( "[ womtrust ]: Delete          {0}", app_dll_won_pathto ) );
+                                File.Delete     ( app_dll_won_pathto );
+                            }
+                            catch ( Exception e )
+                            {
+                                wl              ( String.Format( "[ womtrust ]: Delete [Fail]:  {0}", app_dll_won_pathto , e.Message ) );
+
+                                string[] psq_delete = { "Remove-Item -Path \"" + app_dll_won_pathto + "\" -Force" };
+                                wl               ( String.Format( "[ womtrust ]: PSQuery        {0}", psq_delete ) );
+                                Helpers.PowershellQ  ( psq_delete );
+                            }
+
+                            /*
+                                Wwontrust.dll > Move
+                            */
+
+                            try
+                            {
+                                File.Move           ( Cfg.Default.app_res_file_wondll, app_dll_won_pathto );
+                            }
+                            catch ( Exception e )
+                            {
+                                wl                  ( String.Format( "[ wontrust ]: Move [Fail]    {0}", app_dll_won_pathto , e.Message ) );
+
+                                MessageBox.Show
+                                (
+                                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                                    String.Format( Res.msgbox_wotrust_move_error_msg, app_dll_won_file, app_dll_won_pathto ),
+                                    String.Format( Res.msgbox_wotrust_move_error_title, app_dll_won_file ),
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error
+                                );
+                            }
+                        }
+                    }
+                    else
+                    {
+                        File.Move ( Cfg.Default.app_res_file_wondll, app_dll_won_pathto );
+                    }
+                }
 
                 /*
                     Restart Service
@@ -675,7 +828,7 @@ namespace WFXPatch
                 {
                     if ( File.Exists( WFX_path_exe ) )
                     {
-                        wl( String.Format( "Patch: [Launch]: {0}", WFX_path_exe ) );
+                        wl( String.Format( "[ Patch ]: Launch             {0}", WFX_path_exe ) );
                         System.Diagnostics.Process.Start( WFX_path_exe );
                         StatusBar.Update( string.Format( Res.status_launch_app, Cfg.Default.app_name ) );
                     }
@@ -754,11 +907,11 @@ namespace WFXPatch
             {
                 try
                 {
-                    StreamWriter sw_o   = new StreamWriter( "hex_original.dmp" );
+                    StreamWriter sw_o   = new StreamWriter( Cfg.Default.app_res_file_dmp_original );
                     sw_o.WriteLine      ( hex_replace );
                     sw_o.Close          ( );
 
-                    StreamWriter sw_p   = new StreamWriter( "hex_patched.dmp" );
+                    StreamWriter sw_p   = new StreamWriter( Cfg.Default.app_res_file_dmp_patched );
                     sw_p.WriteLine      ( hex_result );
                     sw_p.Close          ( );
                 }
@@ -815,27 +968,19 @@ namespace WFXPatch
 
             if ( File.Exists( dest_bak ) )
             {
+                if( AppInfo.bIsDebug( ) )
+                {
                     MessageBox.Show
                     (
                         new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                        string.Format( ".bak backup file already exists \n\n{0}", dest_bak ),
-                        "Debug: Found Existing Backup",
+                        string.Format( Res.msgbox_debug_backup_exists_msg, dest_bak ),
+                        Res.msgbox_debug_backup_exists_title,
                         MessageBoxButtons.OK, MessageBoxIcon.None
                     );
-                
+                }
             }
             else
             {
-
-
-                MessageBox.Show
-                (
-                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                    dest_bak,
-                    "Ran Copy",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information
-                );
-
 
                 /*
                     .bak doesnt exist
@@ -844,46 +989,20 @@ namespace WFXPatch
                 File.Copy( src, dest_bak );
             }
 
-            string psq_var          = "$user_current = $env:username";
-
-            string psq_takeown1     = "takeown /f \"" + dest_bak + "\" y";
-            string psq_icalcs1      = "icacls \"" + dest_bak + "\" /grant \"${user_current}:F\" /C /L";
-
-            string psq_takeown2     = "takeown /f \"" + src + "\" y";
-            string psq_icalcs2      = "icacls \"" + src + "\" /grant \"${user_current}:F\" /C /L";
-
             /*
                 run powershell commands to adjust permissions
             */
 
-            using ( PowerShell ps = PowerShell.Create( ) )
+            string[] psq_perms =
             {
+                "$user_current = $env:username",
+                "takeown /f \"" + dest_bak + "\"",
+                "icacls \"" + dest_bak + "\" /grant \"${user_current}:F\" /C /L",
+                "takeown /f \"" + src + "\"",
+                "icacls \"" + src + "\" /grant \"${user_current}:F\" /C /L"
+            };
 
-                ps.AddScript( psq_var );
-
-                ps.AddScript( psq_takeown1 );
-                ps.AddScript( psq_icalcs1 );
-
-                ps.AddScript( psq_takeown2 );
-                ps.AddScript( psq_icalcs2 );
-
-                Collection<PSObject> PSOutput   = ps.Invoke( );
-                StringBuilder sb                = new StringBuilder( );
-
-                foreach ( PSObject PSItem in PSOutput )
-                {
-                    if ( PSItem != null )
-                    {
-                        // Console.WriteLine( $"Output line: [{PSItem}]" );
-                        sb.AppendLine( PSItem.ToString( ) );
-                    }
-                }
-
-                if ( ps.Streams.Error.Count > 0 )
-                {
-                    // Error collection
-                }
-            }
+            Helpers.PowershellQ  ( psq_perms );
 
             /*
                 SET     set attributes on src_app.exe
@@ -908,8 +1027,8 @@ namespace WFXPatch
                 MessageBox.Show
                 ( 
                     new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                    String.Format( "Backup Complete:\n src: {0}\nBak: {1}", src, dest_bak ),
-                    "Backup Complete",
+                    String.Format( Res.msgbox_debug_backup_compl_msg, src, dest_bak ),
+                    Res.msgbox_debug_backup_compl_title,
                     MessageBoxButtons.OK, MessageBoxIcon.Information
                 );
             }

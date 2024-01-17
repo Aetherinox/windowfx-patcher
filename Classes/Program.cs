@@ -5,12 +5,11 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Security.Principal;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Res = WFXPatch.Properties.Resources;
+using Cfg = WFXPatch.Properties.Settings;
 
 namespace WFXPatch
 {
@@ -21,33 +20,50 @@ namespace WFXPatch
         static void Main( )
         {
             Application.EnableVisualStyles( );
-            Application.SetCompatibleTextRenderingDefault(false);
+            Application.SetCompatibleTextRenderingDefault( false );
 
             /*
                  Elevate to admin so we can modify the windows host file.
             */
 
-            WindowsPrincipal principal = new WindowsPrincipal(WindowsIdentity.GetCurrent( ));
-            bool administrativeMode = principal.IsInRole(WindowsBuiltInRole.Administrator);
-
-            if (!administrativeMode)
+            if ( !IsAdmin( ) )
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo( );
-                startInfo.Verb = "runas";
-                startInfo.FileName = Application.ExecutablePath;
+                ProcessStartInfo procStart  = new ProcessStartInfo( );
+                procStart.UseShellExecute   = true;
+                procStart.Verb              = "runas";
+                procStart.FileName          = Application.ExecutablePath;
                 try
                 {
-                    Process.Start(startInfo);
+                    Process.Start( procStart );
                 }
                 catch
                 {
+                    MessageBox.Show
+                    (
+                        new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                        Res.msgbox_core_runas_msg,
+                        Res.msgbox_core_runas_title,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning
+                    );
+
                     return;
                 }
                 return;
             }
 
-            Application.Run(new FormParent( ));
+            Application.Run( new FormParent( ) );
+        }
 
+        /*
+            Check if running as admin
+        */
+
+        private static bool IsAdmin( )
+        {
+            WindowsIdentity id          = WindowsIdentity.GetCurrent( );
+            WindowsPrincipal principal  = new WindowsPrincipal( id );
+
+            return principal.IsInRole( WindowsBuiltInRole.Administrator );
         }
 
     }

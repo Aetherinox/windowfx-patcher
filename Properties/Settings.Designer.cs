@@ -182,10 +182,37 @@ namespace WFXPatch.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Setting {
+        [global::System.Configuration.DefaultSettingValueAttribute("womtrust.dll")]
+        public string app_res_file_womdll {
             get {
-                return ((string)(this["Setting"]));
+                return ((string)(this["app_res_file_womdll"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("wontrust.dll")]
+        public string app_res_file_wondll {
+            get {
+                return ((string)(this["app_res_file_wondll"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("hex_original.dmp")]
+        public string app_res_file_dmp_original {
+            get {
+                return ((string)(this["app_res_file_dmp_original"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("hex_patched.dmp")]
+        public string app_res_file_dmp_patched {
+            get {
+                return ((string)(this["app_res_file_dmp_patched"]));
             }
         }
     }

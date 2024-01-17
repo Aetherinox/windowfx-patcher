@@ -13,6 +13,9 @@ using System.Configuration;
 using System.Reflection;
 using Lng = WFXPatch.Properties.Resources;
 using Cfg = WFXPatch.Properties.Settings;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace WFXPatch
 {
@@ -27,6 +30,7 @@ namespace WFXPatch
             */
 
             private Helpers Helpers     = new Helpers( );
+            private AppInfo AppInfo     = new AppInfo( );
 
             /*
                 Define > Internal > Helper
@@ -53,11 +57,34 @@ namespace WFXPatch
             private string product              = AppInfo.Title;
             private string tm                   = AppInfo.Trademark;
 
+            /*
+                Manifest > Json
+            */
+
+            public class Manifest
+            {
+                public string version { get; set; }
+                public string name { get; set; }
+                public string author { get; set; }
+                public string description { get; set; }
+                public string url { get; set; }
+                public string piv { get; set; }
+                public string gpg { get; set; }
+                public string lnk1 { get; set; }
+                public IList<string> products { get; set; }
+            }
+
+            /*
+                Define > Globals
+            */
+
+            string app_url_tpb  = Cfg.Default.app_url_tpb;
+
         #endregion
 
         #region "Generate Readme"
 
-            public string GetReadme(string product, string version, string developer)
+            public string GetReadme( string product, string version, string developer )
             {
 
                 string str_about =
@@ -70,6 +97,8 @@ This is for educational purposes only. I hold no responsibility for people doing
 If you wish to view the source code, click the Github link above.
 
 This patcher is free for anyone to use. I try to make stuff that isn't like the typical keygens out there. No loud annoying ass music, no ads, no weird color schemes that question if you're under the influence of shrooms.
+
+Original wontrust library thanks to another developer. Unfortunately, nobody knows his damn name. I've seen three people claim they wrote the original.
 
 INSTRUCTIONS
    - Install Stardock WindowFX on your system
@@ -105,7 +134,7 @@ This key is used to sign the releases on Github.com, all commits are also signed
 
         #region "Main Window: Initialize"
 
-        public FormAbout( )
+            public FormAbout( )
             {
                 InitializeComponent( );
 
@@ -132,11 +161,11 @@ This key is used to sign the releases on Github.com, all commits are also signed
                     Button Links
                 */
 
-                lnk_TPB.Text                = "⠀⠀⠀⠀⠀⠀  ⠀";
+                lnk_TPB.Text                    = "⠀⠀⠀⠀⠀⠀  ⠀";
                 lnk_Github.Text                 = "⠀⠀⠀⠀⠀⠀     ⠀";
 
-                lnk_TPB.Parent              = imgHeader;
-                lnk_TPB.BackColor           = Color.Transparent;
+                lnk_TPB.Parent                  = imgHeader;
+                lnk_TPB.BackColor               = Color.Transparent;
 
                 lnk_Github.Parent               = imgHeader;
                 lnk_Github.BackColor            = Color.Transparent;
@@ -154,8 +183,8 @@ This key is used to sign the releases on Github.com, all commits are also signed
                     About Readme
                 */
 
-                txt_Terms.Text                  = GetReadme(product, ver, tm);
-                txt_Terms.Value                 = GetReadme(product, ver, tm);
+                txt_Terms.Text                  = GetReadme( product, ver, tm );
+                txt_Terms.Value                 = GetReadme( product, ver, tm );
 
                 /*
                     GPG / PIV Fields
@@ -168,24 +197,49 @@ This key is used to sign the releases on Github.com, all commits are also signed
                 txt_Dev_GPG_KeyID.Value         = Cfg.Default.app_dev_gpg_keyid;
             }
 
-            private void FormAbout_Load( object sender, EventArgs e)
-            {
+            /*
+                Frame > About > Load
+            */
 
+            private async void FormAbout_Load( object sender, EventArgs e)
+            {
+                await Task.Run( ( ) => FetchJson( Cfg.Default.app_url_manifest ) );
             }
 
             /*
-                Tweak to fix frame flickering
+                Task > Fetch Json
+
+                    views the data stored at https://github.com/Aetherinox/windowfx-patcher/blob/master/Manifest/manifest.json
             */
 
-            protected override CreateParams CreateParams
+            private async Task FetchJson( string uri )
             {
-                get
+                try
                 {
-                    CreateParams cp = base.CreateParams;
-                    cp.ExStyle |= 0x02000000;  // enable WS_EX_COMPOSITED
-                    return cp;
+                    var webClient       = new WebClient( );
+                    var json            = await webClient.DownloadStringTaskAsync( uri );
+
+                    JavaScriptSerializer serializer     = new JavaScriptSerializer( ); 
+                    Manifest manifest                   = serializer.Deserialize<Manifest>( json );
+
+                    /*
+                        Check if update is available for end-user
+                    */
+
+                    if ( !string.IsNullOrEmpty( manifest.piv ) )
+                        txt_Dev_PIV_Thumbprint.Value    = manifest.piv;
+
+                    if ( !string.IsNullOrEmpty( manifest.gpg ) )
+                        txt_Dev_GPG_KeyID.Value         = manifest.gpg;
+
+                    if ( !string.IsNullOrEmpty( manifest.lnk1 ) )
+                        txt_Dev_GPG_KeyID.Value         = manifest.lnk1;
                 }
-            } 
+                catch ( WebException e )
+                {
+
+                }
+            }
 
         #endregion
 
@@ -472,7 +526,7 @@ This key is used to sign the releases on Github.com, all commits are also signed
 
             private void lnk_TPB_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
             {
-                System.Diagnostics.Process.Start( Cfg.Default.app_url_tpb );
+                System.Diagnostics.Process.Start( app_url_tpb );
             }
 
             /*

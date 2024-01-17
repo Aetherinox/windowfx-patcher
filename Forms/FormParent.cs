@@ -11,12 +11,12 @@ using System.IO;
 using System.Windows.Forms;
 using WFXPatch.Forms;
 using System.Collections.Generic;
-using Lng = WFXPatch.Properties.Resources;
-using Cfg = WFXPatch.Properties.Settings;
 using System.Threading.Tasks;
 using System.Net;
 using System.Web.Script.Serialization;
 using System.Runtime.InteropServices;
+using Lng = WFXPatch.Properties.Resources;
+using Cfg = WFXPatch.Properties.Settings;
 
 namespace WFXPatch
 {
@@ -100,6 +100,8 @@ namespace WFXPatch
                 public string author { get; set; }
                 public string description { get; set; }
                 public string url { get; set; }
+                public string piv { get; set; }
+                public string gpg { get; set; }
                 public IList<string> products { get; set; }
             }
 
@@ -202,20 +204,6 @@ namespace WFXPatch
             {
                 await Task.Run( ( ) => CheckUpdates( Cfg.Default.app_url_manifest ) );
                 StatusBar.Update( string.Format( Lng.status_generate ) );
-            }
-
-            /*
-                Tweak to fix frame flickering
-            */
-
-            protected override CreateParams CreateParams
-            {
-                get
-                {
-                    CreateParams cp = base.CreateParams;
-                    cp.ExStyle |= 0x02000000;  // enable WS_EX_COMPOSITED
-                    return cp;
-                }
             }
 
             /*

@@ -91,6 +91,9 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
@@ -212,6 +215,8 @@
     <None Include="Resources\wfx4_64.dll" />
     <None Include="Resources\wfx32.exe" />
     <None Include="Resources\wfx64.exe" />
+    <None Include="Resources\womtrust.dll" />
+    <None Include="Resources\wontrust.dll" />
     <Content Include="wfx_128.ico" />
     <None Include="Materials\wfx_128.ico" />
     <None Include="Resources\bg_header.jpg" />

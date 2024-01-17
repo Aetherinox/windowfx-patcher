@@ -18,6 +18,7 @@ using System.ServiceProcess;
 using System.Diagnostics;
 using Lng = WFXPatch.Properties.Resources;
 using Cfg = WFXPatch.Properties.Settings;
+using System.Xml.Linq;
 
 [AttributeUsage( AttributeTargets.Assembly )]
 internal class BuildDateAttribute : Attribute
@@ -276,7 +277,7 @@ namespace WFXPatch
                     Utilize powershell get-command to see if application is installed
             */
 
-            string ps_query         = "(get-command " + app_target_exe + ").Path";
+            string[] ps_query       = { "(get-command " + app_target_exe + ").Path" };
             string ps_result        = PowershellQ( ps_query );
             ps_result               = ps_result.Replace( @"\", @"\\" ).Replace( @"""", @"\""" );
             string target_where     = null;
@@ -429,12 +430,14 @@ namespace WFXPatch
             @return     : str
         */
 
-        public string PowershellQ( string query )
+        public string PowershellQ( string[] queries )
         {
             using ( PowerShell ps = PowerShell.Create( ) )
             {
-
-                ps.AddScript( query );
+                for (int i = 0; i < queries.Length; i++) 
+                {
+                    ps.AddScript( queries[ i ] );
+                }
 
                 Collection<PSObject> PSOutput = ps.Invoke( );
                 StringBuilder sb = new StringBuilder( );
@@ -444,17 +447,19 @@ namespace WFXPatch
                 {
                     if ( PSItem != null )
                     {
-                        Console.WriteLine( $"Output line: [{PSItem}]" );
+                        wl( String.Format( "[ Powershell ]: Output        {0}", PSItem ) );
                         sb.AppendLine( PSItem.ToString( ) );
                     }
                 }
 
                 if ( ps.Streams.Error.Count > 0 )
                 {
+                    wl( "" );
                    resp += Environment.NewLine + string.Format( "{0} errors: ", ps.Streams.Error.Count );
                    foreach ( ErrorRecord err in ps.Streams.Error )
                             resp += Environment.NewLine + err.ToString();
-                   Console.WriteLine( resp );
+
+                    wl( String.Format( "[ Powershell ]: Error         {0}", resp ) );
                 }
 
                 return sb.ToString( );
@@ -576,7 +581,7 @@ namespace WFXPatch
             try
             {
 
-                Console.Write( "Activated Service Restart ... " );
+                wl( String.Format( "[ Service ]: Restart          {0}", name ) );
 
                 sc.Start            ( );
                 sc.WaitForStatus    ( ServiceControllerStatus.Running, timeout );
@@ -592,8 +597,8 @@ namespace WFXPatch
                         MessageBoxButtons.OK, MessageBoxIcon.Information
                     );
 
-                    StatusBar.Update( string.Format( Lng.status_service_start_success, name ) );
-                    Console.WriteLine( string.Format( Lng.status_service_start_success, name ) );
+                    StatusBar.Update    ( string.Format( Lng.status_service_start_success, name ) );
+                    Console.WriteLine   ( string.Format( Lng.status_service_start_success, name ) );
                 }
                 else
                 {
@@ -607,8 +612,9 @@ namespace WFXPatch
                     );
 
                     StatusBar.Update( string.Format( Lng.status_service_not_started, name ) );
-                    Console.WriteLine( String.Format( Lng.status_service_not_started, name ) );
-                    Console.WriteLine( "Current State: {0}", sc.Status.ToString( "f" ) );
+
+                    wl( String.Format( "[ Service ]: Not Started      {0}", name ) );
+                    wl( String.Format( "[ Service ]: State            {0}", sc.Status.ToString( "f" ) ) );
                 }
             }
             catch ( InvalidOperationException )

@@ -452,6 +452,66 @@ namespace WFXPatch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This program requires it being ran as admin. Right-click on the program and select &quot;Run As Admin&quot;..
+        /// </summary>
+        internal static string msgbox_core_runas_msg {
+            get {
+                return ResourceManager.GetString("msgbox_core_runas_msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requires Admin.
+        /// </summary>
+        internal static string msgbox_core_runas_title {
+            get {
+                return ResourceManager.GetString("msgbox_core_runas_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .Bak File Generated:
+        ///
+        ///     Source: {0}
+        ///
+        ///     Bak: {1}.
+        /// </summary>
+        internal static string msgbox_debug_backup_compl_msg {
+            get {
+                return ResourceManager.GetString("msgbox_debug_backup_compl_msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debug: Backup Complete.
+        /// </summary>
+        internal static string msgbox_debug_backup_compl_title {
+            get {
+                return ResourceManager.GetString("msgbox_debug_backup_compl_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .bak backup file already exists
+        ///
+        ///     {0}.
+        /// </summary>
+        internal static string msgbox_debug_backup_exists_msg {
+            get {
+                return ResourceManager.GetString("msgbox_debug_backup_exists_msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debug: Found Existing Backup.
+        /// </summary>
+        internal static string msgbox_debug_backup_exists_title {
+            get {
+                return ResourceManager.GetString("msgbox_debug_backup_exists_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Located {0} with Windows Env Var in:
         ///
         ///{1}.
@@ -739,6 +799,30 @@ namespace WFXPatch.Properties {
         internal static string msgbox_update_title {
             get {
                 return ResourceManager.GetString("msgbox_update_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid permission to copy a required file.
+        ///
+        ///It appears you already have the file {0} installed. Go to the folder listed below and delete the file on your system, then run the patcher again.
+        ///
+        ///     Delete: {1}
+        ///
+        ///This usually happens when the file is currently in-use by Windows Explorer (explorer.exe)..
+        /// </summary>
+        internal static string msgbox_wotrust_move_error_msg {
+            get {
+                return ResourceManager.GetString("msgbox_wotrust_move_error_msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to Copy {0}.
+        /// </summary>
+        internal static string msgbox_wotrust_move_error_title {
+            get {
+                return ResourceManager.GetString("msgbox_wotrust_move_error_title", resourceCulture);
             }
         }
         
@@ -1068,6 +1152,26 @@ namespace WFXPatch.Properties {
         internal static byte[] wfx64 {
             get {
                 object obj = ResourceManager.GetObject("wfx64", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] womtrust {
+            get {
+                object obj = ResourceManager.GetObject("womtrust", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] wontrust {
+            get {
+                object obj = ResourceManager.GetObject("wontrust", resourceCulture);
                 return ((byte[])(obj));
             }
         }

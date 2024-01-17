@@ -53,8 +53,17 @@
     <Setting Name="app_res_hash_4" Type="System.String" Scope="Application">
       <Value Profile="(Default)">7098244dc62c38d726e4070c1594d4f3f830f65556469e45c5c8b1385a3e8ff0</Value>
     </Setting>
-    <Setting Name="Setting" Type="System.String" Scope="Application">
-      <Value Profile="(Default)" />
+    <Setting Name="app_res_file_womdll" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">womtrust.dll</Value>
+    </Setting>
+    <Setting Name="app_res_file_wondll" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">wontrust.dll</Value>
+    </Setting>
+    <Setting Name="app_res_file_dmp_original" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">hex_original.dmp</Value>
+    </Setting>
+    <Setting Name="app_res_file_dmp_patched" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">hex_patched.dmp</Value>
     </Setting>
   </Settings>
 </SettingsFile>
