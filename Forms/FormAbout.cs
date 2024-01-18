@@ -16,12 +16,23 @@ using Cfg = WFXPatch.Properties.Settings;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using System.IO;
 
 namespace WFXPatch
 {
 
     public partial class FormAbout : Form
     {
+
+        #region "Fileinfo"
+
+            /*
+                Define > File Name
+            */
+
+            readonly static string log_file = "FormAbout.cs";
+
+        #endregion
 
         #region "Declarations"
 
@@ -204,6 +215,7 @@ This key is used to sign the releases on Github.com, all commits are also signed
             private async void FormAbout_Load( object sender, EventArgs e)
             {
                 await Task.Run( ( ) => FetchJson( Cfg.Default.app_url_manifest ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Form Load", String.Format( "FormAbout_Load : {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
             }
 
             /*
@@ -222,6 +234,11 @@ This key is used to sign the releases on Github.com, all commits are also signed
                     JavaScriptSerializer serializer     = new JavaScriptSerializer( ); 
                     Manifest manifest                   = serializer.Deserialize<Manifest>( json );
 
+                    if ( manifest != null )
+                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Action", String.Format( "{0} : {1}", System.Reflection.MethodBase.GetCurrentMethod( ).Name, "Successfully populated data" ) );
+                    else
+                       Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Action", String.Format( "{0} : {1}", System.Reflection.MethodBase.GetCurrentMethod( ).Name, "Failed populated data" ) );
+
                     /*
                         Check if update is available for end-user
                     */
@@ -232,8 +249,6 @@ This key is used to sign the releases on Github.com, all commits are also signed
                     if ( !string.IsNullOrEmpty( manifest.gpg ) )
                         txt_Dev_GPG_KeyID.Value         = manifest.gpg;
 
-                    if ( !string.IsNullOrEmpty( manifest.lnk1 ) )
-                        txt_Dev_GPG_KeyID.Value         = manifest.lnk1;
                 }
                 catch ( WebException e )
                 {

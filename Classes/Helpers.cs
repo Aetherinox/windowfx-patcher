@@ -16,7 +16,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.ServiceProcess;
 using System.Diagnostics;
-using Lng = WFXPatch.Properties.Resources;
+using Res = WFXPatch.Properties.Resources;
 using Cfg = WFXPatch.Properties.Settings;
 using System.Xml.Linq;
 
@@ -38,20 +38,31 @@ internal class BuildDateAttribute : Attribute
 namespace WFXPatch
 {
 
+
     class Helpers
     {
+
+        #region "Fileinfo"
+
+            /*
+                Define > File Name
+            */
+
+            readonly static string log_file = "Helpers.cs";
+
+        #endregion
 
         /*
             Define > Dependency Classes
         */
 
-        private AppInfo AppInfo = new AppInfo( );
+        private AppInfo AppInfo             = new AppInfo( );
 
         /*
-            Define > Actions
+            Define > Misc
         */
 
-        readonly static Action<string> wl = Console.WriteLine;
+        readonly static Action<string> wl   = Console.WriteLine;
 
         /*
             Define > Paths
@@ -128,13 +139,15 @@ namespace WFXPatch
                 if ( Directory.Exists( dir ) )
                 {
 
+                    Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Findapp-Patch ]", String.Format( "{0}", dir ) );
+
                     if ( AppInfo.bIsDebug( ) )
                     {
                         MessageBox.Show
                         (
                             new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                            string.Format( Lng.msgbox_debug_fpath_msg, app_target_exe, dir ),
-                            string.Format( Lng.msgbox_debug_fpath_title ),
+                            string.Format( Res.msgbox_debug_fpath_msg, app_target_exe, dir ),
+                            string.Format( Res.msgbox_debug_fpath_title ),
                             MessageBoxButtons.OK, MessageBoxIcon.None
                         );
                     }
@@ -154,13 +167,15 @@ namespace WFXPatch
             {
                 if ( File.Exists( folder + app_target_exe ) )
                 {
+                    Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Findapp-Env ]", String.Format( "Located {0} in {1}", app_target_exe, folder ) );
+
                     if ( AppInfo.bIsDebug( ) )
                     {
                         MessageBox.Show
                         (
                             new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                            string.Format( Lng.msgbox_debug_fpath_env_c1_msg, app_target_exe, folder ),
-                            string.Format( Lng.msgbox_debug_fpath_env_c1_title ),
+                            string.Format( Res.msgbox_debug_fpath_env_c1_msg, app_target_exe, folder ),
+                            string.Format( Res.msgbox_debug_fpath_env_c1_title ),
                             MessageBoxButtons.OK, MessageBoxIcon.None
                         );
                     }
@@ -169,13 +184,16 @@ namespace WFXPatch
                 }
                 else if ( File.Exists( folder + "\\" + app_target_exe ) )
                 {
+
+                    Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Findapp-Env ]", String.Format( "Located {0} in {1}", app_target_exe, folder ) );
+
                     if ( AppInfo.bIsDebug( ) )
                     {
                         MessageBox.Show
                         (
                             new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                            string.Format( Lng.msgbox_debug_fpath_env_c2_msg, app_target_exe, folder ),
-                            string.Format( Lng.msgbox_debug_fpath_env_c2_title ),
+                            string.Format( Res.msgbox_debug_fpath_env_c2_msg, app_target_exe, folder ),
+                            string.Format( Res.msgbox_debug_fpath_env_c2_title ),
                             MessageBoxButtons.OK, MessageBoxIcon.None
                         );
                     }
@@ -192,13 +210,15 @@ namespace WFXPatch
             if ( File.Exists( find_InProg64 ) )
             {
 
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Findapp-Prog64 ]", String.Format( "Located {0} in {1}", app_target_exe, find_InProg64 ) );
+
                 if ( AppInfo.bIsDebug( ) )
                 {
                     MessageBox.Show
                     (
                         new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                        string.Format( Lng.msgbox_debug_fpath_msg, app_target_exe, find_InProg64 ),
-                        string.Format( Lng.msgbox_debug_fpath_title ),
+                        string.Format( Res.msgbox_debug_fpath_msg, app_target_exe, find_InProg64 ),
+                        string.Format( Res.msgbox_debug_fpath_title ),
                         MessageBoxButtons.OK, MessageBoxIcon.None
                     );
                 }
@@ -214,13 +234,15 @@ namespace WFXPatch
             if ( File.Exists( find_InProg86 ) )
             {
 
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Findapp-Prog86 ]", String.Format( "Located {0} in {1}", app_target_exe, find_InProg86 ) );
+
                 if ( AppInfo.bIsDebug( ) )
                 {
                     MessageBox.Show
                     (
                         new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                        string.Format( Lng.msgbox_debug_fpath_msg, app_target_exe, find_InProg86 ),
-                        string.Format( Lng.msgbox_debug_fpath_title ),
+                        string.Format( Res.msgbox_debug_fpath_msg, app_target_exe, find_InProg86 ),
+                        string.Format( Res.msgbox_debug_fpath_title ),
                         MessageBoxButtons.OK, MessageBoxIcon.None
                     );
                 }
@@ -236,13 +258,15 @@ namespace WFXPatch
             if ( File.Exists( find_InAppData ) )
             {
 
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Findapp-AppData ]", String.Format( "Located {0} in {1}", app_target_exe, find_InAppData ) );
+
                 if ( AppInfo.bIsDebug( ) )
                 {
                     MessageBox.Show
                     (
                         new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                        string.Format( Lng.msgbox_debug_fpath_msg, app_target_exe, find_InAppData ),
-                        string.Format( Lng.msgbox_debug_fpath_title ),
+                        string.Format( Res.msgbox_debug_fpath_msg, app_target_exe, find_InAppData ),
+                        string.Format( Res.msgbox_debug_fpath_title ),
                         MessageBoxButtons.OK, MessageBoxIcon.None
                     );
                 }
@@ -258,13 +282,15 @@ namespace WFXPatch
             if ( File.Exists( find_InAppHome ) )
             {
 
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Findapp-Patch ]", String.Format( "Located {0} in {1}", app_target_exe, find_InAppHome ) );
+
                 if ( AppInfo.bIsDebug( ) )
                 {
                     MessageBox.Show
                     (
                         new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                        string.Format( Lng.msgbox_debug_fpath_msg, app_target_exe, find_InAppHome ),
-                        string.Format( Lng.msgbox_debug_fpath_title ),
+                        string.Format( Res.msgbox_debug_fpath_msg, app_target_exe, find_InAppHome ),
+                        string.Format( Res.msgbox_debug_fpath_title ),
                         MessageBoxButtons.OK, MessageBoxIcon.None
                     );
                 }
@@ -289,13 +315,16 @@ namespace WFXPatch
 
             if ( File.Exists( target_where ) )
             {
+
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Findapp-PS ]", String.Format( "Located {0} in {1}", app_target_exe, target_where ) );
+
                 if ( AppInfo.bIsDebug( ) )
                 {
                     MessageBox.Show
                     (
                         new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                        string.Format( Lng.msgbox_debug_fpath_ps_msg, app_target_exe, target_where ),
-                        string.Format( Lng.msgbox_debug_fpath_ps_title ),
+                        string.Format( Res.msgbox_debug_fpath_ps_msg, app_target_exe, target_where ),
+                        string.Format( Res.msgbox_debug_fpath_ps_title ),
                         MessageBoxButtons.OK, MessageBoxIcon.None
                     );
                 }
@@ -437,6 +466,7 @@ namespace WFXPatch
                 for (int i = 0; i < queries.Length; i++) 
                 {
                     ps.AddScript( queries[ i ] );
+                    Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ PSQ.Execute ]", String.Format( "{0}", queries[ i ] ) );
                 }
 
                 Collection<PSObject> PSOutput = ps.Invoke( );
@@ -447,19 +477,18 @@ namespace WFXPatch
                 {
                     if ( PSItem != null )
                     {
-                        wl( String.Format( "[ Powershell ]: Output        {0}", PSItem ) );
+                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ PSQ.Result ]", String.Format( "{0}", PSItem ) );
                         sb.AppendLine( PSItem.ToString( ) );
                     }
                 }
 
                 if ( ps.Streams.Error.Count > 0 )
                 {
-                    wl( "" );
-                   resp += Environment.NewLine + string.Format( "{0} errors: ", ps.Streams.Error.Count );
-                   foreach ( ErrorRecord err in ps.Streams.Error )
+                    resp += Environment.NewLine + string.Format( "{0} Error(s): ", ps.Streams.Error.Count );
+                    foreach ( ErrorRecord err in ps.Streams.Error )
                             resp += Environment.NewLine + err.ToString();
 
-                    wl( String.Format( "[ Powershell ]: Error         {0}", resp ) );
+                    Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ PSQ.Error ]", String.Format( "{0}", resp ) );
                 }
 
                 return sb.ToString( );
@@ -574,14 +603,14 @@ namespace WFXPatch
 
             if ( sc.Status == ServiceControllerStatus.StartPending )
             {
-                StatusBar.Update( string.Format( Lng.status_service_already_running, name ) );
-                Console.WriteLine( string.Format( Lng.status_service_already_running, name ) );
+                StatusBar.Update    ( string.Format( Res.status_service_already_running, name ) );
+                Console.WriteLine   ( string.Format( Res.status_service_already_running, name ) );
             }
 
             try
             {
 
-                wl( String.Format( "[ Service ]: Restart          {0}", name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Service.Kill ]", String.Format( "{0}", name ) );
 
                 sc.Start            ( );
                 sc.WaitForStatus    ( ServiceControllerStatus.Running, timeout );
@@ -592,13 +621,13 @@ namespace WFXPatch
                     MessageBox.Show
                     (
                         new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                        String.Format( Lng.status_service_start_success, name ),
+                        String.Format( Res.status_service_start_success, name ),
                         "Restart Service",
                         MessageBoxButtons.OK, MessageBoxIcon.Information
                     );
 
-                    StatusBar.Update    ( string.Format( Lng.status_service_start_success, name ) );
-                    Console.WriteLine   ( string.Format( Lng.status_service_start_success, name ) );
+                    StatusBar.Update    ( string.Format( Res.status_service_start_success, name ) );
+                    Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Service.Start ]", String.Format( "{0}", name ) );
                 }
                 else
                 {
@@ -606,15 +635,16 @@ namespace WFXPatch
                     MessageBox.Show
                     (
                         new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                        string.Format( Lng.status_service_not_started, name ),
+                        string.Format( Res.status_service_not_started, name ),
                         "Restart Service",
                         MessageBoxButtons.OK, MessageBoxIcon.Information
                     );
 
-                    StatusBar.Update( string.Format( Lng.status_service_not_started, name ) );
+                    StatusBar.Update( string.Format( Res.status_service_not_started, name ) );
 
-                    wl( String.Format( "[ Service ]: Not Started      {0}", name ) );
-                    wl( String.Format( "[ Service ]: State            {0}", sc.Status.ToString( "f" ) ) );
+                    Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Service.NotRunning ]", String.Format( "{0}", name ) );
+                    Log.Send( "", 0, "", String.Format( "Status: {0}", sc.Status.ToString( "f" ) ) );
+
                 }
             }
             catch ( InvalidOperationException )
@@ -623,13 +653,13 @@ namespace WFXPatch
                 MessageBox.Show
                 (
                     new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                    String.Format( Lng.status_service_start_fail, name ),
+                    String.Format( Res.status_service_start_fail, name ),
                     "Restart Service",
                     MessageBoxButtons.OK, MessageBoxIcon.Information
                 );
 
-                StatusBar.Update( string.Format( Lng.status_service_start_fail, name ) );
-                Console.WriteLine( String.Format( Lng.status_service_start_fail, name ) );
+                StatusBar.Update( string.Format( Res.status_service_start_fail, name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Service.Fail ]", String.Format( "{0}", name ) );
             }
 
         }
@@ -662,13 +692,13 @@ namespace WFXPatch
             }
             catch ( Exception )
             {
-                StatusBar.Update( String.Format( Lng.status_taskkill_fail, name ) );
+                StatusBar.Update( String.Format( Res.status_taskkill_fail, name ) );
                 return;
             }
             finally
             {
-                StatusBar.Update( string.Format( Lng.status_taskkill_succ, name ) );
-                wl( String.Format( "[ Service ]: Kill             {0}", name ) );
+                StatusBar.Update( string.Format( Res.status_taskkill_succ, name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Service.Kill ]", String.Format( "{0}", name ) );
             }
         }
 
@@ -698,15 +728,16 @@ namespace WFXPatch
             }
             catch ( Exception )
             {
-                StatusBar.Update( String.Format( Lng.status_taskkill_fail, name ) );
+                StatusBar.Update( String.Format( Res.status_taskkill_fail, name ) );
                 return;
             }
             finally
             {
-                StatusBar.Update( string.Format( Lng.status_taskkill_succ, name ) );
-                wl( String.Format( "[ Service ]: Kill             {0}", name ) );
+                StatusBar.Update( string.Format( Res.status_taskkill_succ, name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Service.Kill ] Elevated", String.Format( "{0}", name ) );
             }
         }
 
     }
+
 }

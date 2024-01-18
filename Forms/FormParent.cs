@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web.Script.Serialization;
 using System.Runtime.InteropServices;
-using Lng = WFXPatch.Properties.Resources;
+using Res = WFXPatch.Properties.Resources;
 using Cfg = WFXPatch.Properties.Settings;
 
 namespace WFXPatch
@@ -23,11 +23,24 @@ namespace WFXPatch
     public partial class FormParent : Form, IReceiver
     {
 
-        #region "Declarations"
+        #region "Fileinfo"
 
             /*
-                Define > Classes
+                Define > File Name
             */
+
+            readonly static string log_file                 = "FormParent.cs";
+            static int i_DebugClicks                        = 0;
+            private System.Windows.Forms.Timer DebugTimer   = new System.Windows.Forms.Timer( );
+            Stopwatch SW_DebugRemains                       = new Stopwatch( );
+
+        #endregion
+
+        #region "Declarations"
+
+        /*
+            Define > Classes
+        */
 
             private Patch Patch         = new Patch( );
             private Helpers Helpers     = new Helpers( );
@@ -172,8 +185,8 @@ namespace WFXPatch
                     Richtext in body of interface
                 */
 
-                string l1                   = Lng.txt_intro_1;
-                string l2                   = Lng.txt_intro_2;
+                string l1                   = Res.txt_intro_1;
+                string l2                   = Res.txt_intro_2;
 
                 rtxt_Intro.Text             = "";
 
@@ -191,9 +204,8 @@ namespace WFXPatch
                     Buttons
                 */
 
-                btn_Patch.Text              = Lng.btn_patch;
-                btn_OpenFolder.Text         = Lng.btn_open_folder;
-
+                btn_Patch.Text              = Res.btn_patch;
+                btn_OpenFolder.Text         = Res.btn_open_folder;
             }
 
             /*
@@ -203,7 +215,30 @@ namespace WFXPatch
             private async void FormParent_Load( object sender, EventArgs e )
             {
                 await Task.Run( ( ) => CheckUpdates( Cfg.Default.app_url_manifest ) );
-                StatusBar.Update( string.Format( Lng.status_generate ) );
+                StatusBar.Update( string.Format( Res.status_generate ) );
+
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Form Load", String.Format( "FormParent_Load : {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+
+                /*
+                    Debug Timer
+                */
+
+                DebugTimer.Interval     = ( 10 * 700 );
+                DebugTimer.Tick         += new EventHandler( DebugTimer_Tick );
+                DebugTimer.Start        ( );
+                SW_DebugRemains.Start   ( );
+            }
+
+            /*
+                Debug Timer
+                    This termines how long a user has to click the header image in order to enable developer mode.
+                    This is easier than creating yet another menu item.
+            */
+
+            private void DebugTimer_Tick(object sender, EventArgs e)
+            {
+                i_DebugClicks = 0;
+                SW_DebugRemains.Restart( );
             }
 
             /*
@@ -247,8 +282,8 @@ namespace WFXPatch
                         {
                             Cfg.Default.bShowedUpdates = true;
 
-                            var result = MessageBox.Show( new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen }, string.Format( Lng.msgbox_update_msg, manifest.version, Cfg.Default.app_name ),
-                                string.Format( Lng.msgbox_update_title, ver_curr, manifest.version ),
+                            var result = MessageBox.Show( new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen }, string.Format( Res.msgbox_update_msg, manifest.version, Cfg.Default.app_name ),
+                                string.Format( Res.msgbox_update_title, ver_curr, manifest.version ),
                                 MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation
                             );
 
@@ -283,6 +318,7 @@ namespace WFXPatch
 
             private void btn_Window_Minimize_Click( object sender, EventArgs e )
             {
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
                 this.WindowState = FormWindowState.Minimized;
             }
 
@@ -310,6 +346,8 @@ namespace WFXPatch
 
             private void btn_Window_Close_Click( object sender, EventArgs e )
             {
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+                Patch.Cleanup( );
                 Application.Exit( );
             }
 
@@ -594,7 +632,34 @@ namespace WFXPatch
 
             private void mnu_Sub_Exit_Click( object sender, EventArgs e )
             {
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+                Patch.Cleanup( );
                 Application.Exit( );
+            }
+
+            /*
+                Top Menu > Debug Log
+            */
+
+            private void mnu_Sub_DebugLog_Click( object sender, EventArgs e )
+            {
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+
+                string log_filename     = Log.GetStorageFile( );
+                string log_path         = Path.Combine( patch_launch_dir, log_filename );
+
+                if ( File.Exists( log_path ) )
+                    Process.Start( "explorer.exe", log_path );
+                else
+                {
+                    MessageBox.Show
+                    (
+                        new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                        string.Format( Res.msgbox_logs_open_msg, Cfg.Default.app_argid_debug ),
+                        Res.msgbox_logs_open_title,
+                        MessageBoxButtons.OK, MessageBoxIcon.Error
+                    );
+                }
             }
 
             /*
@@ -603,6 +668,8 @@ namespace WFXPatch
 
             private void mnu_Cat_Contribute_Click( object sender, EventArgs e )
             {
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+
                 this.Hide( );
 
                 FormContribute to   = new FormContribute( );
@@ -616,6 +683,8 @@ namespace WFXPatch
 
             private void mnu_Sub_Updates_Click( object sender, EventArgs e )
             {
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+
                 System.Diagnostics.Process.Start( Cfg.Default.app_url_github );
             }
 
@@ -625,6 +694,7 @@ namespace WFXPatch
 
             private void mnu_Sub_Validate_Click( object sender, EventArgs e )
             {
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
 
                 string exe_target = System.AppDomain.CurrentDomain.FriendlyName;
                 if ( !File.Exists( exe_target ) )
@@ -657,6 +727,8 @@ namespace WFXPatch
                     if ( x509_cert.ToLower( ) == Cfg.Default.app_dev_piv_thumbprint.ToLower( ) )
                     {
 
+                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.x509 ] OK", String.Format( "Integrity check passed with thumbprint {0}", x509_cert ) );
+
                         /* certificate: resource file signed and authentic */
 
                         MessageBox.Show(
@@ -668,11 +740,14 @@ namespace WFXPatch
                     }
                     else
                     {
+
+                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.x509 ] Suspicious", String.Format( "App signed by someone different with thumbprint {0}", x509_cert ) );
+
                         /* certificate: resource file signed but not by developer */
 
                         MessageBox.Show(
                             new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                            string.Format( "The fails associated to this patch have a signature, however, it is not by the developer who wrote the patch, aborting...\n\nCertificate Thumbprint: \n{0}", x509_cert ),
+                            string.Format( "The files associated to this patch have a signature, however, it is not by the developer who wrote the patch, aborting...\n\nCertificate Thumbprint: \n{0}", x509_cert ),
                             "Integrity Check Failed",
                             MessageBoxButtons.OK, MessageBoxIcon.Error
                         );
@@ -680,6 +755,9 @@ namespace WFXPatch
                 }
                 else
                 {
+
+                    Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.x509 ] Fail", String.Format( "App files are not signed with certificate" ) );
+
                     /* certificate: resource file not signed at all */
 
                     MessageBox.Show(
@@ -714,6 +792,8 @@ namespace WFXPatch
 
             private void mnu_Sub_About_Click( object sender, EventArgs e )
             {
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod().Name ) );
+
                 this.Hide( );
 
                 FormAbout to    = new FormAbout( );
@@ -775,7 +855,61 @@ namespace WFXPatch
 
         #endregion
 
-        #region "Body: Patch Button"
+        #region "Button: Host"
+
+            private void btn_HostView_Click( object sender, EventArgs e )
+            {
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+
+                string etc_path = @"C:\Windows\System32\drivers\etc";
+                Process.Start( "explorer.exe", etc_path );
+            }
+
+            /*
+                Button > Block > On Click
+            */
+
+            private void btn_DoBlock_Click( object sender, EventArgs e )
+            {
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+
+                var result = MessageBox.Show
+                (
+                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                    Res.msgbox_bhost_msg,
+                    Res.msgbox_bhost_title,
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question
+                );
+
+                string answer = result.ToString( ).ToLower( );
+
+                /*
+                    Block Host > Cancel
+                */
+
+                if ( answer != "yes" )
+                {
+                    MessageBox.Show
+                    (
+                        new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                        Res.msgbox_bhost_cancel_msg,
+                        Res.msgbox_bhost_cancel_title,
+                        MessageBoxButtons.OK, MessageBoxIcon.Error
+                    );
+
+                    return;
+                }
+
+                /*
+                    Block Host > Continue
+                */
+
+                Patch.BlockHost( );
+            }
+
+        #endregion
+
+        #region "Button: Patch"
 
             /*
                 Button > Patch > Click
@@ -783,32 +917,36 @@ namespace WFXPatch
 
             private async void btn_Patch_Click( object sender, EventArgs e )
             {
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+
                 prog_Bar1.Visible   = true;
                 prog_Bar1.Value     = 0;
 
-                StatusBar.Update( string.Format( Lng.status_patch_start ) );
+                StatusBar.Update( string.Format( Res.status_patch_start ) );
                 await Task.Run( ( ) => Patch.Start( ) );
             }
 
         #endregion
 
-        #region "Body: Open Folder Button"
+        #region "Button: Open Folder"
 
-            /*
-                Auto-detects which folder WindowFXConfig.exe is installed in and opens that folder
-                in the user's File Explorer.
-            */
+        /*
+            Auto-detects which folder WindowFXConfig.exe is installed in and opens that folder
+            in the user's File Explorer.
+        */
 
-            private void btn_OpenFolder_Click( object sender, EventArgs e )
+        private void btn_OpenFolder_Click( object sender, EventArgs e )
             {
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+
                 string app_path_full      = Helper.FindApp( );
 
                 if ( String.IsNullOrEmpty( app_path_full ) )
                 {
                     MessageBox.Show(
                         new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                        string.Format( Lng.msgbox_nolocopen_msg ),
-                        Lng.msgbox_nolocopen_title,
+                        string.Format( Res.msgbox_nolocopen_msg ),
+                        Res.msgbox_nolocopen_title,
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
                     );
@@ -835,8 +973,8 @@ namespace WFXPatch
 
                     MessageBox.Show(
                         new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                        string.Format( Lng.msgbox_nolocopen_msg ),
-                        Lng.msgbox_nolocopen_title,
+                        string.Format( Res.msgbox_nolocopen_msg ),
+                        Res.msgbox_nolocopen_title,
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
                     );
@@ -931,52 +1069,6 @@ namespace WFXPatch
 
         #endregion
 
-            private void btn_HostView_Click( object sender, EventArgs e )
-            {
-                string etc_path = @"C:\Windows\System32\drivers\etc";
-                Process.Start( "explorer.exe", etc_path );
-            }
-
-            /*
-                Button > Block > On Click
-            */
-
-            private void btn_DoBlock_Click( object sender, EventArgs e )
-            {
-                var result = MessageBox.Show
-                (
-                    new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                    Lng.msgbox_bhost_msg,
-                    Lng.msgbox_bhost_title,
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question
-                );
-
-                string answer = result.ToString( ).ToLower( );
-
-                /*
-                    Block Host > Cancel
-                */
-
-                if ( answer != "yes" )
-                {
-                    MessageBox.Show
-                    (
-                        new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                        Lng.msgbox_bhost_cancel_msg,
-                        Lng.msgbox_bhost_cancel_title,
-                        MessageBoxButtons.OK, MessageBoxIcon.Error
-                    );
-
-                    return;
-                }
-
-                /*
-                    Block Host > Continue
-                */
-
-                Patch.BlockHost( );
-            }
-
         #region "Body: Group Boxes"
 
             /*
@@ -1067,8 +1159,99 @@ namespace WFXPatch
                 prog_Bar1.Value = i;
             }
 
+
         #endregion
 
+        #region "Debug Mode: Header"
 
+            /*
+                Debug Mode > Header Click
+                    if the user clicks the header a certain number of times in a short duration, they will enable
+                    debugging mode.
+            */
+
+            private void lbl_HeaderName_MouseClick( object sender, MouseEventArgs e )
+            {
+
+                /*
+                    add +1 to clicks
+                */
+
+                i_DebugClicks++;
+
+                /*
+                    don't go higher than 7, otherwise each click after 7 will re-activate dialog
+                */
+
+                int i_DebugRemains = 7 - i_DebugClicks;
+                if ( i_DebugRemains > 7 )
+                    return;
+
+                /*
+                    timer > remaining
+                */
+
+                int remains         = 7 - Convert.ToInt32( SW_DebugRemains.Elapsed.TotalSeconds );
+
+
+                /*
+                    prompt to enable / disable debug
+                */
+
+                if ( Cfg.Default.app_bDevmode )
+                    Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Debug ] Trigger", String.Format( "Disable debug with {0} more clicks -- {1} seconds remain", i_DebugRemains, remains ) );
+                else
+                    Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Debug ] Trigger", String.Format( "Enable debug with {0} more clicks -- {1} seconds remain", i_DebugRemains, remains ) );
+
+                /*
+                    wait until 7 clicks are done in X seconds
+                */
+
+                if ( i_DebugClicks >= 7 )
+                {
+
+                    if ( Cfg.Default.app_bDevmode )
+                    {
+
+                        /*
+                            Debug > disable
+                        */
+
+                        var resp_input = MessageBox.Show
+                        (
+                            new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                            Res.msgbox_debug_egg_disable_msg,
+                            Res.msgbox_debug_egg_disable_title,
+                            MessageBoxButtons.YesNo, MessageBoxIcon.None
+                        );
+
+                        if ( resp_input.ToString( ).ToLower( ) == "yes" )
+                            Cfg.Default.app_bDevmode = false;
+
+                    }
+                    else
+                    {
+
+                        /*
+                            Debug > enable
+                        */
+
+                        string log_path = Log.GetStorageFile( );
+                        var resp_input = MessageBox.Show
+                        (
+                            new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                            String.Format( Res.msgbox_debug_egg_enable_title, log_path ),
+                            Res.msgbox_debug_egg_enable_title,
+                            MessageBoxButtons.YesNo, MessageBoxIcon.None
+                        );
+
+                        if ( resp_input.ToString( ).ToLower( ) == "yes" )
+                            Cfg.Default.app_bDevmode = true;
+
+                    }
+                }
+            }
+        #endregion
     }
+
 }

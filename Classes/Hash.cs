@@ -18,6 +18,16 @@ namespace WFXPatch
     public sealed class Hash
     {
 
+        #region "Fileinfo"
+
+            /*
+                Define > File Name
+            */
+
+            readonly static string log_file = "Hash.cs";
+
+        #endregion
+
         /*
             Define > Classes
         */
@@ -34,8 +44,8 @@ namespace WFXPatch
            cryptographic service provider
         */
 
-        private static MD5 Md5         = MD5.Create( );
-        private static SHA256 Sha256    = SHA256.Create( );
+        private static MD5 Md5              = MD5.Create( );
+        private static SHA256 Sha256        = SHA256.Create( );
 
         /*
             method : string to byte array

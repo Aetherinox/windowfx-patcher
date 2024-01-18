@@ -53,6 +53,7 @@ namespace WFXPatch
             this.mnu_Sub_Exit = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu_Cat_Contribute = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu_Cat_Help = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnu_Sub_DebugLog = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu_Sub_Updates = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu_Sub_Validate = new System.Windows.Forms.ToolStripMenuItem();
             this.mnu_Help_Sep_1 = new System.Windows.Forms.ToolStripSeparator();
@@ -67,15 +68,15 @@ namespace WFXPatch
             this.lbl_HeaderSub = new System.Windows.Forms.Label();
             this.pnl_StatusParent = new System.Windows.Forms.Panel();
             this.box_BlockGroup_1 = new System.Windows.Forms.Panel();
+            this.btn_HostView = new WFXPatch.AetherxButton();
+            this.btn_DoBlock = new WFXPatch.AetherxButton();
             this.lbl_HostBlocker_Desc = new System.Windows.Forms.Label();
             this.lbl_Group_HostBlocker_Title = new System.Windows.Forms.Label();
             this.box_BlockGroup_2 = new System.Windows.Forms.Panel();
             this.lbl_Group_Patcher_Title = new System.Windows.Forms.Label();
             this.box_BlockGroup_2_Body = new System.Windows.Forms.Panel();
-            this.prog_Bar1 = new WFXPatch.AetherxProgress();
             this.rtxt_Intro = new WFXPatch.Controls.AetherxRTextBox();
-            this.btn_HostView = new WFXPatch.AetherxButton();
-            this.btn_DoBlock = new WFXPatch.AetherxButton();
+            this.prog_Bar1 = new WFXPatch.AetherxProgress();
             this.btn_OpenFolder = new WFXPatch.AetherxButton();
             this.btn_Patch = new WFXPatch.AetherxButton();
             this.mnu_Main.SuspendLayout();
@@ -125,6 +126,7 @@ namespace WFXPatch
             this.lbl_HeaderName.Size = new System.Drawing.Size(217, 32);
             this.lbl_HeaderName.TabIndex = 5;
             this.lbl_HeaderName.Text = "WindowFX Patcher";
+            this.lbl_HeaderName.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbl_HeaderName_MouseClick);
             this.lbl_HeaderName.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbl_HeaderName_MouseDown);
             this.lbl_HeaderName.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lbl_HeaderName_MouseMove);
             this.lbl_HeaderName.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lbl_HeaderName_MouseUp);
@@ -187,6 +189,7 @@ namespace WFXPatch
             // mnu_Cat_Help
             // 
             this.mnu_Cat_Help.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnu_Sub_DebugLog,
             this.mnu_Sub_Updates,
             this.mnu_Sub_Validate,
             this.mnu_Help_Sep_1,
@@ -196,6 +199,16 @@ namespace WFXPatch
             this.mnu_Cat_Help.Padding = new System.Windows.Forms.Padding(12, 0, 12, 0);
             this.mnu_Cat_Help.Size = new System.Drawing.Size(60, 34);
             this.mnu_Cat_Help.Text = "Help";
+            // 
+            // mnu_Sub_DebugLog
+            // 
+            this.mnu_Sub_DebugLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(35)))));
+            this.mnu_Sub_DebugLog.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.mnu_Sub_DebugLog.ForeColor = System.Drawing.Color.White;
+            this.mnu_Sub_DebugLog.Name = "mnu_Sub_DebugLog";
+            this.mnu_Sub_DebugLog.Size = new System.Drawing.Size(183, 22);
+            this.mnu_Sub_DebugLog.Text = "Debug Log";
+            this.mnu_Sub_DebugLog.Click += new System.EventHandler(this.mnu_Sub_DebugLog_Click);
             // 
             // mnu_Sub_Updates
             // 
@@ -359,6 +372,38 @@ namespace WFXPatch
             this.box_BlockGroup_1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.box_BlockGroup_1_MouseMove);
             this.box_BlockGroup_1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.box_BlockGroup_1_MouseUp);
             // 
+            // btn_HostView
+            // 
+            this.btn_HostView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(6)))), ((int)(((byte)(85)))));
+            this.btn_HostView.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_HostView.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btn_HostView.FlatAppearance.BorderSize = 0;
+            this.btn_HostView.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_HostView.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_HostView.Location = new System.Drawing.Point(248, 68);
+            this.btn_HostView.Name = "btn_HostView";
+            this.btn_HostView.Size = new System.Drawing.Size(111, 29);
+            this.btn_HostView.TabIndex = 35;
+            this.btn_HostView.Text = "&View Host";
+            this.btn_HostView.UseVisualStyleBackColor = false;
+            this.btn_HostView.Click += new System.EventHandler(this.btn_HostView_Click);
+            // 
+            // btn_DoBlock
+            // 
+            this.btn_DoBlock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(6)))), ((int)(((byte)(85)))));
+            this.btn_DoBlock.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_DoBlock.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.btn_DoBlock.FlatAppearance.BorderSize = 0;
+            this.btn_DoBlock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_DoBlock.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_DoBlock.Location = new System.Drawing.Point(132, 68);
+            this.btn_DoBlock.Name = "btn_DoBlock";
+            this.btn_DoBlock.Size = new System.Drawing.Size(111, 29);
+            this.btn_DoBlock.TabIndex = 26;
+            this.btn_DoBlock.Text = "&Block Host";
+            this.btn_DoBlock.UseVisualStyleBackColor = false;
+            this.btn_DoBlock.Click += new System.EventHandler(this.btn_DoBlock_Click);
+            // 
             // lbl_HostBlocker_Desc
             // 
             this.lbl_HostBlocker_Desc.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -421,27 +466,6 @@ namespace WFXPatch
             this.box_BlockGroup_2_Body.MouseMove += new System.Windows.Forms.MouseEventHandler(this.box_BlockGroup_2_MouseMove);
             this.box_BlockGroup_2_Body.MouseUp += new System.Windows.Forms.MouseEventHandler(this.box_BlockGroup_2_MouseUp);
             // 
-            // prog_Bar1
-            // 
-            this.prog_Bar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.prog_Bar1.ChannelColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
-            this.prog_Bar1.ChannelHeight = 10;
-            this.prog_Bar1.ForeColor = System.Drawing.Color.White;
-            this.prog_Bar1.Location = new System.Drawing.Point(135, 406);
-            this.prog_Bar1.Name = "prog_Bar1";
-            this.prog_Bar1.ShowMaximun = false;
-            this.prog_Bar1.ShowValue = WFXPatch.TextPosition.None;
-            this.prog_Bar1.Size = new System.Drawing.Size(260, 24);
-            this.prog_Bar1.SliderColor = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(6)))), ((int)(((byte)(85)))));
-            this.prog_Bar1.SliderHeight = 8;
-            this.prog_Bar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.prog_Bar1.SymbolAfter = "";
-            this.prog_Bar1.SymbolBefore = "";
-            this.prog_Bar1.TabBackColor = System.Drawing.Color.RoyalBlue;
-            this.prog_Bar1.TabIndex = 36;
-            this.prog_Bar1.Value = 64;
-            this.prog_Bar1.Visible = false;
-            // 
             // rtxt_Intro
             // 
             this.rtxt_Intro.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
@@ -464,37 +488,26 @@ namespace WFXPatch
             this.rtxt_Intro.MouseMove += new System.Windows.Forms.MouseEventHandler(this.rtxt_Intro_MouseMove);
             this.rtxt_Intro.MouseUp += new System.Windows.Forms.MouseEventHandler(this.rtxt_Intro_MouseUp);
             // 
-            // btn_HostView
+            // prog_Bar1
             // 
-            this.btn_HostView.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(6)))), ((int)(((byte)(85)))));
-            this.btn_HostView.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_HostView.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btn_HostView.FlatAppearance.BorderSize = 0;
-            this.btn_HostView.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_HostView.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_HostView.Location = new System.Drawing.Point(248, 68);
-            this.btn_HostView.Name = "btn_HostView";
-            this.btn_HostView.Size = new System.Drawing.Size(111, 29);
-            this.btn_HostView.TabIndex = 35;
-            this.btn_HostView.Text = "&View Host";
-            this.btn_HostView.UseVisualStyleBackColor = false;
-            this.btn_HostView.Click += new System.EventHandler(this.btn_HostView_Click);
-            // 
-            // btn_DoBlock
-            // 
-            this.btn_DoBlock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(6)))), ((int)(((byte)(85)))));
-            this.btn_DoBlock.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_DoBlock.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.btn_DoBlock.FlatAppearance.BorderSize = 0;
-            this.btn_DoBlock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_DoBlock.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_DoBlock.Location = new System.Drawing.Point(132, 68);
-            this.btn_DoBlock.Name = "btn_DoBlock";
-            this.btn_DoBlock.Size = new System.Drawing.Size(111, 29);
-            this.btn_DoBlock.TabIndex = 26;
-            this.btn_DoBlock.Text = "&Block Host";
-            this.btn_DoBlock.UseVisualStyleBackColor = false;
-            this.btn_DoBlock.Click += new System.EventHandler(this.btn_DoBlock_Click);
+            this.prog_Bar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.prog_Bar1.ChannelColor = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(55)))), ((int)(((byte)(55)))));
+            this.prog_Bar1.ChannelHeight = 10;
+            this.prog_Bar1.ForeColor = System.Drawing.Color.White;
+            this.prog_Bar1.Location = new System.Drawing.Point(135, 406);
+            this.prog_Bar1.Name = "prog_Bar1";
+            this.prog_Bar1.ShowMaximun = false;
+            this.prog_Bar1.ShowValue = WFXPatch.TextPosition.None;
+            this.prog_Bar1.Size = new System.Drawing.Size(260, 24);
+            this.prog_Bar1.SliderColor = System.Drawing.Color.FromArgb(((int)(((byte)(197)))), ((int)(((byte)(6)))), ((int)(((byte)(85)))));
+            this.prog_Bar1.SliderHeight = 8;
+            this.prog_Bar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.prog_Bar1.SymbolAfter = "";
+            this.prog_Bar1.SymbolBefore = "";
+            this.prog_Bar1.TabBackColor = System.Drawing.Color.RoyalBlue;
+            this.prog_Bar1.TabIndex = 36;
+            this.prog_Bar1.Value = 64;
+            this.prog_Bar1.Visible = false;
             // 
             // btn_OpenFolder
             // 
@@ -611,6 +624,7 @@ namespace WFXPatch
         private Label lbl_Group_Patcher_Title;
         private Panel box_BlockGroup_2_Body;
         private AetherxProgress prog_Bar1;
+        private ToolStripMenuItem mnu_Sub_DebugLog;
     }
 }
 

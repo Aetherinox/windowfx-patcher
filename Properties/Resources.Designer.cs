@@ -512,6 +512,45 @@ namespace WFXPatch.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to disable debug logging?.
+        /// </summary>
+        internal static string msgbox_debug_egg_disable_msg {
+            get {
+                return ResourceManager.GetString("msgbox_debug_egg_disable_msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable Debug Logging?.
+        /// </summary>
+        internal static string msgbox_debug_egg_disable_title {
+            get {
+                return ResourceManager.GetString("msgbox_debug_egg_disable_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to enable debug logging?
+        ///
+        ///All logs will be stored in the location:
+        ///     {0}.
+        /// </summary>
+        internal static string msgbox_debug_egg_enable_msg {
+            get {
+                return ResourceManager.GetString("msgbox_debug_egg_enable_msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Debug Logging?.
+        /// </summary>
+        internal static string msgbox_debug_egg_enable_title {
+            get {
+                return ResourceManager.GetString("msgbox_debug_egg_enable_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Located {0} with Windows Env Var in:
         ///
         ///{1}.
@@ -697,6 +736,27 @@ namespace WFXPatch.Properties {
         internal static string msgbox_integrity_fail_title {
             get {
                 return ResourceManager.GetString("msgbox_integrity_fail_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log files are only generated if you launch this app with this startup argument: 
+        ///     {0}
+        ///
+        ///If you are expernecing issues and need support, you&apos;ll be asked to do this and submit your log to the developer for diagnosing on Github..
+        /// </summary>
+        internal static string msgbox_logs_open_msg {
+            get {
+                return ResourceManager.GetString("msgbox_logs_open_msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Logs Found.
+        /// </summary>
+        internal static string msgbox_logs_open_title {
+            get {
+                return ResourceManager.GetString("msgbox_logs_open_title", resourceCulture);
             }
         }
         

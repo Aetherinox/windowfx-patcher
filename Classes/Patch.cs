@@ -26,19 +26,29 @@ namespace WFXPatch
     class Patch
     {
 
+        #region "Fileinfo"
+
+            /*
+                Define > File Name
+            */
+
+            readonly static string log_file = "Patch.cs";
+
+        #endregion
+
         /*
             Define > Dependency Classes
         */
 
-        private Helpers Helpers         = new Helpers( );
-        private Perms Perms             = new Perms( );
-        private AppInfo AppInfo         = new AppInfo( );
+        private Helpers Helpers             = new Helpers( );
+        private Perms Perms                 = new Perms( );
+        private AppInfo AppInfo             = new AppInfo( );
 
         /*
-            Define > Actions
+            Define > Misc
         */
 
-        readonly static Action<string> wl = Console.WriteLine;
+        readonly static Action<string> wl   = Console.WriteLine;
 
         /*
             Define > Paths
@@ -280,11 +290,13 @@ namespace WFXPatch
             Helpers.TaskKill( "wfx32" );
             Helpers.TaskKill( "WindowFXSRV" );
 
+            wl( "" );
+
             /*
                 Check skip
             */
 
-            bool bRequireEdit   = false;
+            bool bFilesModified = false;
 
             /*
                 loop each dll path
@@ -398,7 +410,7 @@ namespace WFXPatch
                     Extract modified dll and exe files
                 */
 
-                File.WriteAllBytes( Cfg.Default.app_res_file_1, Res.wfx4    );
+                File.WriteAllBytes( Cfg.Default.app_res_file_1, Res.wfx4 );
 
                 i_progress += Math.Round( 8.0 );
                 StatusBar.Update    ( string.Format( Res.status_byte_modify, i_progress ) );
@@ -430,6 +442,10 @@ namespace WFXPatch
                         OpCodes.LDC:i4 1593
                 */
 
+                wl( "" );
+
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Process ]", String.Format( "{0}", Cfg.Default.app_res_file_1 ) );
+
                 string file_1_src   = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_1 );
                 string file_1_sha   = Hash.GetSHA256Hash( file_1_src );
 
@@ -439,39 +455,39 @@ namespace WFXPatch
                                 Move > File 1 > Hash
                             */
 
-                            wl                          ( "" );
-                            wl                          ( String.Format( "[ File 1 ]: SHA256*           {0}", file_1_sha ) );
-                            wl                          ( String.Format( "[ File 1 ]: SHA256            {0}", Cfg.Default.app_res_hash_1 ) );
+                            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ SHA256 ] *", String.Format( "{0}", file_1_sha ) );
+                            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ SHA256 ]", String.Format( "{0}", Cfg.Default.app_res_hash_1 ) );
 
                             if ( file_1_sha == Cfg.Default.app_res_hash_1 )
                             {
-                                wl                      ( String.Format( "[ File 1 ]: Skip              " ) );
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Skip", String.Format( "{0} -> {1}", Cfg.Default.app_res_file_1, file_1_src ) );
                             }
                             else
                             {
-
-                                bRequireEdit    = true;
+                                bFilesModified    = true;
 
                                 if ( File.Exists( Cfg.Default.app_res_file_1 ) )
                                 {
                                     try
                                     {
-                                        wl              ( String.Format( "[ File 1 ]: File.Delete       {0}", file_1_src ) );
                                         File.Delete     ( file_1_src );
+                                        Log.Send        ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Delete ] OK", String.Format( "{0}", file_1_src ) );
                                     }
                                     catch ( Exception e )
                                     {
-                                        wl              ( String.Format( "[ File 1 ]: File.Delete       [Failure]: {0}", file_1_src , e.Message ) );
+                                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Delete ] Fail", String.Format( "{0}", file_1_src ) );
+                                        Log.Send( "", 0, "", String.Format( "{0}", e.Message ) );
 
                                         string[] psq_delete = { "Remove-Item -Path \"" + file_1_src + "\" -Force" };
-                                        wl               ( String.Format( "[ File 1 ]: PSQuery           {0}", psq_delete ) );
+
+                                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ PSQ.Delete ]", String.Format( "{0}", psq_delete  ) );
                                         Helpers.PowershellQ  ( psq_delete );
                                     }
                                 }
 
-                                wl                      ( String.Format( "[ File 1 ]: Move-Start        {0}", file_1_src ) );
-                                File.Move               ( Cfg.Default.app_res_file_1, file_1_src );
-                                wl                      ( String.Format( "[ File 1 ]: Move-Complete     {0}", file_1_src ) );
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Begin", String.Format( "{0}", file_1_src ) );
+                                File.Move( Cfg.Default.app_res_file_1, file_1_src );
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Finish", String.Format( "{0}", file_1_src ) );
                             }
 
                 /*
@@ -483,6 +499,10 @@ namespace WFXPatch
 
                 */
 
+                wl( "" );
+
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Process ]", String.Format( "{0}", Cfg.Default.app_res_file_2 ) );
+
                 string file_2_src   = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_2 );
                 string file_2_sha   = Hash.GetSHA256Hash( file_2_src );
 
@@ -492,40 +512,39 @@ namespace WFXPatch
                                 Move > File 2 > Hash
                             */
 
-                            wl                          ( "" );
-                            wl                          ( String.Format( "[ File 2 ]: SHA256*           {0}", file_2_sha ) );
-                            wl                          ( String.Format( "[ File 2 ]: SHA256            {0}", Cfg.Default.app_res_hash_2 ) );
+                            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ SHA256 ] *", String.Format( "{0}", file_2_sha ) );
+                            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ SHA256 ]", String.Format( "{0}", Cfg.Default.app_res_hash_2 ) );
 
                             if ( file_2_sha == Cfg.Default.app_res_hash_2 )
                             {
-                                wl                      ( String.Format( "[ File 2 ]: Skip              " ) );
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Skip", String.Format( "{0} -> {1}", Cfg.Default.app_res_file_2, file_2_src ) );
                             }
                             else
                             {
-
-                                bRequireEdit    = true;
+                                bFilesModified    = true;
 
                                 if ( File.Exists( Cfg.Default.app_res_file_2 ) )
                                 {
                                     try
                                     {
-                                        wl              ( String.Format( "[ File 2 ]: File.Delete       {0}", file_2_src ) );
                                         File.Delete     ( file_2_src );
+                                        Log.Send        ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Delete ] OK", String.Format( "{0}", file_2_src ) );
                                     }
                                     catch ( Exception e )
                                     {
-                                        wl              ( String.Format( "[ File 2 ]: File.Delete       [Failure]: {0}", file_2_src , e.Message ) );
+                                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Delete ] Fail", String.Format( "{0}", file_2_src ) );
+                                        Log.Send( "", 0, "", String.Format( "{0}", e.Message ) );
 
                                         string[] psq_delete = { "Remove-Item -Path \"" + file_2_src + "\" -Force" };
-                                        wl               ( String.Format( "[ File 2 ]: PSQuery           {0}", psq_delete ) );
+
+                                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ PSQ.Delete ]", String.Format( "{0}", psq_delete  ) );
                                         Helpers.PowershellQ  ( psq_delete );
                                     }
-
                                 }
 
-                                wl                      ( String.Format( "[ File 2 ]: Move-Start        {0}", file_2_src ) );
-                                File.Move               ( Cfg.Default.app_res_file_2, file_2_src );
-                                wl                      ( String.Format( "[ File 2 ]: Move-Complete     {0}", file_2_src ) );
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), " [ File.Move ] Begin", String.Format( "{0}", file_2_src ) );
+                                File.Move( Cfg.Default.app_res_file_2, file_2_src );
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Finish", String.Format( "{0}", file_2_src ) );
                             }
 
                 /*
@@ -537,6 +556,10 @@ namespace WFXPatch
 
                 */
 
+                wl( "" );
+
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Process ]", String.Format( "{0}", Cfg.Default.app_res_file_3 ) );
+
                 string file_3_src   = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_3 );
                 string file_3_sha   = Hash.GetSHA256Hash( file_3_src );
 
@@ -546,40 +569,39 @@ namespace WFXPatch
                                 Move > File 3 > Hash
                             */
 
-                            wl                          ( "" );
-                            wl                          ( String.Format( "[ File 3 ]: SHA256*           {0}", file_3_sha ) );
-                            wl                          ( String.Format( "[ File 3 ]: SHA256            {0}", Cfg.Default.app_res_hash_3 ) );
+                            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ SHA256 ] *", String.Format( "{0}", file_3_sha ) );
+                            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ SHA256 ]", String.Format( "{0}", Cfg.Default.app_res_hash_3 ) );
 
                             if ( file_3_sha == Cfg.Default.app_res_hash_3 )
                             {
-                                wl                      ( String.Format( "[ File 3 ]: Skip              " ) );
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Skip", String.Format( "{0} -> {1}", Cfg.Default.app_res_file_3, file_3_src ) );
                             }
                             else
                             {
-
-                                bRequireEdit    = true;
+                                bFilesModified    = true;
 
                                 if ( File.Exists( Cfg.Default.app_res_file_3 ) )
                                 {
                                     try
                                     {
-                                        wl              ( String.Format( "[ File 3 ]: File.Delete       {0}", file_3_src ) );
                                         File.Delete     ( file_3_src );
+                                        Log.Send        ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Delete ] OK", String.Format( "{0}", file_3_src ) );
                                     }
                                     catch ( Exception e )
                                     {
-                                        wl              ( String.Format( "[ File 3 ]: File.Delete       [Failure] {0}", file_3_src , e.Message ) );
+                                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Delete ] Fail", String.Format( "{0}", file_3_src ) );
+                                        Log.Send( "", 0, "", String.Format( "{0}", e.Message ) );
 
                                         string[] psq_delete = { "Remove-Item -Path \"" + file_3_src + "\" -Force" };
-                                        wl               ( String.Format( "[ File 3 ]: PSQuery           {0}", psq_delete ) );
+
+                                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ PSQ.Delete ]", String.Format( "{0}", psq_delete  ) );
                                         Helpers.PowershellQ  ( psq_delete );
                                     }
-
                                 }
 
-                                wl                      ( String.Format( "[ File 3 ]: Move-Start        {0}", file_3_src ) );
-                                File.Move               ( Cfg.Default.app_res_file_3, file_3_src );
-                                wl                      ( String.Format( "[ File 3 ]: Move-Complete     {0}", file_3_src ) );
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Begin", String.Format( "{0}", file_3_src ) );
+                                File.Move( Cfg.Default.app_res_file_3, file_3_src );
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Finish", String.Format( "{0}", file_3_src ) );
                             }
 
                 /*
@@ -591,6 +613,10 @@ namespace WFXPatch
 
                 */
 
+                wl( "" );
+
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Process ]", String.Format( "{0}", Cfg.Default.app_res_file_4 ) );
+
                 string file_4_src   = Path.Combine( WFX_path_fol, Cfg.Default.app_res_file_4 );
                 string file_4_sha   = Hash.GetSHA256Hash( file_4_src );
 
@@ -600,51 +626,50 @@ namespace WFXPatch
                                 Move > File 4 > Hash
                             */
 
-                            wl                          ( "" );
-                            wl                          ( String.Format( "[ File 4 ]: SHA256*           {0}", file_4_sha ) );
-                            wl                          ( String.Format( "[ File 4 ]: SHA256            {0}", Cfg.Default.app_res_hash_4 ) );
+                            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ SHA256 ] *", String.Format( "{0}", file_4_sha ) );
+                            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ SHA256 ]", String.Format( "{0}", Cfg.Default.app_res_hash_4 ) );
 
                             if ( file_4_sha == Cfg.Default.app_res_hash_4 )
                             {
-                                wl                      ( String.Format( "[ File 4 ]: Skip              " ) );
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Skip", String.Format( "{0} -> {1}", Cfg.Default.app_res_file_4, file_4_src ) );
                             }
                             else
                             {
-
-                                bRequireEdit    = true;
+                                bFilesModified    = true;
 
                                 if ( File.Exists( Cfg.Default.app_res_file_4 ) )
                                 {
                                     try
                                     {
-                                        wl              ( String.Format( "[ File 4 ]: File.Delete       {0}", file_4_src ) );
                                         File.Delete     ( file_4_src );
+                                        Log.Send        ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Delete ] OK", String.Format( "{0}", file_4_src ) );
                                     }
                                     catch ( Exception e )
                                     {
-                                        wl              ( String.Format( "[ File 4 ]: File.Delete       [Failure]: {0}", file_4_src , e.Message ) );
+                                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Delete ] Fail", String.Format( "{0}", file_4_src ) );
+                                        Log.Send( "", 0, "", String.Format( "{0}", e.Message ) );
 
                                         string[] psq_delete = { "Remove-Item -Path \"" + file_4_src + "\" -Force" };
-                                        wl               ( String.Format( "[ File 4 ]: PSQuery           {0}", psq_delete ) );
+
+                                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ PSQ.Delete ]", String.Format( "{0}", psq_delete  ) );
                                         Helpers.PowershellQ  ( psq_delete );
                                     }
-
                                 }
 
-                                wl                      ( String.Format( "[ File 4 ]: Move-Start        {0}", file_4_src ) );
-                                File.Move               ( Cfg.Default.app_res_file_4, file_4_src );
-                                wl                      ( String.Format( "[ File 4 ]: Move-Complete     {0}", file_4_src ) );
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Start", String.Format( "{0}", file_4_src ) );
+                                File.Move( Cfg.Default.app_res_file_4, file_4_src );
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Finish", String.Format( "{0}", file_4_src ) );
                             }
-                            wl                          ( "" );
 
                 /*
                     Wwomtrust.dll
                 */
 
-                wl  ( "" );
-
                 string app_dll_wom_file     = "womtrust.dll";
                 string app_dll_wom_pathto   = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.Windows ), app_dll_wom_file );
+
+                wl( "" );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Process ]", String.Format( "{0}", Cfg.Default.app_res_file_womdll ) );
 
                 File.WriteAllBytes( Cfg.Default.app_res_file_womdll, Res.womtrust );
 
@@ -676,10 +701,14 @@ namespace WFXPatch
                         string app_dll_wom_sha256_src   = Hash.GetSHA256Hash( Cfg.Default.app_res_file_womdll );
                         string app_dll_wom_sha256_cur   = Hash.GetSHA256Hash( app_dll_wom_pathto );
 
-                        wl                      ( String.Format( "[ womtrust ]: SHA256*         {0}", app_dll_wom_sha256_src ) );
-                        wl                      ( String.Format( "[ womtrust ]: SHA256          {0}", app_dll_wom_sha256_cur ) );
+                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ SHA256 ] *", String.Format( "{0}", app_dll_wom_sha256_src ) );
+                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ SHA256 ]", String.Format( "{0}", app_dll_wom_sha256_cur ) );
 
-                        if ( app_dll_wom_sha256_src != app_dll_wom_sha256_cur )
+                        if ( app_dll_wom_sha256_src == app_dll_wom_sha256_cur )
+                        {
+                            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Skip", String.Format( "{0} -> {1}", Cfg.Default.app_res_file_womdll, app_dll_wom_pathto ) );
+                        }
+                        else
                         {
 
                             /*
@@ -688,16 +717,18 @@ namespace WFXPatch
 
                             try
                             {
-                                wl              ( String.Format( "[ womtrust ]: Delete          {0}", app_dll_wom_pathto ) );
-                                File.Delete     ( app_dll_wom_pathto );
+                                Log.Send    ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Delete ] OK", String.Format( "{0}", app_dll_wom_pathto ) );
+                                File.Delete ( app_dll_wom_pathto );
                             }
                             catch ( Exception e )
                             {
-                                wl              ( String.Format( "[ womtrust ]: Delete [Fail]   {0}", app_dll_wom_pathto , e.Message ) );
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Delete ] Fail", String.Format( "{0}", app_dll_wom_pathto ) );
+                                Log.Send( " ", 0, " ", String.Format( "{0}", e.Message ) );
 
                                 string[] psq_delete = { "Remove-Item -Path \"" + app_dll_wom_pathto + "\" -Force" };
-                                wl              ( String.Format( "[ womtrust ]: PSQuery         {0}", psq_delete ) );
-                                Helpers.PowershellQ  ( psq_delete );
+
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ PSQ.Delete ]", String.Format( "{0}", psq_delete ) );
+                                Helpers.PowershellQ( psq_delete );
                             }
 
                             /*
@@ -706,11 +737,13 @@ namespace WFXPatch
 
                             try
                             {
-                                File.Move       ( Cfg.Default.app_res_file_womdll, app_dll_wom_pathto );
+                                File.Move   ( Cfg.Default.app_res_file_womdll, app_dll_wom_pathto );
+                                Log.Send    ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] OK", String.Format( "{0}", app_dll_wom_pathto ) );
                             }
                             catch ( Exception e )
                             {
-                                wl              ( String.Format( "[ womtrust ]: Move [Fail]     {0}", app_dll_wom_pathto , e.Message ) );
+                                Log.Send    ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Fail", String.Format( "{0}", app_dll_wom_pathto ) );
+                                Log.Send    ( " ", 0, " ", String.Format( "{0}", e.Message ) );
 
                                 MessageBox.Show
                                 (
@@ -724,7 +757,24 @@ namespace WFXPatch
                     }
                     else
                     {
-                        File.Move ( Cfg.Default.app_res_file_womdll, app_dll_wom_pathto );
+                        try
+                        {
+                            File.Move   ( Cfg.Default.app_res_file_womdll, app_dll_wom_pathto );
+                            Log.Send    ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] OK", String.Format( "{0}", app_dll_wom_pathto ) );
+                        }
+                        catch ( Exception e )
+                        {
+                            Log.Send    ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Fail", String.Format( "{0}", app_dll_wom_pathto ) );
+                            Log.Send    ( " ", 0, " ", String.Format( "{0}", e.Message ) );
+
+                            MessageBox.Show
+                            (
+                                new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                                String.Format( Res.msgbox_wotrust_move_error_msg, app_dll_wom_file, app_dll_wom_pathto ),
+                                String.Format( Res.msgbox_wotrust_move_error_title, app_dll_wom_file ),
+                                MessageBoxButtons.OK, MessageBoxIcon.Error
+                            );
+                        }
                     }
                 }
 
@@ -733,7 +783,10 @@ namespace WFXPatch
                 */
 
                 string app_dll_won_file     = "wontrust.dll";
-                string app_dll_won_pathto   = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.Windows ), "wontrust.dll" );
+                string app_dll_won_pathto   = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.Windows ), app_dll_won_file );
+
+                wl( "" );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Process ]", String.Format( "{0}", Cfg.Default.app_res_file_wondll ) );
 
                 File.WriteAllBytes( Cfg.Default.app_res_file_wondll, Res.wontrust );
 
@@ -745,8 +798,8 @@ namespace WFXPatch
                         string[] psq_perms =
                         {
                             "$user_current = $env:username",
-                            "takeown /f \"" + app_dll_wom_pathto + "\"",
-                            "icacls \"" + app_dll_wom_pathto + "\" /grant \"${user_current}:F\" /C /L",
+                            "takeown /f \"" + app_dll_won_pathto + "\"",
+                            "icacls \"" + app_dll_won_pathto + "\" /grant \"${user_current}:F\" /C /L",
                         };
 
                         Helpers.PowershellQ( psq_perms );
@@ -760,10 +813,14 @@ namespace WFXPatch
                         string app_dll_won_sha256_src   = Hash.GetSHA256Hash( Cfg.Default.app_res_file_wondll );
                         string app_dll_won_sha256_cur   = Hash.GetSHA256Hash( app_dll_won_pathto );
 
-                        wl                              ( String.Format( "[ wontrust.dll ]: SHA256*     {0}", app_dll_won_sha256_src ) );
-                        wl                              ( String.Format( "[ wontrust.dll ]: SHA256      {0}", app_dll_won_sha256_cur ) );
+                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ SHA256 ] *", String.Format( "{0}", app_dll_won_sha256_src ) );
+                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ SHA256 ]", String.Format( "{0}", app_dll_won_sha256_cur ) );
 
-                        if ( app_dll_won_sha256_src != app_dll_won_sha256_cur )
+                        if ( app_dll_won_sha256_src == app_dll_won_sha256_cur )
+                        {
+                            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Skip", String.Format( "{0} -> {1}", Cfg.Default.app_res_file_wondll, app_dll_won_pathto ) );
+                        }
+                        else
                         {
 
                             /*
@@ -772,16 +829,18 @@ namespace WFXPatch
 
                             try
                             {
-                                wl              ( String.Format( "[ womtrust ]: Delete          {0}", app_dll_won_pathto ) );
-                                File.Delete     ( app_dll_won_pathto );
+                                Log.Send    ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Delete ] OK", String.Format( "{0}", app_dll_won_pathto ) );
+                                File.Delete ( app_dll_won_pathto );
                             }
                             catch ( Exception e )
                             {
-                                wl              ( String.Format( "[ womtrust ]: Delete [Fail]:  {0}", app_dll_won_pathto , e.Message ) );
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Delete ] Fail", String.Format( "{0}", app_dll_won_pathto ) );
+                                Log.Send( " ", 0, " ", String.Format( "{0}", e.Message ) );
 
                                 string[] psq_delete = { "Remove-Item -Path \"" + app_dll_won_pathto + "\" -Force" };
-                                wl               ( String.Format( "[ womtrust ]: PSQuery        {0}", psq_delete ) );
-                                Helpers.PowershellQ  ( psq_delete );
+
+                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ PSQ.Delete ]", String.Format( "{0}", psq_delete ) );
+                                Helpers.PowershellQ( psq_delete );
                             }
 
                             /*
@@ -790,16 +849,18 @@ namespace WFXPatch
 
                             try
                             {
-                                File.Move           ( Cfg.Default.app_res_file_wondll, app_dll_won_pathto );
+                                File.Move   ( Cfg.Default.app_res_file_wondll, app_dll_won_pathto );
+                                Log.Send    ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] OK", String.Format( "{0}", app_dll_won_pathto ) );
                             }
                             catch ( Exception e )
                             {
-                                wl                  ( String.Format( "[ wontrust ]: Move [Fail]    {0}", app_dll_won_pathto , e.Message ) );
+                                Log.Send    ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Fail", String.Format( "{0}", app_dll_won_pathto ) );
+                                Log.Send    ( " ", 0, " ", String.Format( "{0}", e.Message ) );
 
                                 MessageBox.Show
                                 (
                                     new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
-                                    String.Format( Res.msgbox_wotrust_move_error_msg, app_dll_won_file, app_dll_won_pathto ),
+                                    String.Format( Res.msgbox_wotrust_move_error_msg, app_dll_wom_file, app_dll_won_pathto ),
                                     String.Format( Res.msgbox_wotrust_move_error_title, app_dll_won_file ),
                                     MessageBoxButtons.OK, MessageBoxIcon.Error
                                 );
@@ -808,9 +869,28 @@ namespace WFXPatch
                     }
                     else
                     {
-                        File.Move ( Cfg.Default.app_res_file_wondll, app_dll_won_pathto );
+                        try
+                        {
+                            File.Move   ( Cfg.Default.app_res_file_wondll, app_dll_won_pathto );
+                            Log.Send    ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] OK", String.Format( "{0}", app_dll_won_pathto ) );
+                        }
+                        catch ( Exception e )
+                        {
+                            Log.Send    ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Fail", String.Format( "{0}", app_dll_won_pathto ) );
+                            Log.Send    ( " ", 0, " ", String.Format( "{0}", e.Message ) );
+
+                            MessageBox.Show
+                            (
+                                new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                                String.Format( Res.msgbox_wotrust_move_error_msg, app_dll_wom_file, app_dll_won_pathto ),
+                                String.Format( Res.msgbox_wotrust_move_error_title, app_dll_won_file ),
+                                MessageBoxButtons.OK, MessageBoxIcon.Error
+                            );
+                        }
                     }
                 }
+
+                wl( "" );
 
                 /*
                     Restart Service
@@ -828,7 +908,8 @@ namespace WFXPatch
                 {
                     if ( File.Exists( WFX_path_exe ) )
                     {
-                        wl( String.Format( "[ Patch ]: Launch             {0}", WFX_path_exe ) );
+
+                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App ] Launch:", String.Format( "{0}", WFX_path_exe ) );
                         System.Diagnostics.Process.Start( WFX_path_exe );
                         StatusBar.Update( string.Format( Res.status_launch_app, Cfg.Default.app_name ) );
                     }
@@ -853,12 +934,14 @@ namespace WFXPatch
 
             */
 
+            Cleanup( );
+
             /*
-                re-enable AutoRestartShell in registry
-                AutoRestartShell = 1
+                Determines if the patch was installed and files were modified.
+                This can fail if you have already installed the patch and the SHA256 hashes are the same.
             */
 
-            if( !bRequireEdit )
+            if( !bFilesModified )
             {
 
                 string app_path_full    = Helpers.FindApp( );
@@ -917,16 +1000,17 @@ namespace WFXPatch
                 }
                 catch ( Exception e )
                 {
-                    wl( String.Format( "Hex Dump [Exception]: {0} - {1} ", exe, e.Message ) );
+                    Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "Hex Dumb Exception", String.Format( "{0} - {1}", exe, e.Message ) );
                 }
                 finally
                 {
-                    wl( String.Format( "Hex Dump [Complete]: {0}", exe ) );
+                    Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "Hex Dump Success", exe );
                 }
             }
 
-            wl( String.Format( "[ ModifyBytes ]: Open         {0}", exe ) );
-            wl( String.Format( "[ ModifyBytes ]: Write        {0} ->\n                              {1}", a, b ) );
+            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ ModifyBytes ] Open", String.Format( "{0}", exe ) );
+            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ ModifyBytes ] Write", String.Format( "{0}", a ) );
+            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), " ", String.Format( "{0}", b ) );
 
             // bytes will be separated by a hyphen -, remove hyphen
             string[] hex_patch          = hex_result.Split(' ');
@@ -939,7 +1023,7 @@ namespace WFXPatch
 
             File.WriteAllBytes( exe, bytes_modified );
 
-            wl( String.Format( "[ ModifyBytes ]: Save         {0}", exe ) );
+            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ ModifyBytes ] Save", String.Format( "{0}", exe ) );
             wl( "" );
 
         }
@@ -1185,6 +1269,40 @@ namespace WFXPatch
                 Res.msgbox_bhost_fw_success_title,
                 MessageBoxButtons.OK, MessageBoxIcon.None
             );
+        }
+
+        /*
+            Patch > Cleanup
+        */
+
+        public static void Cleanup( )
+        {
+
+            string[] app_files =
+            {
+                Cfg.Default.app_res_file_1,
+                Cfg.Default.app_res_file_2,
+                Cfg.Default.app_res_file_3,
+                Cfg.Default.app_res_file_4,
+                Cfg.Default.app_res_file_womdll,
+                Cfg.Default.app_res_file_wondll,
+            };
+
+            foreach ( string file in app_files )
+            {   
+                if ( File.Exists( file ) )
+                {
+                    try
+                    {
+                        File.Delete( file );
+                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Cleanup ] Remove", String.Format( "{0}", file ) );
+                    }
+                    catch ( Exception e )
+                    {
+                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Cleanup ] Remove", String.Format( "Exception: {0}", e.Message ) );
+                    }
+                }
+            }
         }
     }
 }

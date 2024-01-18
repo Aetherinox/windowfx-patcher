@@ -5,7 +5,9 @@
 */
 
 using System;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace WFXPatch
 {
@@ -32,6 +34,20 @@ namespace WFXPatch
             #else
                 return false;
             #endif
+        }
+
+        /*
+             AppInfo > Get Resources
+        */
+
+        public string GetResources( )
+        {
+            foreach(string resourceName in Assembly.GetExecutingAssembly().GetManifestResourceNames())
+            {
+                return resourceName;
+            }
+
+            return string.Empty;
         }
 
         /*

@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9F513B82-B75D-412A-A86F-45574F3187D1}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>WFXPatch</RootNamespace>
     <AssemblyName>WFXPatch</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
@@ -59,6 +59,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>wfx_128.ico</ApplicationIcon>
@@ -122,6 +124,7 @@
     <Compile Include="Classes\FolderBrowserDialogEx.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Classes\Log.cs" />
     <Compile Include="Classes\Receiver.cs" />
     <Compile Include="Classes\Perms.cs" />
     <Compile Include="Classes\Helpers.cs" />

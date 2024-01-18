@@ -65,5 +65,11 @@
     <Setting Name="app_res_file_dmp_patched" Type="System.String" Scope="Application">
       <Value Profile="(Default)">hex_patched.dmp</Value>
     </Setting>
+    <Setting Name="app_bDevmode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="app_argid_debug" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">--debug</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

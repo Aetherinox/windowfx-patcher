@@ -215,5 +215,26 @@ namespace WFXPatch.Properties {
                 return ((string)(this["app_res_file_dmp_patched"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool app_bDevmode {
+            get {
+                return ((bool)(this["app_bDevmode"]));
+            }
+            set {
+                this["app_bDevmode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("--debug")]
+        public string app_argid_debug {
+            get {
+                return ((string)(this["app_argid_debug"]));
+            }
+        }
     }
 }

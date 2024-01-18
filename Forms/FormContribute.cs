@@ -15,6 +15,16 @@ namespace WFXPatch.Forms
     public partial class FormContribute : Form
     {
 
+        #region "Fileinfo"
+
+            /*
+                Define > File Name
+            */
+
+            readonly static string log_file = "FormContribute.cs";
+
+        #endregion
+
         #region "Declarations"
 
             /*
@@ -73,18 +83,10 @@ namespace WFXPatch.Forms
 
             }
 
-            /*
-                Tweak to fix frame flickering
-            */
-
-            protected override CreateParams CreateParams
+            private void FormContribute_Load( object sender, EventArgs e )
             {
-                get
-                {
-                    CreateParams cp = base.CreateParams;
-                    cp.ExStyle |= 0x02000000;  // enable WS_EX_COMPOSITED
-                    return cp;
-                }
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Form Load", String.Format( "FormContribute_Load : {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+
             }
 
         #endregion

@@ -571,4 +571,28 @@ This usually happens when the file is currently in-use by Windows Explorer (expl
   <data name="msgbox_wotrust_move_error_title" xml:space="preserve">
     <value>Failed to Copy {0}</value>
   </data>
+  <data name="msgbox_debug_egg_disable_msg" xml:space="preserve">
+    <value>Do you want to disable debug logging?</value>
+  </data>
+  <data name="msgbox_debug_egg_disable_title" xml:space="preserve">
+    <value>Disable Debug Logging?</value>
+  </data>
+  <data name="msgbox_debug_egg_enable_msg" xml:space="preserve">
+    <value>Do you want to enable debug logging?
+
+All logs will be stored in the location:
+     {0}</value>
+  </data>
+  <data name="msgbox_debug_egg_enable_title" xml:space="preserve">
+    <value>Enable Debug Logging?</value>
+  </data>
+  <data name="msgbox_logs_open_msg" xml:space="preserve">
+    <value>Log files are only generated if you launch this app with this startup argument: 
+     {0}
+
+If you are expernecing issues and need support, you'll be asked to do this and submit your log to the developer for diagnosing on Github.</value>
+  </data>
+  <data name="msgbox_logs_open_title" xml:space="preserve">
+    <value>No Logs Found</value>
+  </data>
 </root>
