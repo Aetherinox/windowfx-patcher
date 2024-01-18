@@ -27,12 +27,10 @@ namespace WFXPatch
 
             /*
                 Define > File Name
+                    utilized with logging
             */
 
             readonly static string log_file                 = "FormParent.cs";
-            static int i_DebugClicks                        = 0;
-            private System.Windows.Forms.Timer DebugTimer   = new System.Windows.Forms.Timer( );
-            Stopwatch SW_DebugRemains                       = new Stopwatch( );
 
         #endregion
 
@@ -45,6 +43,14 @@ namespace WFXPatch
             private Patch Patch         = new Patch( );
             private Helpers Helpers     = new Helpers( );
             private AppInfo AppInfo     = new AppInfo( );
+
+        /*
+            Define > Debug Activation
+        */
+
+            static int i_DebugClicks                        = 0;
+            private System.Windows.Forms.Timer DebugTimer   = new System.Windows.Forms.Timer( );
+            Stopwatch SW_DebugRemains                       = new Stopwatch( );
 
             /*
                 Define > Internal > Helper
@@ -206,6 +212,7 @@ namespace WFXPatch
 
                 btn_Patch.Text              = Res.btn_patch;
                 btn_OpenFolder.Text         = Res.btn_open_folder;
+
             }
 
             /*
@@ -221,6 +228,10 @@ namespace WFXPatch
 
                 /*
                     Debug Timer
+                        forces the debug activation timer to expire every X seconds.
+                        A user must click on the header image at least 7 times in a matter of 7 seconds in order for debug mode to activate.
+
+                        see method DebugTimer_Tick for functionality
                 */
 
                 DebugTimer.Interval     = ( 10 * 700 );
@@ -230,7 +241,7 @@ namespace WFXPatch
             }
 
             /*
-                Debug Timer
+                Debug Timer > Tick
                     This termines how long a user has to click the header image in order to enable developer mode.
                     This is easier than creating yet another menu item.
             */
@@ -256,6 +267,25 @@ namespace WFXPatch
 
                     JavaScriptSerializer serializer     = new JavaScriptSerializer( ); 
                     Manifest manifest                   = serializer.Deserialize<Manifest>( json );
+
+                    /*
+                        validate json results from github
+                    */
+
+                    MessageBox.Show
+                    (
+                        new Form( ) { TopMost = true, TopLevel = true, StartPosition = FormStartPosition.CenterScreen },
+                        Cfg.Default.app_bDevmode.ToString(),
+                        "Check Update V 1",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error
+                    );
+
+
+                    if ( manifest != null )
+                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Uplink", String.Format( "{0} : {1}", "FormParent.CheckUpdates", "Successful connection - populated manifest data" ) );
+                    else
+                       Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Uplink", String.Format( "{0} : {1}", "FormParent.CheckUpdates", "Successful connection - missing manifest data" ) );
+
 
                     /*
                         Check if update is available for end-user
@@ -294,7 +324,8 @@ namespace WFXPatch
                 }
                 catch ( WebException e )
                 {
-
+                    Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Uplink", String.Format( "{0} : {1}", "FormParent.CheckUpdates", "Failed connection - exception" ) );
+                    Log.Send( log_file, 0, "", String.Format( "{0}", e.Message ) );
                 }
             }
 
@@ -318,7 +349,7 @@ namespace WFXPatch
 
             private void btn_Window_Minimize_Click( object sender, EventArgs e )
             {
-                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "{0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
                 this.WindowState = FormWindowState.Minimized;
             }
 
@@ -346,7 +377,7 @@ namespace WFXPatch
 
             private void btn_Window_Close_Click( object sender, EventArgs e )
             {
-                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "{0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
                 Patch.Cleanup( );
                 Application.Exit( );
             }
@@ -416,9 +447,9 @@ namespace WFXPatch
 
         #region "Header"
 
-        /*
-            Header Image
-        */
+            /*
+                Header Image
+            */
 
             private void imgHeader_MouseDown( object sender, MouseEventArgs e )
             {
@@ -632,7 +663,7 @@ namespace WFXPatch
 
             private void mnu_Sub_Exit_Click( object sender, EventArgs e )
             {
-                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "{0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
                 Patch.Cleanup( );
                 Application.Exit( );
             }
@@ -643,7 +674,7 @@ namespace WFXPatch
 
             private void mnu_Sub_DebugLog_Click( object sender, EventArgs e )
             {
-                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "{0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
 
                 string log_filename     = Log.GetStorageFile( );
                 string log_path         = Path.Combine( patch_launch_dir, log_filename );
@@ -668,7 +699,7 @@ namespace WFXPatch
 
             private void mnu_Cat_Contribute_Click( object sender, EventArgs e )
             {
-                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "{0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
 
                 this.Hide( );
 
@@ -683,7 +714,7 @@ namespace WFXPatch
 
             private void mnu_Sub_Updates_Click( object sender, EventArgs e )
             {
-                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "{0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
 
                 System.Diagnostics.Process.Start( Cfg.Default.app_url_github );
             }
@@ -694,7 +725,7 @@ namespace WFXPatch
 
             private void mnu_Sub_Validate_Click( object sender, EventArgs e )
             {
-                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "{0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
 
                 string exe_target = System.AppDomain.CurrentDomain.FriendlyName;
                 if ( !File.Exists( exe_target ) )
@@ -792,7 +823,7 @@ namespace WFXPatch
 
             private void mnu_Sub_About_Click( object sender, EventArgs e )
             {
-                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod().Name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "{0}", System.Reflection.MethodBase.GetCurrentMethod().Name ) );
 
                 this.Hide( );
 
@@ -859,7 +890,7 @@ namespace WFXPatch
 
             private void btn_HostView_Click( object sender, EventArgs e )
             {
-                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "{0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
 
                 string etc_path = @"C:\Windows\System32\drivers\etc";
                 Process.Start( "explorer.exe", etc_path );
@@ -871,7 +902,7 @@ namespace WFXPatch
 
             private void btn_DoBlock_Click( object sender, EventArgs e )
             {
-                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "{0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
 
                 var result = MessageBox.Show
                 (
@@ -917,7 +948,7 @@ namespace WFXPatch
 
             private async void btn_Patch_Click( object sender, EventArgs e )
             {
-                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "{0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
 
                 prog_Bar1.Visible   = true;
                 prog_Bar1.Value     = 0;
@@ -930,14 +961,14 @@ namespace WFXPatch
 
         #region "Button: Open Folder"
 
-        /*
-            Auto-detects which folder WindowFXConfig.exe is installed in and opens that folder
-            in the user's File Explorer.
-        */
+            /*
+                Auto-detects which folder WindowFXConfig.exe is installed in and opens that folder
+                in the user's File Explorer.
+            */
 
-        private void btn_OpenFolder_Click( object sender, EventArgs e )
+            private void btn_OpenFolder_Click( object sender, EventArgs e )
             {
-                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "Click: {0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "{0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
 
                 string app_path_full      = Helper.FindApp( );
 
@@ -1226,7 +1257,10 @@ namespace WFXPatch
                         );
 
                         if ( resp_input.ToString( ).ToLower( ) == "yes" )
+                        {
                             Cfg.Default.app_bDevmode = false;
+                            Program.DisableDebugConsole( );
+                        }
 
                     }
                     else
@@ -1246,7 +1280,10 @@ namespace WFXPatch
                         );
 
                         if ( resp_input.ToString( ).ToLower( ) == "yes" )
+                        {
                             Cfg.Default.app_bDevmode = true;
+                            Program.EnableDebugConsole( );
+                        }
 
                     }
                 }

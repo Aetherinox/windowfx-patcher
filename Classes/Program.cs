@@ -18,6 +18,7 @@ using System.Globalization;
 using System.Resources;
 using Res = WFXPatch.Properties.Resources;
 using Cfg = WFXPatch.Properties.Settings;
+using System.Xml.Linq;
 
 namespace WFXPatch
 {
@@ -57,17 +58,25 @@ namespace WFXPatch
             Application.EnableVisualStyles( );
             Application.SetCompatibleTextRenderingDefault( false );
 
-            string log_filename     = Log.GetStorageFile( );
-            ConsoleFileOutput cf    = new ConsoleFileOutput( log_filename, Console.Out);
-            Console.SetOut( cf );
-
             /*
-                 developer mode
+                The program needs to run as admin (Further below). As soon as the program runs as admin,
+                all arguments and user settings will be gone since it's no longer the same user running the program.
+
+                Utilize stringbuilder below to loop through the original arguments and set them up to be passed
+                to the process below.
+
+                arguments will be formatted into a single string space separated
+
+                --arg1 --arg2 --arg3
             */
 
-            if ( args.Length > 0 && args[ 0 ] == "--debug" )
+            string args_runAs       = "";
+            StringBuilder sb        = new StringBuilder( );
+
+            foreach ( string file in args )
             {
-                Cfg.Default.app_bDevmode = true;
+                sb.Append( file + " " );
+                args_runAs = sb.ToString( );
             }
 
             /*
@@ -76,13 +85,15 @@ namespace WFXPatch
 
             if ( !IsAdmin( ) )
             {
-                ProcessStartInfo procStart  = new ProcessStartInfo( );
-                procStart.UseShellExecute   = true;
-                procStart.Verb              = "runas";
-                procStart.FileName          = Application.ExecutablePath;
+                ProcessStartInfo ProcAdmin  = new ProcessStartInfo( );
+                ProcAdmin.UseShellExecute   = true;
+                ProcAdmin.Verb              = "runas";
+                ProcAdmin.FileName          = Application.ExecutablePath;
+                ProcAdmin.Arguments         = args_runAs;
+
                 try
                 {
-                    Process.Start( procStart );
+                    Process.Start( ProcAdmin );
                 }
                 catch
                 {
@@ -96,81 +107,75 @@ namespace WFXPatch
 
                     return;
                 }
+
                 return;
             }
 
+            /*
+                 ensure debug mode is turned off by default as we don't want presistence
+            */
 
-            //Log.Send( log_file, "new FormParent()" );
+            Cfg.Default.app_bDevmode = false;
+            Cfg.Default.Save( ) ;
+
+            /*
+                 utilize arguments
+
+                    args start at index args[ 0 ]
+                    args.Length will return the number of args provided
+            */
+
+            if ( args.Length > 0 && args[ 0 ] == Cfg.Default.app_argid_debug )
+            {
+                Cfg.Default.app_bDevmode = true;
+                EnableDebugConsole( );
+
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Debug ]", String.Format( "User defined {0} argument", Cfg.Default.app_argid_debug ) );
+            }
+
+            /*
+                 launch app with FormParent
+            */
 
             Application.Run( new FormParent( ) );
         }
-
-        /*
-            Console Override
-        */
-
-        public class ConsoleFileOutput : TextWriter
-        {
-            private Encoding encoding = Encoding.UTF8;
-            private StreamWriter writer;
-            private TextWriter console;
-
-            public override Encoding Encoding
-            {
-                get { return encoding; }
-            }
-
-            public ConsoleFileOutput( string file, TextWriter console, Encoding encoding = null)
-            {
-                if ( encoding != null )
-                    this.encoding = encoding;
-
-                this.console    = console;
-                this.writer     = new StreamWriter( file, true, this.encoding );
-
-                this.writer.AutoFlush = true;
-            }
-
-            public override void Write(string value)
-            {
-                Console.SetOut  ( console );
-                Console.Write   ( value );
-                Console.SetOut  ( this );
-
-                this.writer.Write( value );
-            }
-
-            public override void WriteLine( string msg )
-            {
-                Console.SetOut( console );
-                Console.WriteLine( msg );
-                this.writer.WriteLine( msg );
-
-                Console.SetOut( this );
-            }
-
-            public override void Flush( )
-            {
-                this.writer.Flush( );
-            }
-
-            public override void Close( )
-            {
-                this.writer.Close( );
-            }
-
-            new public void Dispose( )
-            {
-                this.writer.Flush( );
-                this.writer.Close( );
-                this.writer.Dispose( );
-                base.Dispose( );
-            }
-
-        }
    
         /*
-            Check if running as admin
+            Console > Enable
+
+            @arg        : void
+            @ret        : void
+        */
+
+        public static void EnableDebugConsole( )
+        {
+            string log_filename     = Log.GetStorageFile( );
+            Log.Initialize cf       = new Log.Initialize( log_filename, Console.Out );
+            Console.SetOut( cf );
+
+            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Debug ]", String.Format( "Enter Debug Mode" ) );
+        }
+
+        /*
+            Console > Disable
+                we dont really need the cole for any other reason; just null it.
+                better ways to do this, but  enough time has been spent on this.
+
+            @arg        : void
+            @ret        : void
+        */
+
+        public static void DisableDebugConsole( )
+        {
+            Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Debug ]", String.Format( "Exit Debug Mode" ) );
+            Console.SetOut( new Log.Initialize.SetNull( ) ) ;
+        }
+
+        /*
+            Check running as admin
+
+            @arg        : void
+            @ret        : bool
         */
 
         private static bool IsAdmin( )

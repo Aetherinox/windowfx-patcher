@@ -8,6 +8,8 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Lng = WFXPatch.Properties.Resources;
+using Cfg = WFXPatch.Properties.Settings;
 
 namespace WFXPatch
 {
@@ -21,12 +23,17 @@ namespace WFXPatch
     {
 
         /*
-             AppInfo > Configuration Name
+             AppInfo > Get Debug
+
+             @ret       : bool
         */
 
         public bool bIsDebug( )
         {
             if ( System.Diagnostics.Debugger.IsAttached )
+                return true;
+
+            if ( Cfg.Default.app_bDevmode )
                 return true;
 
             #if DEBUG
@@ -38,11 +45,13 @@ namespace WFXPatch
 
         /*
              AppInfo > Get Resources
+
+             @ret       : string
         */
 
         public string GetResources( )
         {
-            foreach(string resourceName in Assembly.GetExecutingAssembly().GetManifestResourceNames())
+            foreach(string resourceName in Assembly.GetExecutingAssembly( ).GetManifestResourceNames( ) )
             {
                 return resourceName;
             }
@@ -53,7 +62,8 @@ namespace WFXPatch
         /*
             AppInfo -> Title
 
-            @usage      :   string title = AppInfo.Title;
+            @usage      : string title = AppInfo.Title;
+            @ret        : str
         */
 
         public static string Title
@@ -72,7 +82,8 @@ namespace WFXPatch
         /*
             AppInfo -> Description
 
-            @usage      :   string description = AppInfo.Description;
+            @usage      : string description = AppInfo.Description;
+            @ret        : str
         */
 
         public static string Description
@@ -91,7 +102,8 @@ namespace WFXPatch
         /*
             AppInfo -> Trademark
 
-            @usage      :   string trademark = AppInfo.Trademark;
+            @usage      : string trademark = AppInfo.Trademark;
+            @ret        : str
         */
 
         public static string Trademark
@@ -110,7 +122,8 @@ namespace WFXPatch
         /*
             AppInfo -> Company
 
-            @usage      :   string company = AppInfo.Company;
+            @usage      : string company = AppInfo.Company;
+            @ret        : str
         */
 
         public static string Company
@@ -129,7 +142,8 @@ namespace WFXPatch
         /*
             AppInfo -> Copyright
 
-            @usage      :   string copyright = AppInfo.Copyright;
+            @usage      : string copyright = AppInfo.Copyright;
+            @ret        : str
         */
 
         public static string Copyright
@@ -148,7 +162,8 @@ namespace WFXPatch
         /*
             AppInfo -> Version
 
-            @usage      :   string version = AppInfo.PublishVersion;
+            @usage      : string version = AppInfo.PublishVersion;
+            @ret        : str
         */
 
         public static string Version
@@ -168,7 +183,8 @@ namespace WFXPatch
         /*
             AppInfo -> Product Version
 
-            @usage      :   string product_ver = AppInfo.ProductVersion;
+            @usage      : string product_ver = AppInfo.ProductVersion;
+            @ret        : str
         */
 
         public static string ProductVersionCore
@@ -182,7 +198,8 @@ namespace WFXPatch
         /*
             AppInfo -> Publish Version
 
-            @usage      :   string publish_ver = AppInfo.PublishVersion;
+            @usage      : string publish_ver = AppInfo.PublishVersion;
+            @ret        : str
         */
 
         public static string PublishVersion
@@ -207,8 +224,8 @@ namespace WFXPatch
                 returns if an update is available by comparing the provided version
                 with the product version.
 
-        @return     :   true    Update Available
-                        false   Current version
+        @ret            : true      Update Available
+                          false     Current version
 
         */
 
@@ -252,9 +269,11 @@ namespace WFXPatch
             AppInfo -> Version Check
                 compare two versions.
 
-            @return     1   = v2 smaller
-                        -1  = v1 smaller
-                        0   = equal
+            @arg        : str v1
+            @arg        : str v2
+            @ret        : 0 = equal
+                          1 = v2 smaller
+                         -1 = v1 smaller
 
         */
 

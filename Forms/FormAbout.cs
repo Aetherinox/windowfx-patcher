@@ -11,12 +11,13 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Configuration;
 using System.Reflection;
-using Lng = WFXPatch.Properties.Resources;
-using Cfg = WFXPatch.Properties.Settings;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.IO;
+using Lng = WFXPatch.Properties.Resources;
+using Cfg = WFXPatch.Properties.Settings;
+using static System.Windows.Forms.LinkLabel;
 
 namespace WFXPatch
 {
@@ -84,12 +85,6 @@ namespace WFXPatch
                 public string lnk1 { get; set; }
                 public IList<string> products { get; set; }
             }
-
-            /*
-                Define > Globals
-            */
-
-            string app_url_tpb  = Cfg.Default.app_url_tpb;
 
         #endregion
 
@@ -234,10 +229,14 @@ This key is used to sign the releases on Github.com, all commits are also signed
                     JavaScriptSerializer serializer     = new JavaScriptSerializer( ); 
                     Manifest manifest                   = serializer.Deserialize<Manifest>( json );
 
+                    /*
+                        validate json results from github
+                    */
+
                     if ( manifest != null )
-                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Action", String.Format( "{0} : {1}", System.Reflection.MethodBase.GetCurrentMethod( ).Name, "Successfully populated data" ) );
+                        Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Uplink", String.Format( "{0} : {1}", "FormAbout.FetchJson", "Successful connection - populated manifest data" ) );
                     else
-                       Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Action", String.Format( "{0} : {1}", System.Reflection.MethodBase.GetCurrentMethod( ).Name, "Failed populated data" ) );
+                       Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Uplink", String.Format( "{0} : {1}", "FormAbout.FetchJson", "Successful connection - missing manifest data" ) );
 
                     /*
                         Check if update is available for end-user
@@ -252,7 +251,8 @@ This key is used to sign the releases on Github.com, all commits are also signed
                 }
                 catch ( WebException e )
                 {
-
+                    Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Uplink", String.Format( "{0} : {1}", "FormAbout.FetchJson", "Failed connection - exception" ) );
+                    Log.Send( log_file, 0, "", String.Format( "{0}", e.Message ) );
                 }
             }
 
@@ -292,6 +292,8 @@ This key is used to sign the releases on Github.com, all commits are also signed
 
             private void btn_Window_Close_Click(object sender, EventArgs e)
             {
+                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Button", String.Format( "{0}", System.Reflection.MethodBase.GetCurrentMethod( ).Name ) );
+
                 this.Close( );
                 FormParent.Object.Show( );
             }
@@ -318,9 +320,9 @@ This key is used to sign the releases on Github.com, all commits are also signed
 
         #region "Header"
 
-        /*
-            Header Image
-        */
+            /*
+                Header Image
+            */
 
             private void imgHeader_Paint( object sender, PaintEventArgs e )
             {
@@ -541,7 +543,12 @@ This key is used to sign the releases on Github.com, all commits are also signed
 
             private void lnk_TPB_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
             {
-                System.Diagnostics.Process.Start( app_url_tpb );
+                string link = Cfg.Default.app_url_tpb;;
+                Log.Send
+                (
+                    log_file,  new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ),  "[ App.Win ] Link", String.Format( "{0} Link: {1}", System.Reflection.MethodBase.GetCurrentMethod( ).Name, link ) 
+                );
+                System.Diagnostics.Process.Start( link );
             }
 
             /*
@@ -583,7 +590,12 @@ This key is used to sign the releases on Github.com, all commits are also signed
 
             private void lnk_Github_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
             {
-                System.Diagnostics.Process.Start( Cfg.Default.app_url_github );
+                string link = Cfg.Default.app_url_github;
+                Log.Send
+                (
+                    log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ App.Win ] Link", String.Format( "{0} Link: {1}", System.Reflection.MethodBase.GetCurrentMethod( ).Name, link )
+                );
+                System.Diagnostics.Process.Start( link );
             }
 
         #endregion

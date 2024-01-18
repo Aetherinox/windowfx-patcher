@@ -1,5 +1,12 @@
-﻿using System;
+﻿/*
+    @app        : WindowFX Patcher
+    @repo       : https://github.com/Aetherinox/windowfx-patcher
+    @author     : Aetherinox
+*/
+
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -12,88 +19,179 @@ namespace WFXPatch
 
             /*
                 Define > File Name
+                    utilized with logging
             */
 
             readonly static string log_file = "Log.cs";
 
 		#endregion
 
-		public static StringBuilder LogString = new StringBuilder( ); 
+        #region "Class: Console: Initialize"
 
-        public static void Out( string str )
-        {
-            Console.WriteLine( str );
-            LogString.Append( str ).Append( Environment.NewLine );
-        }
+        /*
+            Console > Initialize
+                override the default functionality for Console.Write() and Console.WriteLine().
+                re-routes text to display in console and save to log file.
+        */
 
-		/*
-			Log > Get Storage File
-				specifies where logs will be stored.
-		*/
+            public class Initialize : TextWriter
+            {
+                private Encoding encoding = Encoding.UTF8;
+                private StreamWriter writer;
+                private TextWriter console;
 
-		public static string GetStorageFile( )
-		{
-            DateTime dt             = DateTime.Now;
-            string now              = dt.ToString( "MM_dd_yy" );
+                public sealed class SetNull: TextWriter
+                {
+                    public override Encoding Encoding
+                    {
+                        get { return Encoding.UTF8; }
+                    }
+                }
+
+                public override Encoding Encoding
+                {
+                    get { return encoding; }
+                }
+
+                public Initialize( string file, TextWriter console, Encoding encoding = null)
+                {
+
+                    if ( encoding != null )
+                        this.encoding = encoding;
+
+                    this.console    = console;
+                    this.writer     = new StreamWriter( file, true, this.encoding );
+
+                    this.writer.AutoFlush = true;
+                }
+
+                public override void Write( string msg )
+                {
+                    Console.SetOut  ( console );
+                    Console.Write   ( msg );
+                    Console.SetOut  ( this );
+
+                    this.writer.Write( msg );
+                }
+
+                public override void WriteLine( string msg )
+                {
+                    Console.SetOut          ( console );
+                    Console.WriteLine       ( msg );
+                    Console.SetOut          ( this );
+
+                    this.writer.WriteLine( msg );
+                }
+
+                public override void Flush( )
+                {
+                    this.writer.Flush( );
+                }
+
+                public override void Close( )
+                {
+                    this.writer.Close( );
+                }
+
+                new public void Dispose( )
+                {
+                    this.writer.Flush( );
+                    this.writer.Close( );
+                    this.writer.Dispose( );
+                    base.Dispose( );
+                }
+
+            }
+
+        #endregion
+
+        #region "Methods: Console: Helpers"
+
+		    /*
+			    Log > Get Storage File
+				    specifies where logs will be stored.
+
+                @arg        : void
+                @ret        : str
+		    */
+
+		    public static string GetStorageFile( )
+		    {
+                DateTime dt             = DateTime.Now;
+                string now              = dt.ToString( "MM_dd_yy" );
             
-			return String.Format( "{0}_devlog.log", now );
-		}
+			    return String.Format( "{0}_devlog.log", now );
+		    }
 
-		/*
-			convert list of string arrays to a string with proper column formatting / padding.
-			each array must contain the same number of arguments
+            /*
+			    re-structures console output and file logs to display logs in a certain manner.
 
-			string a	= "Some Data";
-			string b	= "More Data"
-			var lines	= new List<string[]>();
+                    [ MM.dd.yy HH:mm ] FileName[ Line # ] Message Value
 
-			lines.Add( new[] { "Column Name", a, b } );
+                @arg        : str cat
+                @arg        : int line
+                @arg        : str msg
+                @arg        : str val
+                @ret        : void
+		    */
 
-			var output	= Log.PrintLines( lines, 3 );
-		*/
+            public static void Send( string cat = "", int line = 0, string msg = "", string val = "" )
+		    {
+			    DateTime dt			= DateTime.Now;
+			    string now			= dt.ToString( "MM.dd.yy HH:mm" );
+			    string line_file	= String.Format( "{0}[{1}]", cat, line );
 
-		public static void PrintColumn( List<string[]> lines, int padding = 1 )
-		{
-			var numElements		= lines[ 0 ].Length;
-			var maxValues		= new int[numElements ];
+			    Console.WriteLine( "{0,-18}{1,-24}{2,-30}{3,-15}", now, line_file, msg, val );
+		    }
 
-			for ( int i = 0; i < numElements; i++ )
-			{
-				maxValues[ i ] = lines.Max( x => x[ i ].Length ) + padding;
-			}
+        #endregion
 
-			var sb			= new StringBuilder( );
-			bool bFirst		= true;
+        #region "Methods: Print Columns"
 
-			foreach (var line in lines)
-			{
-				if ( !bFirst )
-				{
-					sb.AppendLine( );
-				}
+            /*
+			    convert list of string arrays to a string with proper column formatting / padding.
+			    each array must contain the same number of arguments
 
-				bFirst = false;
+			    string a	= "Some Data";
+			    string b	= "More Data"
+			    var lines	= new List<string[]>();
 
-				for ( int i = 0; i < line.Length; i++ )
-				{
-					var value = line[i];
-					sb.Append( value.PadRight( maxValues[ i ] ) );
-				}
-			}
+			    lines.Add( new[] { "Column Name", a, b } );
 
-			Console.WriteLine( sb.ToString( ) );
+			    var output	= Log.PrintLines( lines, 3 );
+		    */
 
-			//return sb.ToString();
-		}
+            public static void PrintColumn( List<string[]> lines, int padding = 1 )
+		    {
+			    var numElements		= lines[ 0 ].Length;
+			    var maxValues		= new int[numElements ];
 
-		public static void Send( string cat = "", int line = 0, string msg = "", string val = "" )
-		{
-			DateTime dt			= DateTime.Now;
-			string now			= dt.ToString( "MM.dd.yy HH:mm" );
-			string line_file	= String.Format( "{0}[{1}]", cat, line );
+			    for ( int i = 0; i < numElements; i++ )
+				    maxValues[ i ] = lines.Max( x => x[ i ].Length ) + padding;
 
-			Console.WriteLine( "{0,-18}{1,-24}{2,-30}{3,-15}", now, line_file, msg, val );
-		}
+			    var sb			= new StringBuilder( );
+			    bool bFirst		= true;
+
+			    foreach ( var line in lines )
+			    {
+				    if ( !bFirst )
+					    sb.AppendLine( );
+
+				    bFirst = false;
+
+				    for ( int i = 0; i < line.Length; i++ )
+				    {
+					    var value = line[i];
+					    sb.Append( value.PadRight( maxValues[ i ] ) );
+				    }
+			    }
+
+			    Console.WriteLine( sb.ToString( ) );
+
+			    //return sb.ToString();
+		    }
+
+        #endregion
 
 	}
 

@@ -18,7 +18,6 @@ using System.ServiceProcess;
 using System.Diagnostics;
 using Res = WFXPatch.Properties.Resources;
 using Cfg = WFXPatch.Properties.Settings;
-using System.Xml.Linq;
 
 [AttributeUsage( AttributeTargets.Assembly )]
 internal class BuildDateAttribute : Attribute
@@ -46,6 +45,7 @@ namespace WFXPatch
 
             /*
                 Define > File Name
+                    utilized with logging
             */
 
             readonly static string log_file = "Helpers.cs";

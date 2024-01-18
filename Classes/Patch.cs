@@ -656,24 +656,24 @@ namespace WFXPatch
                                     }
                                 }
 
-                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Start", String.Format( "{0}", file_4_src ) );
-                                File.Move( Cfg.Default.app_res_file_4, file_4_src );
-                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Finish", String.Format( "{0}", file_4_src ) );
+                                Log.Send    ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Start", String.Format( "{0}", file_4_src ) );
+                                File.Move   ( Cfg.Default.app_res_file_4, file_4_src );
+                                Log.Send    ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Move ] Finish", String.Format( "{0}", file_4_src ) );
                             }
 
                 /*
                     Wwomtrust.dll
                 */
 
-                string app_dll_wom_file     = "womtrust.dll";
+                string app_dll_wom_file     = Cfg.Default.app_res_file_womdll;;
                 string app_dll_wom_pathto   = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.Windows ), app_dll_wom_file );
 
                 wl( "" );
                 Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Process ]", String.Format( "{0}", Cfg.Default.app_res_file_womdll ) );
 
-                File.WriteAllBytes( Cfg.Default.app_res_file_womdll, Res.womtrust );
+                File.WriteAllBytes( app_dll_wom_file, Res.womtrust );
 
-                if ( File.Exists( Cfg.Default.app_res_file_womdll ) ) 
+                if ( File.Exists( app_dll_wom_file ) ) 
                 {
                     if ( File.Exists( app_dll_wom_pathto ) )
                     {
@@ -782,15 +782,15 @@ namespace WFXPatch
                     Wwontrust.dll
                 */
 
-                string app_dll_won_file     = "wontrust.dll";
+                string app_dll_won_file     = Cfg.Default.app_res_file_wondll;
                 string app_dll_won_pathto   = Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.Windows ), app_dll_won_file );
 
                 wl( "" );
                 Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ Process ]", String.Format( "{0}", Cfg.Default.app_res_file_wondll ) );
 
-                File.WriteAllBytes( Cfg.Default.app_res_file_wondll, Res.wontrust );
+                File.WriteAllBytes( app_dll_won_file, Res.wontrust );
 
-                if ( File.Exists( Cfg.Default.app_res_file_wondll ) ) 
+                if ( File.Exists( app_dll_won_file ) ) 
                 {
                     if ( File.Exists( app_dll_won_pathto ) )
                     {
@@ -834,8 +834,8 @@ namespace WFXPatch
                             }
                             catch ( Exception e )
                             {
-                                Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Delete ] Fail", String.Format( "{0}", app_dll_won_pathto ) );
-                                Log.Send( " ", 0, " ", String.Format( "{0}", e.Message ) );
+                                Log.Send    ( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ File.Delete ] Fail", String.Format( "{0}", app_dll_won_pathto ) );
+                                Log.Send    ( " ", 0, " ", String.Format( "{0}", e.Message ) );
 
                                 string[] psq_delete = { "Remove-Item -Path \"" + app_dll_won_pathto + "\" -Force" };
 
@@ -918,21 +918,20 @@ namespace WFXPatch
             }
 
             /*
-                start task explorer.exe
+                Commented actions for explorer.exe process
 
                     disabled because WindowFX doesnt need a shell restart
-            */
 
-            // Process.Start( "explorer" );
+                Process.Start( "explorer" );
 
-            /*
                 re-enable AutoRestartShell in registry
                 AutoRestartShell = 1
 
-            ourKey.SetValue( "AutoRestartShell", 1 );
-            ourKey.Close( );
+                ourKey.SetValue( "AutoRestartShell", 1 );
+                ourKey.Close( );
 
             */
+
 
             Cleanup( );
 
@@ -967,6 +966,7 @@ namespace WFXPatch
             );
 
             StatusBar.Update( Res.status_patch_complete );
+
             return;
         }
 
@@ -1024,6 +1024,7 @@ namespace WFXPatch
             File.WriteAllBytes( exe, bytes_modified );
 
             Log.Send( log_file, new System.Diagnostics.StackTrace( true ).GetFrame( 0 ).GetFileLineNumber( ), "[ ModifyBytes ] Save", String.Format( "{0}", exe ) );
+
             wl( "" );
 
         }
